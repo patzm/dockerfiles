@@ -1,0 +1,39 @@
+version: '3'
+
+volumes:
+    config:
+    transcode:
+
+services:
+    plex:
+        image: plexinc/pms-docker:plexpass
+	container_name: plex
+        restart: unless-stopped
+        hostname: tatooine
+        ports:
+            - 32400:32400/tcp
+            - 3005:3005/tcp
+            - 8324:8324/tcp
+            - 32469:32469/tcp
+            - 32410:32410/udp
+            - 32412:32412/udp
+            - 32413:32413/udp
+            - 32414:32414/udp
+        volumes:
+            - config:/config
+            - transcode:/transcode
+            - /share/Audiobooks:/data/audiobooks
+            - /share/PicturesKM:/data/pictureskm
+            - /share/Public:/data/public
+            - /share/homes:/data/homes
+            - /share/Movies:/data/movies
+            - /share/Multimedia:/data/multimedia
+            - /share/Music:/data/music
+            - /share/Series:/data/tv-shows
+        environment:
+            - TZ="Europe/Berlin"
+            - PLEX_CLAIM=
+            - ADVERTISE_IP="https://tatooine.local:32400/"
+            - PLEX_UID=1012
+            - PLEX_GID=1006
+
