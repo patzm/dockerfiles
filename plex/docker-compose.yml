@@ -7,7 +7,7 @@ volumes:
 services:
     plex:
         image: plexinc/pms-docker:plexpass
-	container_name: plex
+        container_name: plex
         restart: unless-stopped
         hostname: tatooine
         ports:
