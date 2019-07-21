@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+    tor:
+        image: brunneis/tor-relay-arm:x86-64
+        container_name: tor
+        hostname: tor
+        ports:
+            - "9001:9001"
+            - "9030:9030"
+        volumes:
+            - tor-keys:/home/tor/data
+        restart: unless-stopped
+        environment:
+            HOST_UID: "1000"
+            CONTACT_INFO: "Martin Patz <tor @t martin-patz.de>"
+            NICKNAME: "mandala"
+            RELAY_TYPE: "middle"
+            BANDWIDTH_RATE: "30 MBytes"
+            BANDWIDTH_BURST: "50 MBytes"
+        command: middle
+
+volumes:
+    tor-keys:
+        external: true
+
