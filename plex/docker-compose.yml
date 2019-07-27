@@ -40,6 +40,7 @@ services:
 
   backup:
     image: blacklabelops/volumerize
+    restart: unless-stopped
     volumes:
       - backup_cache:/volumerize-cache
       - config:/source
