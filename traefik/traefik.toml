@@ -1,0 +1,31 @@
+debug = false
+
+logLevel = "ERROR"
+defaultEntryPoints = ["https","http"]
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+  [entryPoints.https.tls]
+
+[retry]
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "ptatooine.myqnapcloud.com"
+watch = true
+exposedByDefault = false
+
+[acme]
+email = "postmaster@martin-patz.de"
+storage = "/letsencrypt/acme.json"
+entryPoint = "https"
+onHostRule = true
+# caserver = "https://acme-staging-v02.api.letsencrypt.org/directory"
+[acme.httpChallenge]
+entryPoint = "http"
+

@@ -1,0 +1,31 @@
+version: "3.3"
+
+services:
+
+  traefik:
+    image: "traefik:v1.7"
+    container_name: "traefik"
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+      - 8082:8080
+    volumes:
+      - "traefik:/tmp"
+      - "./letsencrypt:/letsencrypt"
+      - "./traefik.toml:/traefik.toml"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  whoami:
+    image: "containous/whoami"
+    container_name: "whoami"
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.https.frontend.rule=Host:ptatooine.myqnapcloud.com;Path:/whoami"
+      - "traefik.https.protocol.https"
+      - "traefik.https.port.443"
+
+volumes:
+  traefik:
+
