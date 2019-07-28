@@ -46,5 +46,5 @@ services:
       - config:/source
       - /share/Backup/docker/volumes/plex:/backup
     environment:
-      - VOLUMERIZE_SOURCE="/source"
-      - VOLUMERIZE_TARGET="file:///backup"
+      - VOLUMERIZE_SOURCE=/source
+      - VOLUMERIZE_TARGET=file:///backup
