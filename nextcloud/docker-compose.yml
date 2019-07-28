@@ -1,0 +1,73 @@
+version: "3.2"
+
+services:
+  db:
+    image: mariadb:10.2
+    hostname: nextcloud_db
+    volumes:
+      - "db:/var/lib/mysql"
+    networks:
+      - traefik
+    env_file:
+      - nextcloud.env
+      - secrets.env
+    restart: always
+
+  redis:
+    image: redis:4.0-alpine
+    container_name: nextcloud_redis
+    volumes:
+      - "redis:/data"
+    networks:
+      - traefik
+    restart: always
+
+  nextcloud:
+    image: crazymax/nextcloud:latest
+    container_name: nextcloud
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - "nextcloud:/data"
+    networks:
+      - traefik
+    env_file:
+      - nextcloud.env
+      - secrets.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=nextcloud"
+      - "traefik.nc.port=8000"
+      - "traefik.nc.frontend.rule=Host:ptatooine.myqnapcloud.com"
+      - "traefik.nc.frontend.redirect.permanent=true"
+      - "traefik.nc.frontend.redirect.regex=https://(.*)/.well-known/(card|cal)dav"
+      - "traefik.nc.frontend.redirect.replacement=https://$$1/remote.php/dav/"
+    restart: always
+
+  cron:
+    image: crazymax/nextcloud:latest
+    container_name: nextcloud_cron
+    depends_on:
+      - nextcloud
+    volumes:
+      - "nextcloud:/data"
+    networks:
+      - traefik
+    env_file:
+      - nextcloud.env
+      - secrets.env
+    environment:
+      - "SIDECAR_CRON=1"
+      - "CRON_PERIOD=*/15 * * * *"
+    restart: always
+
+volumes:
+  db:
+  nextcloud:
+  redis:
+
+networks:
+  traefik:
+    external:
+      name: traefik_default
