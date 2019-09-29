@@ -67,13 +67,18 @@ services:
     restart: unless-stopped
     volumes:
       - backup_cache:/volumerize-cache
-      - db:/source
-      - /share/Backup/docker/volumes/nextcloud/db:/backup
+      - db:/source/db
+      - nextcloud:/source/nextcloud
+      - /share/Backup/docker/volumes/nextcloud/db:/backup/db
+      - /share/Backup/docker/volumes/nextcloud/nextcloud:/backup/nextcloud
     environment:
-      - VOLUMERIZE_JOBBER_TIME=0 30 1 * *
-      - VOLUMERIZE_SOURCE=/source
-      - VOLUMERIZE_TARGET=file:///backup
-      - VOLUMERIZE_CACHE=/volumerize-cache
+      - VOLUMERIZE_JOBBER_TIME=0 30 1 * * *
+      - VOLUMERIZE_SOURCE1=/source/db
+      - VOLUMERIZE_TARGET1=file:///backup/db
+      - VOLUMERIZE_CACHE1=/volumerize-cache/db
+      - VOLUMERIZE_SOURCE2=/source/nextcloud
+      - VOLUMERIZE_TARGET2=file:///backup/nextcloud
+      - VOLUMERIZE_CACHE2=/volumerize-cache/nextcloud
 
 volumes:
   backup_cache:
