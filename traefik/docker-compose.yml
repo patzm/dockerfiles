@@ -9,7 +9,6 @@ services:
     ports:
       - 80:80
       - 443:443
-      - 8082:8080
     volumes:
       - "traefik:/tmp"
       - "./letsencrypt:/letsencrypt"
