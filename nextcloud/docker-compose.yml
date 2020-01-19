@@ -23,7 +23,7 @@ services:
     restart: always
 
   nextcloud:
-    image: crazymax/nextcloud:latest
+    image: crazymax/nextcloud:70878ed9fe35
     container_name: nextcloud
     depends_on:
       - db
@@ -72,7 +72,8 @@ services:
       - /share/Backup/docker/volumes/nextcloud/db:/backup/db
       - /share/Backup/docker/volumes/nextcloud/nextcloud:/backup/nextcloud
     environment:
-      - VOLUMERIZE_JOBBER_TIME=0 30 1 * * *
+      - TZ=Europe/Berlin
+      - VOLUMERIZE_JOBBER_TIME=0 0 2 * * *
       - VOLUMERIZE_SOURCE1=/source/db
       - VOLUMERIZE_TARGET1=file:///backup/db
       - VOLUMERIZE_CACHE1=/volumerize-cache/db
