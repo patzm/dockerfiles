@@ -79,7 +79,7 @@ services:
       - VOLUMERIZE_SOURCE2=/source/nextcloud
       - VOLUMERIZE_TARGET2=file:///backup/nextcloud
       - VOLUMERIZE_CACHE2=/volumerize-cache/nextcloud
-      - VOLUMERIZE_JOBBER_TIME=0 0 2 * * *
+      - VOLUMERIZE_JOBBER_TIME=0 0 2 * * 0
 
 volumes:
   backup_cache:
