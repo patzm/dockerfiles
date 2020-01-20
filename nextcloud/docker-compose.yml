@@ -23,13 +23,13 @@ services:
     restart: always
 
   nextcloud:
-    image: crazymax/nextcloud:70878ed9fe35
+    image: crazymax/nextcloud:16.0.1
     container_name: nextcloud
     depends_on:
       - db
       - redis
     volumes:
-      - nextcloud:/data
+      - data:/data
     networks:
       - traefik
     env_file:
@@ -46,12 +46,12 @@ services:
     restart: always
 
   cron:
-    image: crazymax/nextcloud:latest
+    image: crazymax/nextcloud:16.0.1
     container_name: nextcloud_cron
     depends_on:
       - nextcloud
     volumes:
-      - nextcloud:/data
+      - data:/data
     networks:
       - traefik
     env_file:
@@ -68,24 +68,24 @@ services:
     volumes:
       - backup_cache:/volumerize-cache
       - db:/source/db
-      - nextcloud:/source/nextcloud
+      - data:/source/nextcloud
       - /share/Backup/docker/volumes/nextcloud/db:/backup/db
       - /share/Backup/docker/volumes/nextcloud/nextcloud:/backup/nextcloud
     environment:
       - TZ=Europe/Berlin
-      - VOLUMERIZE_JOBBER_TIME=0 0 2 * * *
       - VOLUMERIZE_SOURCE1=/source/db
       - VOLUMERIZE_TARGET1=file:///backup/db
       - VOLUMERIZE_CACHE1=/volumerize-cache/db
       - VOLUMERIZE_SOURCE2=/source/nextcloud
       - VOLUMERIZE_TARGET2=file:///backup/nextcloud
       - VOLUMERIZE_CACHE2=/volumerize-cache/nextcloud
+      - VOLUMERIZE_JOBBER_TIME=0 0 2 * * *
 
 volumes:
   backup_cache:
   db:
   redis:
-  nextcloud:
+  data:
     # driver: local
     # driver_opts:
     #   type: none
