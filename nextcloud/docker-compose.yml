@@ -23,7 +23,7 @@ services:
     restart: always
 
   nextcloud:
-    image: crazymax/nextcloud:16.0.1
+    image: crazymax/nextcloud:${NEXTCLOUD_TAG}
     container_name: nextcloud
     depends_on:
       - db
@@ -46,7 +46,7 @@ services:
     restart: always
 
   cron:
-    image: crazymax/nextcloud:16.0.1
+    image: crazymax/nextcloud:${NEXTCLOUD_TAG}
     container_name: nextcloud_cron
     depends_on:
       - nextcloud
