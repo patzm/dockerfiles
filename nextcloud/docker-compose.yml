@@ -59,25 +59,6 @@ services:
       - "CRON_PERIOD=*/15 * * * *"
     restart: always
 
-  backup:
-    image: blacklabelops/volumerize
-    restart: unless-stopped
-    volumes:
-      - backup_cache:/volumerize-cache
-      - db:/source/db
-      - data:/source/nextcloud
-      - /share/Backup/docker/volumes/nextcloud/db:/backup/db
-      - /share/Backup/docker/volumes/nextcloud/nextcloud:/backup/nextcloud
-    environment:
-      - TZ=Europe/Berlin
-      - VOLUMERIZE_SOURCE1=/source/db
-      - VOLUMERIZE_TARGET1=file:///backup/db
-      - VOLUMERIZE_CACHE1=/volumerize-cache/db
-      - VOLUMERIZE_SOURCE2=/source/nextcloud
-      - VOLUMERIZE_TARGET2=file:///backup/nextcloud
-      - VOLUMERIZE_CACHE2=/volumerize-cache/nextcloud
-      - VOLUMERIZE_JOBBER_TIME=0 0 2 * * 0
-
 volumes:
   redis:
 
