@@ -5,11 +5,10 @@ services:
     image: mariadb:10.2
     hostname: nextcloud_db
     volumes:
-      - db:/var/lib/mysql
+      - ${MOUNT_DB}:/var/lib/mysql
     networks:
       - traefik
     env_file:
-      - nextcloud.env
       - secrets.env
     restart: always
 
@@ -29,11 +28,10 @@ services:
       - db
       - redis
     volumes:
-      - data:/data
+      - ${MOUNT_DATA}:/data
     networks:
       - traefik
     env_file:
-      - nextcloud.env
       - secrets.env
     labels:
       - "traefik.enable=true"
@@ -51,11 +49,10 @@ services:
     depends_on:
       - nextcloud
     volumes:
-      - data:/data
+      - ${MOUNT_DATA}:/data
     networks:
       - traefik
     env_file:
-      - nextcloud.env
       - secrets.env
     environment:
       - "SIDECAR_CRON=1"
@@ -82,15 +79,7 @@ services:
       - VOLUMERIZE_JOBBER_TIME=0 0 2 * * 0
 
 volumes:
-  backup_cache:
-  db:
   redis:
-  data:
-    # driver: local
-    # driver_opts:
-    #   type: none
-    #   device: /share/nextcloud/data
-    #   o: bind
 
 networks:
   traefik:
