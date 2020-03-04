@@ -1,10 +1,5 @@
 version: '3'
 
-volumes:
-  config:
-  transcode:
-  backup_cache:
-
 services:
   plex:
     image: plexinc/pms-docker:plexpass
@@ -21,32 +16,29 @@ services:
       - 32413:32413/udp
       - 32414:32414/udp
     volumes:
-      - config:/config
+      - ${MOUNT_CONFIG}:/config
       - transcode:/transcode
       - /share/Audiobooks:/data/audiobooks
-      - /share/PicturesKM:/data/pictureskm
-      - /share/Public:/data/public
-      - /share/homes:/data/homes
+      - /share/Plex:/data/plex
       - /share/Movies:/data/movies
-      - /share/Multimedia:/data/multimedia
       - /share/Music:/data/music
       - /share/Series:/data/tv-shows
-    environment:
-      - TZ=Europe/Berlin
-      - PLEX_CLAIM=${PLEX_CLAIM}
-      - ADVERTISE_IP=${ADVERTISE_IP}
-      - PLEX_UID=1012
-      - PLEX_GID=1006
+    env_file:
+      - secrets.env
 
   backup:
     image: blacklabelops/volumerize
     restart: unless-stopped
     volumes:
       - backup_cache:/volumerize-cache
-      - config:/source
+      - ${MOUNT_CONFIG}:/source
       - /share/Backup/docker/volumes/plex:/backup
     environment:
       - TZ=Europe/Berlin
-      - VOLUMERIZE_JOBBER_TIME=0 0 1 * * *
       - VOLUMERIZE_SOURCE=/source
       - VOLUMERIZE_TARGET=file:///backup
+
+volumes:
+  transcode:
+  backup_cache:
+
