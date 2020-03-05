@@ -26,19 +26,6 @@ services:
     env_file:
       - secrets.env
 
-  backup:
-    image: blacklabelops/volumerize
-    restart: unless-stopped
-    volumes:
-      - backup_cache:/volumerize-cache
-      - ${MOUNT_CONFIG}:/source
-      - /share/Backup/docker/volumes/plex:/backup
-    environment:
-      - TZ=Europe/Berlin
-      - VOLUMERIZE_SOURCE=/source
-      - VOLUMERIZE_TARGET=file:///backup
-
 volumes:
   transcode:
-  backup_cache:
 
