@@ -9,6 +9,7 @@ services:
     networks:
       - traefik
     env_file:
+      - .env
       - secrets.env
     restart: always
 
@@ -32,6 +33,7 @@ services:
     networks:
       - traefik
     env_file:
+      - .env
       - secrets.env
     labels:
       - "traefik.enable=true"
@@ -53,6 +55,7 @@ services:
     networks:
       - traefik
     env_file:
+      - .env
       - secrets.env
     environment:
       - "SIDECAR_CRON=1"
