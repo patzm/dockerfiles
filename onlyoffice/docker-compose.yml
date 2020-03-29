@@ -1,0 +1,33 @@
+version: "3.2"
+
+services:
+  document:
+    image: onlyoffice/documentserver:${DOCUMENT_TAG}
+    stdin_open: true
+    tty: true
+    networks:
+      - traefik
+    volumes:
+      - document_data:/var/www/onlyoffice/Data
+      - document_log:/var/log/onlyoffice
+    labels:
+      - "traefik.http.routers.onlyoffice-ds-web.entrypoints=web"
+      - "traefik.http.routers.onlyoffice-ds-web.rule=Host(`office.patz.app`)"
+      - "traefik.http.routers.onlyoffice-ds-web.middlewares=redirect-https@file"
+      - "traefik.http.routers.onlyoffice-ds-websecure.entrypoints=websecure"
+      - "traefik.http.routers.onlyoffice-ds-websecure.rule=Host(`office.patz.app`)"
+      - "traefik.http.routers.onlyoffice-ds-websecure.tls=true"
+      - "traefik.http.routers.onlyoffice-ds-websecure.tls.certresolver=patz.app"
+      - "traefik.http.routers.onlyoffice-ds-websecure.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.onlyoffice-ds-websecure.tls.domains[0].sans=office.patz.app"
+      - "traefik.http.services.onlyoffice-ds.loadbalancer.server.port=80"
+    restart: always
+
+volumes:
+  document_data:
+  document_log:
+
+networks:
+  traefik:
+    external:
+      name: traefik
