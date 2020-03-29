@@ -1,5 +1,5 @@
 log:
-  level: DEBUG
+  level: WARN
 
 entryPoints:
   web:
@@ -13,6 +13,10 @@ providers:
     endpoint: unix:///var/run/docker.sock
   file:
     directory: /etc/traefik/dynamic
+
+serversTransport:
+  forwardingTimeouts:
+    responseHeaderTimeout: 2s
 
 certificatesResolvers:
   patz.app:
