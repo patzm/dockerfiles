@@ -1,5 +1,8 @@
+global:
+  sendAnonymousUsage: true
+
 log:
-  level: WARN
+  level: INFO
 
 entryPoints:
   web:
@@ -9,14 +12,11 @@ entryPoints:
 
 providers:
   docker:
+    network: traefik
     watch: true
     endpoint: unix:///var/run/docker.sock
   file:
     directory: /etc/traefik/dynamic
-
-serversTransport:
-  forwardingTimeouts:
-    responseHeaderTimeout: 2s
 
 certificatesResolvers:
   patz.app:
