@@ -1,7 +1,6 @@
 version: "3.3"
 
 services:
-
   traefik:
     image: "traefik:v2.2"
     container_name: "traefik"
@@ -15,6 +14,8 @@ services:
       - "./traefik.yml:/etc/traefik/traefik.yml"
       - "./dynamic:/etc/traefik/dynamic"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - traefik
 
   whoami:
     image: "containous/whoami"
@@ -31,7 +32,13 @@ services:
       - "traefik.http.routers.whoami-websecure.tls.certresolver=patz.app"
       - "traefik.http.routers.whoami-websecure.tls.domains[0].main=patz.app"
       - "traefik.http.routers.whoami-websecure.tls.domains[0].sans=whoami.patz.app"
+    networks:
+      - traefik
 
 volumes:
   traefik:
 
+networks:
+  traefik:
+    external:
+      name: traefik
