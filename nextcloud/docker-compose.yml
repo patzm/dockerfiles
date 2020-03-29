@@ -1,4 +1,4 @@
-version: "3.2"
+version: "3.3"
 
 services:
   db:
@@ -87,4 +87,4 @@ volumes:
 networks:
   traefik:
     external:
-      name: traefik_default
+      name: traefik
