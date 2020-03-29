@@ -3,7 +3,7 @@ version: "3.3"
 services:
 
   traefik:
-    image: "traefik:v1.7"
+    image: "traefik:v2.2"
     container_name: "traefik"
     restart: always
     ports:
@@ -12,7 +12,8 @@ services:
     volumes:
       - "traefik:/tmp"
       - "./letsencrypt:/letsencrypt"
-      - "./traefik.toml:/traefik.toml"
+      - "./traefik.yml:/etc/traefik/traefik.yml"
+      - "./dynamic:/etc/traefik/dynamic"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   whoami:
@@ -21,9 +22,15 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.https.frontend.rule=Host:ptatooine.myqnapcloud.com;Path:/whoami"
-      - "traefik.https.protocol.https"
-      - "traefik.https.port.443"
+      - "traefik.http.routers.whoami-web.entrypoints=web"
+      - "traefik.http.routers.whoami-web.rule=Host(`whoami.patz.app`)"
+      - "traefik.http.routers.whoami-web.middlewares=redirect-https@file"
+      - "traefik.http.routers.whoami-websecure.entrypoints=websecure"
+      - "traefik.http.routers.whoami-websecure.rule=Host(`whoami.patz.app`)"
+      - "traefik.http.routers.whoami-websecure.tls=true"
+      - "traefik.http.routers.whoami-websecure.tls.certresolver=patz.app"
+      - "traefik.http.routers.whoami-websecure.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.whoami-websecure.tls.domains[0].sans=whoami.patz.app"
 
 volumes:
   traefik:

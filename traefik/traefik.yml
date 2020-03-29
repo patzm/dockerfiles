@@ -1,0 +1,39 @@
+log:
+  level: WARN
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+providers:
+  docker:
+    watch: true
+    endpoint: unix:///var/run/docker.sock
+  file:
+    directory: /etc/traefik/dynamic
+
+serversTransport:
+  forwardingTimeouts:
+    responseHeaderTimeout: 2s
+
+certificatesResolvers:
+  patz.app:
+    acme:
+      email: postmaster@martin-patz.de
+      storage: letsencrypt/patz.app.json
+      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      tlsChallenge: {}
+      httpChallenge:
+        entrypoint: web
+  ptatooine.myqnapcloud.com:
+    acme:
+      email: postmaster@martin-patz.de
+      storage: letsencrypt/ptatooine.myqnapcloud.com.json
+      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      httpChallenge:
+        entrypoint: web
+
+api:
+  dashboard: true
