@@ -8,8 +8,8 @@ services:
     networks:
       - traefik
     volumes:
-      - document_data:/var/www/onlyoffice/Data
-      - document_log:/var/log/onlyoffice
+      - data:/var/www/onlyoffice/Data
+      - logs:/var/log/onlyoffice
     labels:
       - "traefik.http.routers.onlyoffice-ds-web.entrypoints=web"
       - "traefik.http.routers.onlyoffice-ds-web.rule=Host(`office.patz.app`)"
@@ -24,8 +24,8 @@ services:
     restart: always
 
 volumes:
-  document_data:
-  document_log:
+  data:
+  logs:
 
 networks:
   traefik:
