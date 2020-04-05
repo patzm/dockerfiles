@@ -1,0 +1,50 @@
+version: "3.2"
+
+services:
+  paste:
+    image: fboaventura/dckr-fiche:${FICHE_TAG}
+    networks:
+      - traefik
+    volumes:
+      - data:${MOUNT_TARGET_DATA}
+    environment:
+      - DOMAIN=${DOMAIN}
+    ports:
+      - 9999:9999
+    command: ["/bin/sh", "-c", "/fiche -S -d $${DOMAIN} -o ${MOUNT_TARGET_DATA} -l /dev/stdout -p $${PORT} -s $${SLUG} -B $${BUFFER}"]
+    # labels:
+    #  - "traefik.enable=true"
+    #  - "traefik.tcp.routers.fiche-paste.entrypoints=webinsecure"
+    #  - "traefik.tcp.routers.fiche-paste.rule=HostSNI(`*`)"
+    #  - "traefik.tcp.routers.fiche-paste.tls=false"
+    #  - "traefik.tcp.routers.fiche-paste.service=paste"
+    #  - "traefik.tcp.services.paste.loadbalancer.server.port=9999"
+    #  - "traefik.tcp.services.paste.loadbalancer.terminationdelay=10000"
+    restart: always
+  copy:
+    image: fboaventura/dckr-httpd
+    ports:
+      - "80"
+    networks:
+      - traefik
+    volumes:
+      - data:/app/www
+    environment:
+      - DOMAIN=${DOMAIN}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.fiche-copy-websecure.entrypoints=websecure"
+      - "traefik.http.routers.fiche-copy-websecure.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.fiche-copy-websecure.tls=true"
+      - "traefik.http.routers.fiche-copy-websecure.tls.certresolver=patz.app"
+      - "traefik.http.routers.fiche-copy-websecure.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.fiche-copy-websecure.tls.domains[0].sans=${DOMAIN}"
+      - "traefik.http.services.copy.loadbalancer.server.port=80"
+
+volumes:
+  data:
+
+networks:
+  traefik:
+    external:
+      name: traefik
