@@ -1,0 +1,52 @@
+version: "3.2"
+
+services:
+  document:
+    image: onlyoffice/documentserver:${DOCUMENT_TAG}
+    stdin_open: true
+    tty: true
+    env_file:
+      - .env
+      - secrets.env
+    networks:
+      - traefik
+    volumes:
+      - data:/var/www/onlyoffice/Data
+      - db:/var/lib/postgresql
+      - fonts:/usr/share/fonts/truetype/custom
+      - lib:/var/lib/onlyoffice
+      - logs:/var/log/onlyoffice
+      - rabbitmq:/var/lib/rabbitmq
+      - redis:/var/lib/redis
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.onlyoffice-ds-websecure.entrypoints=websecure"
+      - "traefik.http.routers.onlyoffice-ds-websecure.rule=Host(`office.patz.app`)"
+      - "traefik.http.routers.onlyoffice-ds-websecure.middlewares=onlyoffice-ds-header"
+      - "traefik.http.routers.onlyoffice-ds-websecure.tls=true"
+      - "traefik.http.routers.onlyoffice-ds-websecure.tls.certresolver=patz.app"
+      - "traefik.http.routers.onlyoffice-ds-websecure.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.onlyoffice-ds-websecure.tls.domains[0].sans=office.patz.app"
+      - "traefik.http.services.onlyoffice-ds.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.onlyoffice-ds-header.headers.referrerPolicy=no-referrer"
+      - "traefik.http.middlewares.onlyoffice-ds-header.headers.stsSeconds=31536000"
+      - "traefik.http.middlewares.onlyoffice-ds-header.headers.forceSTSHeader=true"
+      - "traefik.http.middlewares.onlyoffice-ds-header.headers.stsPreload=true"
+      - "traefik.http.middlewares.onlyoffice-ds-header.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.onlyoffice-ds-header.headers.browserXssFilter=true"
+      - "traefik.http.middlewares.onlyoffice-ds-header.headers.customRequestHeaders.X-Forwarded-Proto=https"
+    restart: always
+
+volumes:
+  data:
+  db:
+  fonts:
+  lib:
+  logs:
+  rabbitmq:
+  redis:
+
+networks:
+  traefik:
+    external:
+      name: traefik
