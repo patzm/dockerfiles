@@ -12,7 +12,12 @@ services:
       - traefik
     volumes:
       - data:/var/www/onlyoffice/Data
+      - db:/var/lib/postgresql
+      - fonts:/usr/share/fonts/truetype/custom
+      - lib:/var/lib/onlyoffice
       - logs:/var/log/onlyoffice
+      - rabbitmq:/var/lib/rabbitmq
+      - redis:/var/lib/redis
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.onlyoffice-ds-websecure.entrypoints=websecure"
@@ -34,7 +39,12 @@ services:
 
 volumes:
   data:
+  db:
+  fonts:
+  lib:
   logs:
+  rabbitmq:
+  redis:
 
 networks:
   traefik:
