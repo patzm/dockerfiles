@@ -2,19 +2,17 @@ version: "3.2"
 
 services:
   root:
-    image: blaize/docker-dynamic-dns
+    image: linuxserver/ddclient
     env_file:
       - .env
-      - secrets-root.env
-    environment:
-      - HOSTNAME=patz.app
+    volumes:
+      - ./root_config:/config
     restart: always
   wildcard:
-    image: blaize/docker-dynamic-dns
+    image: linuxserver/ddclient
     env_file:
       - .env
-      - secrets-wildcard.env
-    environment:
-      - HOSTNAME=*.patz.app
+    volumes:
+      - ./wildcard_config:/config
     restart: always
 
