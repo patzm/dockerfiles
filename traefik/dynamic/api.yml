@@ -15,6 +15,5 @@ http:
   middlewares:
     auth:
       basicAuth:
-        users:
-          - "admin:$apr1$3XFrbaba$UjpbdjwdD6ie9eqGcHlou/"
+        usersFile: /etc/traefik/dynamic/api_users_passwords.txt
 
