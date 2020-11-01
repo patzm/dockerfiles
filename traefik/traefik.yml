@@ -2,7 +2,7 @@ global:
   sendAnonymousUsage: true
 
 log:
-  level: INFO
+  level: WARN
 
 entryPoints:
   web:
