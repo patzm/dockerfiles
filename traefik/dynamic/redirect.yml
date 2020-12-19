@@ -15,5 +15,5 @@ http:
     noop:
       loadBalancer:
         servers:
-          - address: "http://192.168.1.1"
+          - url: http://192.168.1.1
 
