@@ -1,21 +1,12 @@
 version: "3.2"
 
 services:
-  root:
+  patz.app:
     image: linuxserver/ddclient
     env_file:
       - .env
     volumes:
-      - ./root_config:/config
-    labels:
-      - "traefik.enable=false"
-    restart: always
-  wildcard:
-    image: linuxserver/ddclient
-    env_file:
-      - .env
-    volumes:
-      - ./wildcard_config:/config
+      - ./patz.app:/config
     labels:
       - "traefik.enable=false"
     restart: always
