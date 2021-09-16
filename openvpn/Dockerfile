@@ -12,9 +12,10 @@ RUN apt-get update \
     && apt-get update && apt-get install -y openvpn-as \
     && rm -rf /var/lib/apt/lists/*
 
-# RUN usermod --password $(echo ${ADMIN_PASSWORD} | openssl passwd -1 -stdin) openvpn
+# Set a default password
 RUN echo "openvpn:password" | chpasswd
 
+# Configure the local time-zone
 RUN echo "${TZ}" > /etc/timezone \
     dpkg-reconfigure --frontend noninteractive tzdata \
     && echo "Configured timezone to ${TZ}, current date is $(date)"
