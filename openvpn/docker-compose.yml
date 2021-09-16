@@ -1,0 +1,45 @@
+version: '3'
+
+networks:
+  traefik:
+    external:
+      name: traefik
+
+services:
+  openvpn:
+    build:
+      context: .
+      args:
+        ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+    env_file: .env
+    container_name: openvpn
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - traefik
+    volumes:
+      - ./config:/var/config
+    ports:
+      - 943/tcp
+      - 9443/tcp
+      - 1194/udp
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.openvpn.entrypoints=web"
+      - "traefik.http.routers.openvpn.rule=Host(`vpn.patz.app`)"
+      #- "traefik.http.routers.openvpn.tls=true"
+      #- "traefik.http.routers.openvpn.tls.certresolver=patz.app"
+      #- "traefik.http.routers.openvpn.tls.domains[0].main=patz.app"
+      #- "traefik.http.routers.openvpn.tls.domains[0].sans=vpn.patz.app"
+      - "traefik.http.services.openvpn.loadbalancer.server.port=943"
+      - "traefik.tcp.routers.openvpn.rule=HostSNI(`vpn.patz.app`)"
+      - "traefik.tcp.routers.openvpn.entrypoints=websecure"
+      - "traefik.tcp.routers.openvpn.tls=true"
+      - "traefik.tcp.routers.openvpn.tls.certresolver=patz.app"
+      - "traefik.tcp.routers.openvpn.tls.domains[0].main=patz.app"
+      - "traefik.tcp.routers.openvpn.tls.domains[0].sans=vpn.patz.app"
+      - "traefik.tcp.services.openvpn.loadbalancer.server.port=9443"
+    restart: always
+
