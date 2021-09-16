@@ -1,0 +1,44 @@
+version: '3'
+
+networks:
+  traefik:
+    external:
+      name: traefik
+
+services:
+  openvpn:
+    build: .
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      TZ: Europe/Berlin
+    networks:
+      - traefik
+    dns:
+      - 8.8.8.8
+    volumes:
+      - config:/usr/local/openvpn_as/etc
+    ports:
+      - 443
+      - 943
+      - 9443
+      - 1194/udp
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.openvpn-config.entrypoints=websecure"
+      - "traefik.tcp.routers.openvpn-config.rule=HostSNI(`vpn-config.patz.app`)"
+      - "traefik.tcp.routers.openvpn-config.tls=true"
+      - "traefik.tcp.routers.openvpn-config.tls.passthrough=true"
+      - "traefik.tcp.routers.openvpn-config.service=openvpn-config"
+      - "traefik.tcp.services.openvpn-config.loadbalancer.server.port=943"
+      - "traefik.tcp.routers.openvpn.entrypoints=websecure"
+      - "traefik.tcp.routers.openvpn.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.openvpn.service=openvpn"
+      - "traefik.tcp.services.openvpn.loadbalancer.server.port=443"
+    restart: always
+
+volumes:
+  config:
+

@@ -5,7 +5,7 @@ http:
         - web
       middlewares:
         - redirect-https
-      rule: "HostRegexp(`{host:.+}`)"
+      rule: "HostRegexp(`{subdomain:(cloud|office|pbin)}.patz.app`)"
       service: "noop"
   middlewares:
     redirect-https:
