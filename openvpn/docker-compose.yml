@@ -28,7 +28,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.tcp.routers.openvpn-config.entrypoints=websecure"
-      - "traefik.tcp.routers.openvpn-config.rule=HostSNI(`vpn-config.patz.app`)"
+      - "traefik.tcp.routers.openvpn-config.rule=HostSNI(`vpn.patz.app`)"
       - "traefik.tcp.routers.openvpn-config.tls=true"
       - "traefik.tcp.routers.openvpn-config.tls.passthrough=true"
       - "traefik.tcp.routers.openvpn-config.service=openvpn-config"

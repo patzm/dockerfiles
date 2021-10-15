@@ -20,16 +20,18 @@ RUN echo "${TZ}" > /etc/timezone \
     dpkg-reconfigure --frontend noninteractive tzdata \
     && echo "Configured timezone to ${TZ}, current date is $(date)"
 
-ARG CONFIG_DIR=/usr/local/openvpn_as/etc
+ENV CONFIG_DIR=/usr/local/openvpn_as/etc
 
-WORKDIR ${CONFIG_DIR}
-VOLUME ${CONFIG_DIR}
+COPY start-openvpnas /usr/local/bin/start-openvpnas
+
+WORKDIR /usr/local/openvpn_as/etc
+VOLUME /usr/local/openvpn_as/etc
 
 EXPOSE  443/tcp \
         943/tcp \
         9443/tcp \
         1194/udp
 
-ENTRYPOINT ["/usr/local/openvpn_as/scripts/openvpnas"]
-CMD ["--nodaemon"]
+ENTRYPOINT ["start-openvpnas", "/usr/local/openvpn_as/etc"]
+CMD []
 

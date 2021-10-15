@@ -1,0 +1,15 @@
+#! /usr/bin/env bash
+
+CONFIG_DIR="${1}"
+PID_FILE="${CONFIG_DIR}/twistd.pid"
+
+# Delete the pid file if it exists.
+# We know that the server is not running at container startup.
+echo "Checking if the ${PID_FILE} file exists"
+if [[ -f "${PID_FILE}" ]]; then
+  echo "Deleting ${PID_FILE}, the server is not running yet."
+  rm "${PID_FILE}"
+fi
+
+/usr/local/openvpn_as/scripts/openvpnas --nodaemon
+
