@@ -24,7 +24,7 @@ certificatesResolvers:
   patz.app:
     acme:
       email: postmaster@martin-patz.de
-      storage: letsencrypt/patz.app.json
+      storage: letsencrypt/patz.app/acme.json
       # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       tlsChallenge: {}
       httpChallenge:
