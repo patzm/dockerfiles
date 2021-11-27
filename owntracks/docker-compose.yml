@@ -36,6 +36,8 @@ services:
       - mqtt-data:/mosquitto/data
       - mqtt-logs:/mosquitto/logs
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    networks:
+      - traefik
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.otmqtt.entrypoints=websecure"
@@ -54,6 +56,8 @@ services:
       - "80"
     volumes:
       - ./config.js:/usr/share/nginx/html/config/config.js
+    networks:
+      - traefik
     environment:
       - SERVER_HOST=otrecorder.patz.app
       - SERVER_PORT=443
