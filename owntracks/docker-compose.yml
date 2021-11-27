@@ -19,7 +19,7 @@ services:
       - "traefik.http.routers.otrecorder.tls.certresolver=patz.app"
       - "traefik.http.routers.otrecorder.tls.domains[0].main=patz.app"
       - "traefik.http.routers.otrecorder.tls.domains[0].sans=otrecorder.patz.app"
-      - "traefik.http.services.nc.loadbalancer.server.port=8083"
+      - "traefik.http.services.otrecorder.loadbalancer.server.port=8083"
     restart: unless-stopped
 
   owntracks-frontend:
@@ -39,7 +39,7 @@ services:
       - "traefik.http.routers.otfrontend.tls.certresolver=patz.app"
       - "traefik.http.routers.otfrontend.tls.domains[0].main=patz.app"
       - "traefik.http.routers.otfrontend.tls.domains[0].sans=owntracks.patz.app"
-      - "traefik.http.services.nc.loadbalancer.server.port=80"      
+      - "traefik.http.services.otfrontend.loadbalancer.server.port=80"      
     restart: unless-stopped
 
 volumes:
