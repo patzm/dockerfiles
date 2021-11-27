@@ -3,6 +3,7 @@ version: '3'
 services:
 
   otrecorder:
+    container_name: otrecorder
     image: owntracks/recorder
     expose:
       - "8083"
@@ -23,6 +24,7 @@ services:
     restart: unless-stopped
 
   owntracks-frontend:
+    container_name: otfrontend
     image: owntracks/frontend
     expose:
       - "80"
