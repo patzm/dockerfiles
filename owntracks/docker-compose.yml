@@ -34,11 +34,11 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.otfrontend.entrypoints=websecure"
-      - "traefik.http.routers.otfrontend.rule=Host(`owntrack.patz.app`)"
+      - "traefik.http.routers.otfrontend.rule=Host(`owntracks.patz.app`)"
       - "traefik.http.routers.otfrontend.tls=true"
       - "traefik.http.routers.otfrontend.tls.certresolver=patz.app"
       - "traefik.http.routers.otfrontend.tls.domains[0].main=patz.app"
-      - "traefik.http.routers.otfrontend.tls.domains[0].sans=owntrack.patz.app"
+      - "traefik.http.routers.otfrontend.tls.domains[0].sans=owntracks.patz.app"
       - "traefik.http.services.nc.loadbalancer.server.port=80"      
     restart: unless-stopped
 
