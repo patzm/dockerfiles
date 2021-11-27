@@ -55,8 +55,8 @@ services:
     volumes:
       - ./config.js:/usr/share/nginx/html/config/config.js
     environment:
-      - SERVER_HOST=otrecorder
-      - SERVER_PORT=8083
+      - SERVER_HOST=otrecorder.patz.app
+      - SERVER_PORT=443
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.otfrontend.entrypoints=websecure"
