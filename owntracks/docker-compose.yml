@@ -12,6 +12,10 @@ services:
       - store:/store
     networks:
       - traefik
+    environment:
+      - OTR_USER="user"
+      - OTR_HOST=otmqtt.patz.app
+      - OTR_PORT=443
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.otrecorder.entrypoints=websecure"
@@ -21,6 +25,26 @@ services:
       - "traefik.http.routers.otrecorder.tls.domains[0].main=patz.app"
       - "traefik.http.routers.otrecorder.tls.domains[0].sans=otrecorder.patz.app"
       - "traefik.http.services.otrecorder.loadbalancer.server.port=8083"
+    restart: unless-stopped
+
+  mqtt:
+    container_name: mqtt
+    image: eclipse-mosquitto
+    expose:
+      - "1883"
+    volumes:
+      - mqtt-data:/mosquitto/data
+      - mqtt-logs:/mosquitto/logs
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.otmqtt.entrypoints=websecure"
+      - "traefik.http.routers.otmqtt.rule=Host(`otmqtt.patz.app`)"
+      - "traefik.http.routers.otmqtt.tls=true"
+      - "traefik.http.routers.otmqtt.tls.certresolver=patz.app"
+      - "traefik.http.routers.otmqtt.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.otmqtt.tls.domains[0].sans=otmqtt.patz.app"
+      - "traefik.http.services.otmqtt.loadbalancer.server.port=1883"
     restart: unless-stopped
 
   owntracks-frontend:
@@ -47,6 +71,8 @@ services:
 volumes:
   store:
   config:
+  mqtt-data:
+  mqtt-logs:
 
 networks:
   traefik:
