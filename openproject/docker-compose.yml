@@ -74,7 +74,6 @@ services:
       - "traefik.http.routers.op.tls.certresolver=patz.app"
       - "traefik.http.routers.op.tls.domains[0].main=patz.app"
       - "traefik.http.routers.op.tls.domains[0].sans=openproject.patz.app"
-      - "traefik.http.routers.op.service=op"
       - "traefik.http.services.op.loadbalancer.server.port=8080"
 
   # autoheal:
