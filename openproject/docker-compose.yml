@@ -64,6 +64,8 @@ services:
       timeout: 3s
       retries: 3
       start_period: 30s
+    ports:
+      - "8080"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.op.entrypoints=websecure"
@@ -73,7 +75,7 @@ services:
       - "traefik.http.routers.op.tls.domains[0].main=patz.app"
       - "traefik.http.routers.op.tls.domains[0].sans=openproject.patz.app"
       - "traefik.http.routers.op.service=op"
-      - "traefik.http.services.op.loadbalancer.server.port=80"
+      - "traefik.http.services.op.loadbalancer.server.port=8080"
 
   # autoheal:
   #   image: willfarrell/autoheal
