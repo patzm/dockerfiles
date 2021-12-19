@@ -21,7 +21,7 @@ x-op-app: &app
     RAILS_CACHE_STORE: "memcache"
     OPENPROJECT_CACHE__MEMCACHE__SERVER: "cache:11211"
     OPENPROJECT_RAILS__RELATIVE__URL__ROOT: "${OPENPROJECT_RAILS__RELATIVE__URL__ROOT:-}"
-    DATABASE_URL: "postgres://${PG_USER}:${PG_PASSWD}@db/postgres?pool=20&encoding=unicode&reconnect=true"
+    DATABASE_URL: "postgres://postgres:p4ssw0rd@db/postgres?pool=20&encoding=unicode&reconnect=true"
     RAILS_MIN_THREADS: 4
     RAILS_MAX_THREADS: 16
     # set to true to enable the email receiving feature. See ./docker/cron for more options
@@ -37,8 +37,8 @@ services:
     volumes:
       - "pgdata:/var/lib/postgresql/data"
     environment:
-      POSTGRES_DB: ${PG_USER}
-      POSTGRES_PASSWORD: ${PG_PASSWD}
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: p4ssw0rd
     networks:
       - backend
 
