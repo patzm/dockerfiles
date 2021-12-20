@@ -1,6 +1,6 @@
 # OpenProject
 
-Url: https://www.openproject.org/
+URL: https://www.openproject.org/
 
 ## Setup
 
