@@ -4,6 +4,6 @@ Url: https://www.openproject.org/
 
 ## Setup
 
-Set the following required environment variables:
-- `PG_USER`
-- `PG_PASSWD`
+During the initial bring-up, database initialization takes quite some time.
+Sometimes up to 5 minutes.
+The `seeder` service is responsible for that (I think).
