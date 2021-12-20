@@ -22,6 +22,7 @@ x-op-app: &app
     OPENPROJECT_CACHE__MEMCACHE__SERVER: "cache:11211"
     OPENPROJECT_RAILS__RELATIVE__URL__ROOT: "${OPENPROJECT_RAILS__RELATIVE__URL__ROOT:-}"
     DATABASE_URL: "postgres://postgres:p4ssw0rd@db/postgres?pool=20&encoding=unicode&reconnect=true"
+    PORT: 8080
     RAILS_MIN_THREADS: 4
     RAILS_MAX_THREADS: 16
     # set to true to enable the email receiving feature. See ./docker/cron for more options
@@ -59,13 +60,13 @@ services:
       - cache
       - seeder
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health_checks/default"]
+      test: ["CMD", "curl", "-f", "http://localhost:${PORT}/health_checks/default"]
       interval: 10s
       timeout: 3s
       retries: 3
       start_period: 30s
     ports:
-      - "8080"
+      - "${PORT}"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.op.entrypoints=websecure"
@@ -74,7 +75,7 @@ services:
       - "traefik.http.routers.op.tls.certresolver=patz.app"
       - "traefik.http.routers.op.tls.domains[0].main=patz.app"
       - "traefik.http.routers.op.tls.domains[0].sans=openproject.patz.app"
-      - "traefik.http.services.op.loadbalancer.server.port=8080"
+      - "traefik.http.services.op.loadbalancer.server.port=${PORT}"
 
   worker:
     <<: *app
