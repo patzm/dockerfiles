@@ -76,13 +76,6 @@ services:
       - "traefik.http.routers.op.tls.domains[0].sans=openproject.patz.app"
       - "traefik.http.services.op.loadbalancer.server.port=8080"
 
-  # autoheal:
-  #   image: willfarrell/autoheal
-  #   volumes:
-  #     - "/var/run/docker.sock:/var/run/docker.sock"
-  #   environment:
-  #     AUTOHEAL_CONTAINER_LABEL: all
-
   worker:
     <<: *app
     command: "./docker/prod/worker"
