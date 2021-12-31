@@ -37,7 +37,7 @@ services:
       - mqtt-auth:/mosquitto/auth
       - mqtt-data:/mosquitto/data
       - mqtt-log:/mosquitto/log
-      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./owntracks/mosquitto.conf:/mosquitto/config/mosquitto.conf
     networks:
       - owntracks
       - traefik
@@ -58,7 +58,7 @@ services:
     expose:
       - "80"
     volumes:
-      - ./config.js:/usr/share/nginx/html/config/config.js
+      - ./owntracks/config.js:/usr/share/nginx/html/config/config.js
     networks:
       - owntracks
       - traefik
