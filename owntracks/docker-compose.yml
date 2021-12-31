@@ -14,7 +14,7 @@ services:
       - owntracks
       - traefik
     environment:
-      - OTR_USER="user"
+      - OTR_USER="recorder"
       - OTR_HOST=mqtt
       - OTR_PORT=1883
     labels:
