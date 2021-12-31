@@ -11,11 +11,12 @@ services:
       - config:/config
       - store:/store
     networks:
+      - owntracks
       - traefik
     environment:
       - OTR_USER="user"
-      - OTR_HOST=otmqtt.patz.app
-      - OTR_PORT=443
+      - OTR_HOST=mqtt
+      - OTR_PORT=1883
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.otrecorder.entrypoints=websecure"
@@ -37,6 +38,7 @@ services:
       - mqtt-log:/mosquitto/log
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
     networks:
+      - owntracks
       - traefik
     labels:
       - "traefik.enable=true"
@@ -57,10 +59,11 @@ services:
     volumes:
       - ./config.js:/usr/share/nginx/html/config/config.js
     networks:
+      - owntracks
       - traefik
     environment:
-      - SERVER_HOST=otrecorder.patz.app
-      - SERVER_PORT=443
+      - SERVER_HOST=otrecorder
+      - SERVER_PORT=8083
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.otfrontend.entrypoints=websecure"
@@ -79,6 +82,7 @@ volumes:
   mqtt-log:
 
 networks:
+  owntracks:
   traefik:
     external:
       name: traefik
