@@ -10,9 +10,15 @@ This has to be done with the `mosquitto_passwd` command inside the container.
    ```shell
    docker exec -it mqtt /bin/sh
    ```
+
 2. Run
    ```shell
    mosquitto_passwd /mosquitto/auth/passwd <username>
    ```
+   for every user you wish to allow access.
+
+3. Create an entry for the user `recorder` with a new password.
+   This user is dedicated to the OwnTracks recorder.
+   Set the same password as the environment variable `OTR_PASS`.
 
 for every use one wishes to create.
