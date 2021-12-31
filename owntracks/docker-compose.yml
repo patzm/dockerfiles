@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+
+  otrecorder:
+    container_name: otrecorder
+    image: owntracks/recorder
+    expose:
+      - "8083"
+    volumes:
+      - config:/config
+      - store:/store
+    networks:
+      - owntracks
+      - traefik
+    environment:
+      - OTR_USER=
+      - OTR_HOST=
+      - OTR_PORT=
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.owntracks-recorder.entrypoints=websecure"
+      - "traefik.http.routers.owntracks-recorder.rule=Host(`otrecorder.patz.app`)"
+      - "traefik.http.routers.owntracks-recorder.tls=true"
+      - "traefik.http.routers.owntracks-recorder.tls.certresolver=patz.app"
+      - "traefik.http.routers.owntracks-recorder.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.owntracks-recorder.tls.domains[0].sans=otrecorder.patz.app"
+      - "traefik.http.services.owntracks-recorder.loadbalancer.server.port=8083"
+    restart: unless-stopped
+
+  otfrontend:
+    container_name: otfrontend
+    image: owntracks/frontend
+    expose:
+      - "80"
+    volumes:
+      - ./config.js:/usr/share/nginx/html/config/config.js
+    networks:
+      - owntracks
+      - traefik
+    environment:
+      - SERVER_HOST=otrecorder
+      - SERVER_PORT=8083
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.owntracks-frontend.entrypoints=websecure"
+      - "traefik.http.routers.owntracks-frontend.rule=Host(`owntracks.patz.app`)"
+      - "traefik.http.routers.owntracks-frontend.tls=true"
+      - "traefik.http.routers.owntracks-frontend.tls.certresolver=patz.app"
+      - "traefik.http.routers.owntracks-frontend.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.owntracks-frontend.tls.domains[0].sans=owntracks.patz.app"
+      - "traefik.http.services.owntracks-frontend.loadbalancer.server.port=80"      
+    restart: unless-stopped
+
+volumes:
+  store:
+  config:
+  mqtt-auth:
+  mqtt-config:
+  mqtt-data:
+  mqtt-log:
+
+networks:
+  owntracks:
+  traefik:
+    external:
+      name: traefik
