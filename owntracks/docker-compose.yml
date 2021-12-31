@@ -53,7 +53,7 @@ services:
       - "traefik.http.services.otmqtt.loadbalancer.server.port=1883"
     restart: unless-stopped
 
-  owntracks-frontend:
+  otfrontend:
     container_name: otfrontend
     image: owntracks/frontend
     expose:
