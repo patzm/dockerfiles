@@ -30,6 +30,11 @@ services:
       - redis
     volumes:
       - ${MOUNT_DATA}:/data
+      - /share/Audiobooks:/external/audiobooks:ro
+      - /share/Plex:/external/plex:ro
+      - /share/Movies:/external/movies:ro
+      - /share/Music:/external/music:ro
+      - /share/Series:/external/tv-shows:ro
     networks:
       - traefik
     env_file:
