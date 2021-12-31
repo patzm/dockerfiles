@@ -34,7 +34,7 @@ services:
       - "1883"
     volumes:
       - mqtt-data:/mosquitto/data
-      - mqtt-logs:/mosquitto/logs
+      - mqtt-log:/mosquitto/log
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
     networks:
       - traefik
@@ -76,7 +76,7 @@ volumes:
   store:
   config:
   mqtt-data:
-  mqtt-logs:
+  mqtt-log:
 
 networks:
   traefik:
