@@ -34,6 +34,7 @@ services:
     expose:
       - "1883"
     volumes:
+      - mqtt-auth:/mosquitto/auth
       - mqtt-data:/mosquitto/data
       - mqtt-log:/mosquitto/log
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
@@ -78,6 +79,7 @@ services:
 volumes:
   store:
   config:
+  mqtt-auth:
   mqtt-data:
   mqtt-log:
 
