@@ -35,9 +35,10 @@ services:
       - "1883"
     volumes:
       - mqtt-auth:/mosquitto/auth
+      - mqtt-config:/mosquitto/config
+      # - ./mosquitto-config:/mosquitto/config
       - mqtt-data:/mosquitto/data
       - mqtt-log:/mosquitto/log
-      - ./mosquitto-config:/mosquitto/config
     networks:
       - owntracks
       - traefik
@@ -80,6 +81,7 @@ volumes:
   store:
   config:
   mqtt-auth:
+  mqtt-config:
   mqtt-data:
   mqtt-log:
 
