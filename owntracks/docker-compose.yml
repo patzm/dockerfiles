@@ -37,7 +37,7 @@ services:
       - mqtt-auth:/mosquitto/auth
       - mqtt-data:/mosquitto/data
       - mqtt-log:/mosquitto/log
-      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./custom-mosquitto.conf:/mosquitto/config/mosquitto.conf
     networks:
       - owntracks
       - traefik
