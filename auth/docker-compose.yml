@@ -1,0 +1,84 @@
+version: '3'
+
+networks:
+  auth_internal:
+    external: true
+  traefik:
+    external:
+      name: traefik
+
+services:
+  openldap:
+    image: osixia/openldap
+    env_file: secrets.env
+    environment:
+      - LDAP_DOMAIN=patz.app
+      - LDAP_ORGANISATION=Family Patz
+      - LDAP_TLS=false
+    networks:
+      - auth_internal
+      - traefik
+    volumes:
+      - /share/docker/auth/openldap/db:/var/lib/ldap
+      - /share/docker/auth/openldap/config:/var/ldap/slap.d
+    restart: unless-stopped
+
+  lam:
+    image: jacksgt/ldap-account-manager
+    networks:
+      - auth_internal
+      - traefik
+    depends_on:
+      - openldap
+    volumes:
+      - ./lam/config.cfg:/var/www/html/config/config.cfg
+      - ./lam/patz.conf:/var/www/html/config/patz.conf
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.auth-lam.entrypoints=websecure
+      - traefik.http.routers.auth-lam.rule=Host(`iam.patz.app`)
+      - traefik.http.routers.auth-lam.tls=true
+      - traefik.http.routers.auth-lam.tls.certresolver=patz.app
+      - traefik.http.routers.auth-lam.tls.domains[0].main=patz.app
+      - traefik.http.routers.auth-lam.tls.domains[0].sans=iam.patz.app
+      - traefik.http.services.auth-lam.loadbalancer.server.port=8080
+      - traefik.http.routers.auth-lam.middlewares=forward-auth@file
+    restart: unless-stopped
+
+  keycloak-db:
+    image: postgres:10.1
+    env_file:
+      - secrets.env
+      - keycloak.env
+    volumes:
+      - /share/docker/auth/keycloak/db:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - auth_internal
+    restart: unless-stopped
+
+  keycloak:
+    image: jboss/keycloak
+    env_file:
+      - secrets.env
+      - keycloak.env
+    depends_on:
+      - keycloak-db
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - auth_internal
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.auth-keycloak.entrypoints=websecure
+      - traefik.http.routers.auth-keycloak.rule=Host(`keycloak.patz.app`)
+      - traefik.http.routers.auth-keycloak.tls=true
+      - traefik.http.routers.auth-keycloak.tls.certresolver=patz.app
+      - traefik.http.routers.auth-keycloak.tls.domains[0].main=patz.app
+      - traefik.http.routers.auth-keycloak.tls.domains[0].sans=keycloak.patz.app
+      - traefik.http.services.auth-keycloak.loadbalancer.server.port=8080
+    restart: unless-stopped
+
