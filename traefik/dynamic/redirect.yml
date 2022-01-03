@@ -11,6 +11,12 @@ http:
     redirect-https:
       redirectScheme:
         scheme: https
+    keycloak:
+      forwardAuth:
+        address: "http://forward-auth:4181"
+        trustForwardHeader: true
+        authResponseHeaders:
+          - "X-Forwarded-User"
   services:
     noop:
       loadBalancer:

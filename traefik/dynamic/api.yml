@@ -4,7 +4,7 @@ http:
       entrypoints: websecure
       rule: "Host(`traefik.patz.app`)"
       middlewares:
-        - auth
+        - keycloak@file
       tls:
         certResolver: patz.app
         domains:
@@ -12,8 +12,4 @@ http:
             sans:
               - "traefik.patz.app"
       service: api@internal
-  middlewares:
-    auth:
-      basicAuth:
-        usersFile: /etc/traefik/dynamic/api_users_passwords.txt
 
