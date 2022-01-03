@@ -17,6 +17,32 @@ services:
     networks:
       - traefik
 
+  forward-auth:
+    image: thomseddon/traefik-forward-auth:2.2
+    environment:
+      - DEFAULT_PROVIDER=oidc
+      - PROVIDERS_OIDC_CLIENT_ID=traefik-forward-auth
+      - PROVIDERS_OIDC_CLIENT_SECRET=5v5C4sHLU5XtZcE34yMTX73W3XdhprpH
+      - PROVIDERS_OIDC_ISSUER_URL=https://keycloak.patz.app/auth/realms/patz
+      - SECRET=LH49wCZ4ZijgUTfm8etb
+      - AUTH_HOST=auth.patz.app
+      - COOKIE_DOMAIN=patz.app
+      - INSECURE_COOKIE=false
+      - LOG_LEVEL=debug
+    networks:
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.forward-auth.entrypoints=websecure
+      - traefik.http.routers.forward-auth.rule=Host(`auth.patz.app`)
+      - traefik.http.routers.forward-auth.tls=true
+      - traefik.http.routers.forward-auth.tls.certresolver=patz.app
+      - traefik.http.routers.forward-auth.tls.domains[0].main=patz.app
+      - traefik.http.routers.forward-auth.tls.domains[0].sans=auth.patz.app
+      - traefik.http.routers.forward-auth.middlewares=keycloak@file
+      - traefik.http.services.forward-auth.loadbalancer.server.port=4181
+    restart: always
+
   whoami:
     image: "containous/whoami"
     container_name: "whoami"
