@@ -49,15 +49,12 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami-web.entrypoints=web"
-      - "traefik.http.routers.whoami-web.rule=Host(`whoami.patz.app`)"
-      - "traefik.http.routers.whoami-web.middlewares=redirect-https@file"
-      - "traefik.http.routers.whoami-websecure.entrypoints=websecure"
-      - "traefik.http.routers.whoami-websecure.rule=Host(`whoami.patz.app`)"
-      - "traefik.http.routers.whoami-websecure.tls=true"
-      - "traefik.http.routers.whoami-websecure.tls.certresolver=patz.app"
-      - "traefik.http.routers.whoami-websecure.tls.domains[0].main=patz.app"
-      - "traefik.http.routers.whoami-websecure.tls.domains[0].sans=whoami.patz.app"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.patz.app`)"
+      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.whoami.tls.certresolver=patz.app"
+      - "traefik.http.routers.whoami.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.whoami.tls.domains[0].sans=whoami.patz.app"
     networks:
       - traefik
 
