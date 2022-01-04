@@ -11,6 +11,8 @@ services:
     env_file:
       - .env
       - secrets.env
+    labels:
+      - traefik.enable=false
     restart: always
 
   redis:
@@ -20,6 +22,8 @@ services:
       - redis:/data
     networks:
       - traefik
+    labels:
+      - traefik.enable=false
     restart: always
 
   nextcloud:
@@ -77,6 +81,8 @@ services:
     environment:
       - "SIDECAR_CRON=1"
       - "CRON_PERIOD=*/15 * * * *"
+    labels:
+      - traefik.enable=false
     restart: always
 
 volumes:
@@ -86,3 +92,4 @@ networks:
   traefik:
     external:
       name: traefik
+

@@ -12,6 +12,8 @@ volumes:
 
 x-op-restart-policy: &restart_policy
   restart: unless-stopped
+  labels:
+    - traefik.enable=false
 x-op-image: &image
   image: openproject/community:${TAG:-12}
 x-op-app: &app
@@ -60,13 +62,13 @@ services:
       - cache
       - seeder
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${PORT}/health_checks/default"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health_checks/default"]
       interval: 10s
       timeout: 3s
       retries: 3
       start_period: 30s
     ports:
-      - "${PORT}"
+      - "8080"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.op.entrypoints=websecure"
@@ -75,7 +77,7 @@ services:
       - "traefik.http.routers.op.tls.certresolver=patz.app"
       - "traefik.http.routers.op.tls.domains[0].main=patz.app"
       - "traefik.http.routers.op.tls.domains[0].sans=openproject.patz.app"
-      - "traefik.http.services.op.loadbalancer.server.port=${PORT}"
+      - "traefik.http.services.op.loadbalancer.server.port=8080"
 
   worker:
     <<: *app

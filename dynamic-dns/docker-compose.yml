@@ -8,5 +8,5 @@ services:
     volumes:
       - ./patz.app:/config
     labels:
-      - "traefik.enable=false"
+      - traefik.enable=false
     restart: always

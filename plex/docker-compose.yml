@@ -24,7 +24,7 @@ services:
       - /share/Music:/data/music
       - /share/Series:/data/tv-shows
     labels:
-      - "traefik.enable=false"
+      - traefik.enable=false
     env_file:
       - .env
       - secrets.env
