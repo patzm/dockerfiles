@@ -20,7 +20,6 @@ services:
       - traefik
     volumes:
       - /share/docker/auth/openldap/db:/var/lib/ldap
-      - /share/docker/auth/openldap/config:/var/ldap/slap.d
     labels:
       - traefik.enable=false
     restart: unless-stopped
