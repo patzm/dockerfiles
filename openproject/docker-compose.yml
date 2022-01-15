@@ -19,8 +19,6 @@ x-op-image: &image
 x-op-app: &app
   <<: *image
   <<: *restart_policy
-  env_file:
-    - secrets.env
   environment:
     RAILS_CACHE_STORE: "memcache"
     OPENPROJECT_CACHE__MEMCACHE__SERVER: "cache:11211"
