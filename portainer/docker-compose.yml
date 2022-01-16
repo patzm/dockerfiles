@@ -21,6 +21,8 @@ services:
       - "traefik.http.services.frontend.loadbalancer.server.port=9000"
 
 networks:
+  auth_internal:
+    external: true
   traefik:
     external:
       name: traefik
