@@ -1,5 +1,8 @@
 version: '3'
 
+volumes:
+  transcode:
+
 services:
   plex:
     image: plexinc/pms-docker:plexpass
@@ -22,7 +25,4 @@ services:
     env_file:
       - .env
       - /mnt/ssd-1tb/docker/plex/secrets.env
-
-volumes:
-  transcode:
 
