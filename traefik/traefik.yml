@@ -27,13 +27,6 @@ certificatesResolvers:
       tlsChallenge: {}
       httpChallenge:
         entrypoint: web
-  ptatooine.myqnapcloud.com:
-    acme:
-      email: postmaster@martin-patz.de
-      storage: letsencrypt/ptatooine.myqnapcloud.com.json
-      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
-      httpChallenge:
-        entrypoint: web
 
 api:
   dashboard: true
