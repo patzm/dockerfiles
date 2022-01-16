@@ -7,7 +7,7 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
+      - /mnt/ssd-1tb/docker/portainer:/data
     networks:
       - traefik
     labels:
@@ -19,9 +19,6 @@ services:
       - "traefik.http.routers.frontend.tls.domains[0].main=patz.app"
       - "traefik.http.routers.frontend.tls.domains[0].sans=portainer.patz.app"
       - "traefik.http.services.frontend.loadbalancer.server.port=9000"
-
-volumes:
-  portainer_data:
 
 networks:
   traefik:
