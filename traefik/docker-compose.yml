@@ -45,7 +45,6 @@ services:
 
   whoami:
     image: "containous/whoami"
-    container_name: "whoami"
     restart: always
     labels:
       - "traefik.enable=true"
