@@ -17,7 +17,7 @@ services:
     networks:
       - traefik
 
-  forward-auth:
+  forward_auth:
     image: thomseddon/traefik-forward-auth:2.2
     environment:
       - DEFAULT_PROVIDER=oidc

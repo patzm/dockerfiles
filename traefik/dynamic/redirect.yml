@@ -13,7 +13,7 @@ http:
         scheme: https
     keycloak:
       forwardAuth:
-        address: "http://forward-auth:4181"
+        address: "http://forward_auth:4181"
         trustForwardHeader: true
         authResponseHeaders:
           - "X-Forwarded-User"
