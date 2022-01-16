@@ -9,7 +9,7 @@ services:
       - traefik
     env_file:
       - .env
-      - secrets.env
+      - /mnt/ssd-1tb/docker/nextcloud/secrets.env
     labels:
       - traefik.enable=false
     restart: always
@@ -40,7 +40,7 @@ services:
       - traefik
     env_file:
       - .env
-      - secrets.env
+      - /mnt/ssd-1tb/docker/nextcloud/secrets.env
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.patz-nc-websecure.entrypoints=websecure"
@@ -73,7 +73,7 @@ services:
       - traefik
     env_file:
       - .env
-      - secrets.env
+      - /mnt/ssd-1tb/docker/nextcloud/secrets.env
     environment:
       - "SIDECAR_CRON=1"
       - "CRON_PERIOD=*/15 * * * *"
