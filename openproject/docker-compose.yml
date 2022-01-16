@@ -1,6 +1,8 @@
 version: "3.7"
 
 networks:
+  auth_internal:
+    external: true
   backend:
   traefik:
     external:
@@ -56,6 +58,7 @@ services:
     <<: *app
     command: "./docker/prod/web"
     networks:
+      - auth_internal
       - backend
       - traefik
     depends_on:
