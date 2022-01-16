@@ -20,6 +20,7 @@ services:
       - traefik
     volumes:
       - /mnt/ssd-1tb/docker/auth/openldap/db:/var/lib/ldap
+      - /mnt/ssd-1tb/docker/auth/openldap/config:/etc/ldap/slapd.d
     labels:
       - traefik.enable=false
     restart: unless-stopped
