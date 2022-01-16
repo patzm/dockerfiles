@@ -16,18 +16,18 @@ services:
       - 32413:32413/udp
       - 32414:32414/udp
     volumes:
-      - ${MOUNT_CONFIG}:/config
       - transcode:/transcode
-      - /share/Audiobooks:/data/audiobooks
-      - /share/Plex:/data/plex
-      - /share/Movies:/data/movies
-      - /share/Music:/data/music
-      - /share/Series:/data/tv-shows
+      - ${MOUNT_CONFIG}:/config
+      - ${MOUNT_DATA}/audiobooks:/data/audiobooks
+      - ${MOUNT_DATA}/plex:/data/plex
+      - ${MOUNT_DATA}/movies:/data/movies
+      - ${MOUNT_DATA}/music:/data/music
+      - ${MOUNT_DATA}/tv-shows:/data/tv-shows
     labels:
       - traefik.enable=false
     env_file:
       - .env
-      - secrets.env
+      - /mnt/ssd-1tb/docker/plex/secrets.env
 
 volumes:
   transcode:
