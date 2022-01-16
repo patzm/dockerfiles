@@ -19,7 +19,7 @@ services:
       - auth_internal
       - traefik
     volumes:
-      - /share/docker/auth/openldap/db:/var/lib/ldap
+      - /mnt/ssd-1tb/docker/auth/openldap/db:/var/lib/ldap
     labels:
       - traefik.enable=false
     restart: unless-stopped
@@ -53,7 +53,7 @@ services:
       - /mnt/ssd-1tb/docker/auth/secrets.env
       - keycloak.env
     volumes:
-      - /share/docker/auth/keycloak/db:/var/lib/postgresql/data
+      - /mnt/ssd-1tb/docker/auth/keycloak/db:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
     networks:
       - auth_internal
