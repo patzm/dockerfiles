@@ -7,8 +7,8 @@ networks:
       name: traefik
 
 volumes:
+  # unused, mounted to prevent anonymous volumes
   pgdata:
-  opdata:
 
 x-op-restart-policy: &restart_policy
   restart: unless-stopped
@@ -30,7 +30,8 @@ x-op-app: &app
     # set to true to enable the email receiving feature. See ./docker/cron for more options
     IMAP_ENABLED: "${IMAP_ENABLED:-false}"
   volumes:
-    - "opdata:/var/openproject/assets"
+    - /mnt/ssd-1tb/docker/openproject/opdata:/var/openproject/assets
+    - pgdata:/var/openproject/pgdata
 
 services:
   db:
@@ -38,7 +39,7 @@ services:
     <<: *restart_policy
     stop_grace_period: "3s"
     volumes:
-      - "pgdata:/var/lib/postgresql/data"
+      - /mnt/ssd-1tb/docker/openproject/pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: postgres
       POSTGRES_PASSWORD: p4ssw0rd
@@ -105,3 +106,4 @@ services:
     restart: on-failure
     networks:
       - backend
+
