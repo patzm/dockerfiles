@@ -27,7 +27,7 @@ services:
     restart: always
 
   nextcloud:
-    image: crazymax/nextcloud:${NEXTCLOUD_TAG}
+    image: crazymax/nextcloud:22.2.3
     container_name: nextcloud
     depends_on:
       - db
