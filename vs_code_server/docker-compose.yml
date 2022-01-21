@@ -1,6 +1,8 @@
 version: "3.3"
 
 networks:
+  auth_internal:
+    external: true
   traefik:
     external:
       name: traefik
@@ -17,6 +19,7 @@ services:
     ports:
       - 8443
     networks:
+      - auth_internal
       - traefik
     labels:
       - traefik.enable=true
