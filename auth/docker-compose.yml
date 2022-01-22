@@ -10,6 +10,7 @@ networks:
 services:
   openldap:
     image: osixia/openldap
+    hostname: openldap
     env_file: /mnt/ssd-1tb/docker/auth/secrets.env
     environment:
       - LDAP_DOMAIN=patz.app
@@ -85,4 +86,3 @@ services:
       - traefik.http.routers.auth-keycloak.tls.domains[0].sans=keycloak.patz.app
       - traefik.http.services.auth-keycloak.loadbalancer.server.port=8080
     restart: unless-stopped
-
