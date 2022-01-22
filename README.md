@@ -21,8 +21,7 @@ Most recipes are stand-alone and only require the setup of Traefik.
 For this, create the few external resources by running the `init.sh` script.
 
 The recommended order in which to bring up this project is:
-#. Run `init.sh` to create the external, across-stack resources.
-#. Bring up the authentication stack `auth`.
-#. Bring up Traefik with the `traefik` stack.
-#. Bring up Portainer with the `portainer` stack.
-
+1. Run `init.sh` to create the external, across-stack resources.
+2. Bring up the authentication stack `auth`.
+3. Bring up Traefik with the `traefik` stack.
+4. Bring up Portainer with the `portainer` stack.
