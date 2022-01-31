@@ -1,0 +1,27 @@
+version: "3.3"
+
+networks:
+  auth_internal:
+    external: true
+  traefik:
+    external:
+      name: traefik
+
+services:
+  srv:
+    image: wiznote/wizserver
+    volumes:
+      - /mnt/ssd-1tb/docker/wiz/data:/wiz/storage
+      - /etc/localtime:/etc/localtime
+    networks:
+      - auth_internal
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.wiz.rule=Host(`wiz.patz.app`)
+      - traefik.http.routers.wiz.entrypoints=websecure
+      - traefik.http.routers.wiz.tls.certresolver=patz.app
+      - traefik.http.routers.wiz.tls.domains[0].main=patz.app
+      - traefik.http.routers.wiz.tls.domains[0].sans=wiz.patz.app
+      - traefik.http.services.wiz.loadbalancer.server.port=80
+    restart: always
