@@ -9,7 +9,7 @@ networks:
 
 services:
   code_server:
-    image: lscr.io/linuxserver/code-server
+    image: lscr.io/linuxserver/code-server:4.0.1
     environment:
       - PUID=${UID}
       - PGID=${GID}
