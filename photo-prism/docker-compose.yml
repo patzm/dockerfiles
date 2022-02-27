@@ -1,0 +1,114 @@
+version: '3.5'
+
+networks:
+  default:
+  auth_internal:
+    external: true
+  traefik:
+    external:
+      name: traefik
+
+# --------------------------------------------------------------------------
+# Help     | docker-compose exec photoprism photoprism help
+# Config   | docker-compose exec photoprism photoprism config
+# Reset    | docker-compose exec photoprism photoprism reset
+# Backup   | docker-compose exec photoprism photoprism backup -a -i
+# Restore  | docker-compose exec photoprism photoprism restore -a -i
+# Index    | docker-compose exec photoprism photoprism index
+# Reindex  | docker-compose exec photoprism photoprism index -f
+# Import   | docker-compose exec photoprism photoprism import
+#
+# To search originals for faces without a complete rescan:
+# docker-compose exec photoprism photoprism faces index
+#
+# All commands may have to be prefixed with "sudo" when not running as root.
+# This will point the home directory shortcut ~ to /root in volume mounts.
+
+services:
+  mariadb:
+    image: mariadb:10.8.2
+    restart: unless-stopped
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    command: mysqld --innodb-buffer-pool-size=128M --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=120
+    volumes:
+      - "/mnt/ssd-1tb/docker/photo-prism/db:/var/lib/mysql"
+    networks:
+      - default
+    environment:
+      MYSQL_ROOT_PASSWORD: insecure
+      MYSQL_DATABASE: photoprism
+      MYSQL_USER: photoprism
+      MYSQL_PASSWORD: insecure
+
+  photoprism:
+    image: photoprism/photoprism:20220121
+    depends_on:
+      - mariadb
+    restart: unless-stopped
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    ports:
+      - 2342
+    networks:
+      - auth_internal
+      - default
+      - traefik
+    environment:
+      PHOTOPRISM_SITE_URL: "https://pictures.patz.app/"
+      PHOTOPRISM_HTTP_COMPRESSION: "gzip"
+      PHOTOPRISM_DEBUG: "false"                      # run in debug mode (shows additional log messages)
+      PHOTOPRISM_PUBLIC: "false"                     # no authentication required (disables password protection)
+      PHOTOPRISM_READONLY: "true"                    # don't modify originals directory (reduced functionality)
+      PHOTOPRISM_EXPERIMENTAL: "false"               # enables experimental features
+      PHOTOPRISM_DISABLE_CHOWN: "false"              # disables storage permission updates on startup
+      PHOTOPRISM_DISABLE_WEBDAV: "true"              # disables built-in WebDAV server
+      PHOTOPRISM_DISABLE_SETTINGS: "false"           # disables Settings in Web UI
+      PHOTOPRISM_DISABLE_TENSORFLOW: "false"         # disables all features depending on TensorFlow
+      PHOTOPRISM_DISABLE_FACES: "false"              # disables facial recognition
+      PHOTOPRISM_DISABLE_CLASSIFICATION: "false"     # disables image classification
+      PHOTOPRISM_DARKTABLE_PRESETS: "false"          # enables Darktable presets and disables concurrent RAW conversion
+      PHOTOPRISM_DETECT_NSFW: "false"                # flag photos as private that MAY be offensive (requires TensorFlow)
+      PHOTOPRISM_UPLOAD_NSFW: "true"                 # allows uploads that MAY be offensive
+      PHOTOPRISM_DATABASE_DRIVER: "mysql"
+      PHOTOPRISM_DATABASE_SERVER: "mariadb:3306"
+      PHOTOPRISM_DATABASE_NAME: "photoprism"
+      PHOTOPRISM_DATABASE_USER: "photoprism"
+      PHOTOPRISM_DATABASE_PASSWORD: "insecure"
+      PHOTOPRISM_SITE_TITLE: "Pictures"
+      PHOTOPRISM_SITE_CAPTION: "Familie Patz"
+      PHOTOPRISM_SITE_DESCRIPTION: ""
+      PHOTOPRISM_SITE_AUTHOR: "Martin Patz"
+      ## Hardware video transcoding config (optional)
+      # PHOTOPRISM_FFMPEG_BUFFERS: "64"              # FFmpeg capture buffers (default: 32)
+      # PHOTOPRISM_FFMPEG_BITRATE: "32"              # FFmpeg encoding bitrate limit in Mbit/s (default: 50)
+      # PHOTOPRISM_FFMPEG_ENCODER: "h264_v4l2m2m"    # use Video4Linux for AVC transcoding (default: libx264)
+      # PHOTOPRISM_FFMPEG_ENCODER: "h264_qsv"        # use Intel Quick Sync Video for AVC transcoding (default: libx264)
+      # PHOTOPRISM_INIT: "intel-graphics tensorflow-amd64-avx2" # enable TensorFlow AVX2 & Intel Graphics support
+      ## Enable TensorFlow AVX2 support for modern Intel CPUs (requires starting the container as root)
+      # PHOTOPRISM_INIT: "tensorflow-amd64-avx2"
+      ## Run as a specific user, group, or with a custom umask (does not work together with "user:")
+      # PHOTOPRISM_UID: 1001
+      # PHOTOPRISM_GID: 1002
+      # PHOTOPRISM_UMASK: 0000
+      HOME: "/photoprism"
+    ## Start as a non-root user (see https://docs.docker.com/engine/reference/run/#user)
+    user: "1001:1002"
+    working_dir: "/photoprism"
+    volumes:
+      - "/mnt/hdd-16tb/media/plex/PicturesKM:/photoprism/originals/PicturesKM"
+      - "/mnt/hdd-16tb/media/plex/Martin:/photoprism/originals/Martin"
+      - "/mnt/hdd-16tb/media/plex/Kasandra:/photoprism/originals/Kasandra"
+      # - "~/Import:/photoprism/import"                  # *optional* base folder from which files can be imported to originals
+      - "/mnt/hdd-16tb/docker/photo-prism/storage:/photoprism/storage"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.photo-prism.entrypoints=websecure"
+      - "traefik.http.routers.photo-prism.rule=Host(`pictures.patz.app`)"
+      - "traefik.http.routers.photo-prism.tls=true"
+      - "traefik.http.routers.photo-prism.tls.certresolver=patz.app"
+      - "traefik.http.routers.photo-prism.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.photo-prism.tls.domains[0].sans=pictures.patz.app"
+      - "traefik.http.services.photo-prism.loadbalancer.server.port=2342"
