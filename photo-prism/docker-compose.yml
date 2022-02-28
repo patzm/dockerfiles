@@ -8,6 +8,9 @@ networks:
     external:
       name: traefik
 
+volumes:
+  lib:
+
 # --------------------------------------------------------------------------
 # Help     | docker-compose exec photoprism photoprism help
 # Config   | docker-compose exec photoprism photoprism config
@@ -98,6 +101,7 @@ services:
     user: "1001:1002"
     working_dir: "/photoprism"
     volumes:
+      - "lib:/var/lib/photoprism"
       - "/mnt/hdd-16tb/media/plex/PicturesKM:/photoprism/originals/PicturesKM"
       - "/mnt/hdd-16tb/media/plex/Martin:/photoprism/originals/Martin"
       - "/mnt/hdd-16tb/media/plex/Kasandra:/photoprism/originals/Kasandra"
