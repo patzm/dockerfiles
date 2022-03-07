@@ -9,7 +9,7 @@ networks:
 
 services:
   srv:
-    image: wiznote/wizserver
+    image: wiznote/wizserver:latest
     volumes:
       - /mnt/ssd-1tb/docker/wiz/data:/wiz/storage
       - /etc/localtime:/etc/localtime
