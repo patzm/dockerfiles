@@ -105,11 +105,12 @@ services:
     working_dir: "/photoprism"
     volumes:
       - "lib:/var/lib/photoprism"
+      - "/mnt/hdd-16tb/docker/photo-prism/storage:/photoprism/storage"
+      - "/mnt/hdd-16tb/docker/photo-prism/originals:/photoprism/originals"
       - "/mnt/hdd-16tb/media/plex/PicturesKM:/photoprism/originals/PicturesKM"
       - "/mnt/hdd-16tb/media/plex/Martin:/photoprism/originals/Martin"
       - "/mnt/hdd-16tb/media/plex/Kasandra:/photoprism/originals/Kasandra"
       # - "~/Import:/photoprism/import"                  # *optional* base folder from which files can be imported to originals
-      - "/mnt/hdd-16tb/docker/photo-prism/storage:/photoprism/storage"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.photo-prism.entrypoints=websecure"
