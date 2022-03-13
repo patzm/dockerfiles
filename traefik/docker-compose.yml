@@ -28,6 +28,7 @@ services:
       - SECRET=LH49wCZ4ZijgUTfm8etb
       - AUTH_HOST=auth.patz.app
       - COOKIE_DOMAIN=patz.app
+      - URL_PATH=/_oauth
       - INSECURE_COOKIE=false
       - LOG_LEVEL=debug
     networks:
