@@ -64,7 +64,7 @@ services:
     restart: unless-stopped
 
   keycloak:
-    image: jboss/keycloak
+    image: jboss/keycloak:16.1.1
     env_file:
       - /mnt/ssd-1tb/docker/auth/secrets.env
       - keycloak.env
