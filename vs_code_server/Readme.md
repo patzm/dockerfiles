@@ -11,4 +11,3 @@ For instance, bring up this stack by invoking
 ```bash
 UID=$(id -u) GID=$(id -g) docker-compose up -d
 ```
-

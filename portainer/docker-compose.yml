@@ -12,13 +12,13 @@ services:
       - traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`portainer.patz.app`)"
-      - "traefik.http.routers.frontend.entrypoints=websecure"
-      - "traefik.http.routers.frontend.service=frontend"
-      - "traefik.http.routers.frontend.tls.certresolver=patz.app"
-      - "traefik.http.routers.frontend.tls.domains[0].main=patz.app"
-      - "traefik.http.routers.frontend.tls.domains[0].sans=portainer.patz.app"
-      - "traefik.http.services.frontend.loadbalancer.server.port=9000"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.patz.app`)"
+      - "traefik.http.routers.portainer.entrypoints=websecure"
+      - "traefik.http.routers.portainer.service=portainer"
+      - "traefik.http.routers.portainer.tls.certresolver=patz.app"
+      - "traefik.http.routers.portainer.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.portainer.tls.domains[0].sans=portainer.patz.app"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
 networks:
   auth_internal:
