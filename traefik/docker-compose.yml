@@ -18,6 +18,30 @@ services:
     networks:
       - traefik
 
+  ddns:
+    image: qmcgaw/ddns-updater
+    restart: always
+    user: "${PUID}:${PGID}"
+    labels:
+      - traefik.enable=false
+    environment:
+      - CONFIG=
+      - PERIOD=5m
+      - UPDATE_COOLDOWN_PERIOD=5m
+      - PUBLICIP_FETCHERS=all
+      - PUBLICIP_HTTP_PROVIDERS=all
+      - PUBLICIPV4_HTTP_PROVIDERS=all
+      - PUBLICIPV6_HTTP_PROVIDERS=all
+      - PUBLICIP_DNS_PROVIDERS=all
+      - PUBLICIP_DNS_TIMEOUT=3s
+      - HTTP_TIMEOUT=10s
+      - LOG_LEVEL=info
+      - LOG_CALLER=hidden
+      - SHOUTRRR_ADDRESSES=
+    # TODO: expose web UI behind forward auth
+    volumes:
+      - /mnt/ssd-1tb/docker/traefik/ddns:/updater/data
+
   forward_auth:
     image: thomseddon/traefik-forward-auth:2.2
     environment:
