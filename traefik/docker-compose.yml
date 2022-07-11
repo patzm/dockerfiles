@@ -4,6 +4,11 @@ services:
   traefik:
     image: traefik:v2.7.1
     restart: always
+    user: "${PUID}:${PGID}"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     extra_hosts:
     - "host.docker.internal:host-gateway"
     ports:
