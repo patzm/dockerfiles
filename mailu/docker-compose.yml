@@ -1,0 +1,184 @@
+version: '3'
+
+services:
+
+  resolver:
+    image: mailu/unbound:${MAILU_VERSION}
+    env_file:
+      - .env
+    restart: always
+    labels:
+      - traefik.enable=false
+    networks:
+      default:
+        ipv4_address: 172.26.255.254
+
+  # External dependencies
+  redis:
+    image: redis:alpine
+    restart: always
+    labels:
+      - traefik.enable=false
+    volumes:
+      - "/mnt/ssd-1tb/docker/mailu/redis:/data"
+    depends_on:
+      - resolver
+    dns:
+      - 172.26.255.254
+
+  certdumper:
+    image: mailu/traefik-certdumper:${MAILU_VERSION}
+    restart: always
+    environment:
+      - DOMAIN=${DOMAIN}
+      - TRAEFIK_VERSION=v2
+    volumes:
+      - "/mnt/ssd-1tb/docker/traefik/letsencrypt/patz.family:/traefik"
+      - "/mnt/ssd-1tb/docker/mailu/certs:/output"
+
+  # certdumper:
+  #   image: ldez/traefik-certs-dumper
+  #   entrypoint: sh -c '
+  #     apk add jq
+  #     ; while ! [ -e /traefik/acme.json ]
+  #     || ! [ `jq ".[] | .Certificates | length" /traefik/acme.json` != 0 ]; do
+  #     sleep 1
+  #     ; done
+  #     && traefik-certs-dumper file --version v2 \
+  #     --crt-name "cert" --crt-ext ".pem" --key-name "key" --key-ext ".pem" \
+  #     --source /traefik/acme.json --dest /tmp/work \
+  #     --domain-subdir &&
+  #     mv /tmp/work/*.pem /output
+  #     '
+  #   volumes:
+  #     - "/mnt/ssd-1tb/docker/traefik/letsencrypt/patz.family:/traefik"
+  #     - "/mnt/ssd-1tb/docker/mailu/certs:/output"
+
+
+  # Core services
+  mailu-front:
+    image: mailu/nginx:${MAILU_VERSION}
+    restart: always
+    env_file:
+      - .env
+    logging:
+      driver: json-file
+    ports:
+      - "25:25"
+      - "110:110"
+      - "143:143"
+      - "465:465"
+      - "587:587"
+      - "993:993"
+      - "995:995"
+    volumes:
+      - "/mnt/ssd-1tb/docker/mailu/certs:/certs"
+      - "/mnt/ssd-1tb/docker/mailu/overrides/nginx:/overrides:ro"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mailu-front.rule=Host(`mail.${DOMAIN}`)
+      - traefik.http.routers.mailu-front.entrypoints=websecure
+      - traefik.http.routers.mailu-front.tls.certresolver=${DOMAIN}
+      - traefik.http.routers.mailu-front.tls.domains[0].main=${DOMAIN}
+      - traefik.http.routers.mailu-front.tls.domains[0].sans=mail.${DOMAIN},smtp.${DOMAIN}
+      - traefik.http.services.mailu-front.loadbalancer.server.port=80
+    depends_on:
+      - certdumper
+      - resolver
+    dns:
+      - 172.26.255.254
+    networks:
+      - default
+      - traefik
+
+  admin:
+    image: mailu/admin:${MAILU_VERSION}
+    restart: always
+    env_file:
+      - .env
+    labels:
+      - traefik.enable=false
+    volumes:
+      - "/mnt/ssd-1tb/docker/mailu/data:/data"
+      - "/mnt/ssd-1tb/docker/mailu/dkim:/dkim"
+    depends_on:
+      - redis
+      - resolver
+    dns:
+      - 172.26.255.254
+
+  imap:
+    image: mailu/dovecot:${MAILU_VERSION}
+    restart: always
+    env_file:
+      - .env
+    labels:
+      - traefik.enable=false
+    volumes:
+      - "/mnt/ssd-1tb/docker/mailu/mail:/mail"
+      - "/mnt/ssd-1tb/docker/mailu/overrides/dovecot:/overrides:ro"
+    depends_on:
+      - mailu-front
+      - resolver
+    dns:
+      - 172.26.255.254
+
+  smtp:
+    image: mailu/postfix:${MAILU_VERSION}
+    restart: always
+    env_file:
+      - .env
+    labels:
+      - traefik.enable=false
+    volumes:
+      - "/mnt/ssd-1tb/docker/mailu/mailqueue:/queue"
+      - "/mnt/ssd-1tb/docker/mailu/overrides/postfix:/overrides:ro"
+    depends_on:
+      - mailu-front
+      - resolver
+    dns:
+      - 172.26.255.254
+
+  antispam:
+    image: mailu/rspamd:${MAILU_VERSION}
+    hostname: antispam
+    restart: always
+    env_file:
+      - .env
+    labels:
+      - traefik.enable=false
+    volumes:
+      - "/mnt/ssd-1tb/docker/mailu/filter:/var/lib/rspamd"
+      - "/mnt/ssd-1tb/docker/mailu/overrides/rspamd:/etc/rspamd/override.d:ro"
+    depends_on:
+      - mailu-front
+      - resolver
+    dns:
+      - 172.26.255.254
+
+  webmail:
+    image: mailu/roundcube:${MAILU_VERSION}
+    restart: always
+    env_file:
+      - .env
+    labels:
+      - traefik.enable=false
+    volumes:
+      - "/mnt/ssd-1tb/docker/mailu/webmail:/data"
+      - "/mnt/ssd-1tb/docker/mailu/overrides/roundcube:/overrides:ro"
+    depends_on:
+      - imap
+      - resolver
+    dns:
+      - 172.26.255.254
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.26.0.0/16
+  traefik:
+    external:
+      name: traefik
