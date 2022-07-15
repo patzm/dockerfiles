@@ -62,6 +62,7 @@ services:
       - traefik.http.routers.mailu-front.tls.certresolver=${DOMAIN}
       - traefik.http.routers.mailu-front.tls.domains[0].main=${DOMAIN}
       - traefik.http.routers.mailu-front.tls.domains[0].sans=mail.${DOMAIN},smtp.${DOMAIN}
+      - traefik.http.routers.mailu-front.service=mailu-front
       - traefik.http.services.mailu-front.loadbalancer.server.port=80
     depends_on:
       - certdumper
