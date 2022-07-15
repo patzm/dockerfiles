@@ -102,6 +102,8 @@ services:
     depends_on:
       - front
       # - resolver
+    networks:
+      - default
     # dns:
     #   - 172.26.255.254
 
@@ -115,6 +117,8 @@ services:
     volumes:
       - "/mnt/ssd-1tb/docker/mailu/mailqueue:/queue"
       - "/mnt/ssd-1tb/docker/mailu/overrides/postfix:/overrides:ro"
+    networks:
+      - default
     depends_on:
       - front
       # - resolver
@@ -132,6 +136,8 @@ services:
     volumes:
       - "/mnt/ssd-1tb/docker/mailu/filter:/var/lib/rspamd"
       - "/mnt/ssd-1tb/docker/mailu/overrides/rspamd:/etc/rspamd/override.d:ro"
+    networks:
+      - default
     depends_on:
       - front
       # - resolver
@@ -145,6 +151,8 @@ services:
       - .env
     labels:
       - traefik.enable=false
+    networks:
+      - default
     volumes:
       - "/mnt/ssd-1tb/docker/mailu/webmail:/data"
       - "/mnt/ssd-1tb/docker/mailu/overrides/roundcube:/overrides:ro"
