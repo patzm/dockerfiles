@@ -35,6 +35,14 @@ certificatesResolvers:
       tlsChallenge: {}
       httpChallenge:
         entrypoint: web
+  bergaufboardab.de:
+    acme:
+      email: verteiler@bergaufboardab.de
+      storage: letsencrypt/bergaufboardab.de/acme.json
+      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      tlsChallenge: {}
+      httpChallenge:
+        entrypoint: web
 
 api:
   dashboard: true
