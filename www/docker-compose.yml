@@ -1,0 +1,24 @@
+version: "3.3"
+
+services:
+  bergaufboardab:
+    image: httpd:alpine
+    restart: always
+    volumes:
+      - ./bergaufboardab.de:/usr/local/apache2/htdocs/
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bergaufboardab.rule=Host(`bergaufboardab.de`)"
+      - "traefik.http.routers.bergaufboardab.entrypoints=websecure"
+      - "traefik.http.routers.bergaufboardab.service=bergaufboardab"
+      - "traefik.http.routers.bergaufboardab.tls.certresolver=bergaufboardab.de"
+      - "traefik.http.routers.bergaufboardab.tls.domains[0].main=bergaufboardab.de"
+      - "traefik.http.routers.bergaufboardab.tls.domains[0].sans=www.bergaufboardab.de"
+      - "traefik.http.services.bergaufboardab.loadbalancer.server.port=80"
+
+networks:
+  traefik:
+    external:
+      name: traefik
