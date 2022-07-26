@@ -37,7 +37,7 @@ certificatesResolvers:
         entrypoint: web
   bergaufboardab.de:
     acme:
-      email: verteiler@bergaufboardab.de
+      email: postmaster@martin-patz.de
       storage: letsencrypt/bergaufboardab.de/acme.json
       # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       tlsChallenge: {}
