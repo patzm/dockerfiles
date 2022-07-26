@@ -2,17 +2,6 @@ version: '3'
 
 services:
 
-  # resolver:
-  #   image: mailu/unbound:${MAILU_VERSION}
-  #   env_file:
-  #     - .env
-  #   restart: always
-  #   labels:
-  #     - traefik.enable=false
-  #   networks:
-  #     default:
-  #       ipv4_address: 172.26.255.254
-
   # External dependencies
   redis:
     image: redis:alpine
@@ -21,10 +10,6 @@ services:
       - traefik.enable=false
     volumes:
       - "/mnt/ssd-1tb/docker/mailu/redis:/data"
-    # depends_on:
-    #   - resolver
-    # dns:
-    #   - 172.26.255.254
 
   certdumper:
     image: mailu/traefik-certdumper:${MAILU_VERSION}
@@ -66,9 +51,6 @@ services:
       - traefik.http.services.mailu-front.loadbalancer.server.port=80
     depends_on:
       - certdumper
-      # - resolver
-    # dns:
-    #   - 172.26.255.254
     networks:
       - default
       - traefik
@@ -85,9 +67,6 @@ services:
       - "/mnt/ssd-1tb/docker/mailu/dkim:/dkim"
     depends_on:
       - redis
-      # - resolver
-    # dns:
-    #   - 172.26.255.254
 
   imap:
     image: mailu/dovecot:${MAILU_VERSION}
@@ -101,11 +80,8 @@ services:
       - "/mnt/ssd-1tb/docker/mailu/overrides/dovecot:/overrides:ro"
     depends_on:
       - front
-      # - resolver
     networks:
       - default
-    # dns:
-    #   - 172.26.255.254
 
   smtp:
     image: mailu/postfix:${MAILU_VERSION}
@@ -121,9 +97,6 @@ services:
       - default
     depends_on:
       - front
-      # - resolver
-    # dns:
-    #   - 172.26.255.254
 
   antispam:
     image: mailu/rspamd:${MAILU_VERSION}
@@ -140,9 +113,6 @@ services:
       - default
     depends_on:
       - front
-      # - resolver
-    # dns:
-    #   - 172.26.255.254
 
   webmail:
     image: mailu/roundcube:${MAILU_VERSION}
@@ -158,9 +128,6 @@ services:
       - "/mnt/ssd-1tb/docker/mailu/overrides/roundcube:/overrides:ro"
     depends_on:
       - imap
-      # - resolver
-    # dns:
-    #   - 172.26.255.254
 
 networks:
   default:
