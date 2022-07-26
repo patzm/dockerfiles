@@ -5,7 +5,15 @@ http:
         - web
       middlewares:
         - redirect-https
-      rule: "HostRegexp(`{host:.+}`)"
+      rule: HostRegexp(`{host:.+}`)
+      service: noop
+    http-catch-all:
+      entrypoints:
+        - web
+        - websecure
+      middlewares:
+        - redirect-www-to-https
+      rule: "HostRegexp(`{host:(www\\.).+}`)"
       service: noop
     nas:
       entrypoints:
@@ -36,6 +44,11 @@ http:
     redirect-https:
       redirectScheme:
         scheme: https
+    redirect-www-to-https:
+      redirectRegex:
+        regex: "^https?://(?:www\\.)?(.+)"
+        replacement: "https://${1}"
+        permanent: true
     keycloak:
       forwardAuth:
         address: "http://forward_auth:4181"
