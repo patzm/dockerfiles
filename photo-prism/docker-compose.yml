@@ -48,7 +48,7 @@ services:
       - traefik.enable=false
 
   photoprism:
-    image: photoprism/photoprism:220629-bullseye
+    image: photoprism/photoprism:220728-bullseye
     depends_on:
       - mariadb
     restart: unless-stopped
