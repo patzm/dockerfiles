@@ -3,18 +3,28 @@ version: '3'
 networks:
   auth_internal:
     external: true
+  traefik:
+    external:
+      name: traefik
 
 services:
   dps:
     image: defreitas/dns-proxy-server
     hostname: dns.mageddo
-    expose:
-      - 5380
     networks:
       - auth_internal
+      - traefik
     volumes:
       - /etc/resolv.conf:/etc/resolv.conf
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
-      - traefik.enable=false
+      - traefik.enable=true
+      - traefik.http.routers.dps.entrypoints=websecure
+      - traefik.http.routers.dps.rule=Host(`proxy.patz.app`)
+      - traefik.http.routers.dps.tls=true
+      - traefik.http.routers.dps.tls.certresolver=patz.app
+      - traefik.http.routers.dps.tls.domains[0].main=patz.app
+      - traefik.http.routers.dps.tls.domains[0].sans=proxy.patz.app
+      - traefik.http.routers.dps.middlewares=keycloak@file
+      - traefik.http.services.dps.loadbalancer.server.port=5380
     restart: unless-stopped
