@@ -64,6 +64,7 @@ http:
       loadBalancer:
         servers:
           - url: http://192.168.1.1
+    # The host.docker alias depends on the DPS service
     nas:
       loadBalancer:
         servers:

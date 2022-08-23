@@ -15,6 +15,7 @@ services:
       - auth_internal
       - traefik
     volumes:
+      - /mnt/ssd-1tb/docker/docker-proxy:/app/conf
       - /etc/resolv.conf:/etc/resolv.conf
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
