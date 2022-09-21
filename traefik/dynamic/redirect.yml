@@ -49,6 +49,10 @@ http:
         regex: "^https?://(?:www\\.)?(.+)"
         replacement: "https://${1}"
         permanent: true
+    ssl-header:
+      headers:
+        customRequestHeaders:
+          X-Forwarded-Proto: https
     keycloak:
       forwardAuth:
         address: "http://forward_auth:4181"

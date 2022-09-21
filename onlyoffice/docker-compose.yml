@@ -22,7 +22,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.onlyoffice-ds-websecure.entrypoints=websecure"
       - "traefik.http.routers.onlyoffice-ds-websecure.rule=Host(`office.patz.app`)"
-      - "traefik.http.routers.onlyoffice-ds-websecure.middlewares=onlyoffice-ds-header"
+      - "traefik.http.routers.onlyoffice-ds-websecure.middlewares=onlyoffice-ds-header,ssl-header@file"
       - "traefik.http.routers.onlyoffice-ds-websecure.tls=true"
       - "traefik.http.routers.onlyoffice-ds-websecure.tls.certresolver=patz.app"
       - "traefik.http.routers.onlyoffice-ds-websecure.tls.domains[0].main=patz.app"
@@ -34,7 +34,6 @@ services:
       - "traefik.http.middlewares.onlyoffice-ds-header.headers.stsPreload=true"
       - "traefik.http.middlewares.onlyoffice-ds-header.headers.stsIncludeSubdomains=true"
       - "traefik.http.middlewares.onlyoffice-ds-header.headers.browserXssFilter=true"
-      - "traefik.http.middlewares.onlyoffice-ds-header.headers.customRequestHeaders.X-Forwarded-Proto=https"
     restart: always
 
 volumes:

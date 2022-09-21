@@ -45,7 +45,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.patz-nc-websecure.entrypoints=websecure"
       - "traefik.http.routers.patz-nc-websecure.rule=Host(`cloud.patz.app`)"
-      - "traefik.http.routers.patz-nc-websecure.middlewares=nc-redirect,nc-header"
+      - "traefik.http.routers.patz-nc-websecure.middlewares=nc-redirect,ssl-header@file"
       - "traefik.http.routers.patz-nc-websecure.tls=true"
       - "traefik.http.routers.patz-nc-websecure.tls.certresolver=patz.app"
       - "traefik.http.routers.patz-nc-websecure.tls.domains[0].main=patz.app"
@@ -60,7 +60,6 @@ services:
       - "traefik.http.middlewares.nc-header.headers.stsPreload=true"
       - "traefik.http.middlewares.nc-header.headers.stsIncludeSubdomains=true"
       - "traefik.http.middlewares.nc-header.headers.browserXssFilter=true"
-      - "traefik.http.middlewares.nc-header.headers.customRequestHeaders.X-Forwarded-Proto=https"
     restart: always
 
   cron:
