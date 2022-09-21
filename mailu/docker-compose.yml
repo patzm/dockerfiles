@@ -20,6 +20,8 @@ services:
     volumes:
       - "/mnt/ssd-1tb/docker/traefik/letsencrypt/patz.family:/traefik"
       - "/mnt/ssd-1tb/docker/mailu/certs:/output"
+    labels:
+      - traefik.enable=false
 
   # Core services
   front:
