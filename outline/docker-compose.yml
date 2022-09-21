@@ -1,0 +1,109 @@
+version: "3.7"
+
+networks:
+  auth_internal:
+    external: true
+  outline:
+  traefik:
+    external:
+      name: traefik
+
+
+services:
+
+  outline:
+    image: outlinewiki/outline
+    env_file: .env
+    networks:
+      - traefik
+      - outline
+      - auth_internal
+    depends_on:
+      - postgres
+      - redis
+      - storage
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.outline.entrypoints=websecure
+      - traefik.http.routers.outline.middlewares=ssl-header@file
+      - traefik.http.routers.outline.rule=Host(`outline.patz.app`)
+      - traefik.http.routers.outline.tls=true
+      - traefik.http.routers.outline.tls.certresolver=patz.app
+      - traefik.http.routers.outline.tls.domains[0].main=patz.app
+      - traefik.http.routers.outline.tls.domains[0].sans=outline.patz.app
+      - traefik.http.services.outline.loadbalancer.server.port=3000
+
+  redis:
+    image: redis
+    env_file: .env
+    ports:
+      - "6379:6379"
+    networks:
+      - outline
+    volumes:
+      - ./redis.conf:/redis.conf
+    command: ["redis-server", "/redis.conf"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 30s
+      retries: 3
+    labels:
+      - traefik.enable=false
+
+  postgres:
+    image: postgres
+    env_file: .env
+    networks:
+      - outline
+    ports:
+      - "5432:5432"
+    volumes:
+      - /mnt/ssd-1tb/docker/outline/db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready -U user"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_DB: outline
+    labels:
+      - traefik.enable=false
+
+  storage:
+    image: minio/minio
+    env_file: .env
+    networks:
+      - outline
+      - traefik
+    entrypoint: sh
+    command: -c 'minio server /data --console-address ":9001"'
+    volumes:
+      - /mnt/ssd-1tb/docker/outline/storage:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.routers.outline-data.entrypoints=websecure
+      - traefik.http.routers.outline-data.service=outline-data
+      - traefik.http.routers.outline-data.middlewares=ssl-header@file
+      - traefik.http.routers.outline-data.rule=Host(`outline-data.patz.app`)
+      - traefik.http.routers.outline-data.tls=true
+      - traefik.http.routers.outline-data.tls.certresolver=patz.app
+      - traefik.http.routers.outline-data.tls.domains[0].main=patz.app
+      - traefik.http.routers.outline-data.tls.domains[0].sans=outline-data.patz.app
+      - traefik.http.services.outline-data.loadbalancer.server.port=9000
+
+      - traefik.http.routers.outline-data-admin.entrypoints=websecure
+      - traefik.http.routers.outline-data-admin.service=outline-data-admin
+      - traefik.http.routers.outline-data-admin.rule=Host(`outline-data-admin.patz.app`)
+      - traefik.http.routers.outline-data-admin.tls=true
+      - traefik.http.routers.outline-data-admin.tls.certresolver=patz.app
+      - traefik.http.routers.outline-data-admin.tls.domains[0].main=patz.app
+      - traefik.http.routers.outline-data-admin.tls.domains[0].sans=outline-data-admin.patz.app
+      - traefik.http.services.outline-data-admin.loadbalancer.server.port=9001
