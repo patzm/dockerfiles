@@ -33,6 +33,22 @@ services:
       - "traefik.http.routers.patz-app.tls.domains[0].sans=www.patz.app"
       - "traefik.http.services.patz-app.loadbalancer.server.port=80"
 
+  patz.family:
+    image: httpd:alpine
+    restart: always
+    volumes:
+      - ./patz.family:/usr/local/apache2/htdocs/
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.patz-family.rule=Host(`patz.family`)"
+      - "traefik.http.routers.patz-family.entrypoints=websecure"
+      - "traefik.http.routers.patz-family.tls.certresolver=patz.family"
+      - "traefik.http.routers.patz-family.tls.domains[0].main=patz.family"
+      - "traefik.http.routers.patz-family.tls.domains[0].sans=www.patz.family"
+      - "traefik.http.services.patz-family.loadbalancer.server.port=80"
+
 networks:
   traefik:
     external:
