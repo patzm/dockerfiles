@@ -12,11 +12,26 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.bergaufboardab.rule=Host(`bergaufboardab.de`)"
       - "traefik.http.routers.bergaufboardab.entrypoints=websecure"
-      - "traefik.http.routers.bergaufboardab.service=bergaufboardab"
       - "traefik.http.routers.bergaufboardab.tls.certresolver=bergaufboardab.de"
       - "traefik.http.routers.bergaufboardab.tls.domains[0].main=bergaufboardab.de"
       - "traefik.http.routers.bergaufboardab.tls.domains[0].sans=www.bergaufboardab.de"
       - "traefik.http.services.bergaufboardab.loadbalancer.server.port=80"
+
+  patz.app:
+    image: httpd:alpine
+    restart: always
+    volumes:
+      - ./patz.app:/usr/local/apache2/htdocs/
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.patz-app.rule=Host(`patz.app`)"
+      - "traefik.http.routers.patz-app.entrypoints=websecure"
+      - "traefik.http.routers.patz-app.tls.certresolver=patz.app"
+      - "traefik.http.routers.patz-app.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.patz-app.tls.domains[0].sans=www.patz.app"
+      - "traefik.http.services.patz-app.loadbalancer.server.port=80"
 
 networks:
   traefik:

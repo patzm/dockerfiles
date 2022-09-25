@@ -1,0 +1,23 @@
+@import url("nord.css");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+
+:root {
+    background-color: var(--nord0);
+    color: var(--nord4);
+
+    font-family: 'Open Sans', sans-serif;
+}
+
+a {
+    color: var(--nord8);
+    text-decoration: none;
+}
+a:hover { color: var(--nord13); }
+
+li {
+    margin: 10px 0;
+}
+
+ul {
+    list-style: none;
+}
