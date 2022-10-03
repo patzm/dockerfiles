@@ -90,6 +90,7 @@ services:
     restart: always
     env_file:
       - .env
+      - secrets.env
     labels:
       - traefik.enable=false
     volumes:
