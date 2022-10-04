@@ -43,22 +43,16 @@ services:
       - "/mnt/ssd-1tb/docker/mailu/certs:/certs"
       - "/mnt/ssd-1tb/docker/mailu/overrides/nginx:/overrides:ro"
     labels:
-      - traefik.enable=true
+      - "traefik.enable=true"
+      - "traefik.http.routers.mailu-front.rule=Host(`mail.${DOMAIN}`) || Host(`mail.patz.app`)"
+      - traefik.http.routers.mailu-front.entrypoints=websecure
+      - traefik.http.routers.mailu-front.tls.certresolver=${DOMAIN}
+      - traefik.http.routers.mailu-front.tls.domains[0].main=${DOMAIN}
+      - traefik.http.routers.mailu-front.tls.domains[1].main=patz.app
+      - traefik.http.routers.mailu-front.tls.domains[0].sans=mail.${DOMAIN},smtp.${DOMAIN},imap.${DOMAIN}
+      - traefik.http.routers.mailu-front.tls.domains[1].sans=mail.patz.app,smtp.patz.app,imap.patz.app
+      - traefik.http.routers.mailu-front.service=mailu-front
       - traefik.http.services.mailu-front.loadbalancer.server.port=80
-
-      - traefik.http.routers.mailu-front-patz-app.rule=Host(`mail.patz.app`)
-      - traefik.http.routers.mailu-front-patz-app.entrypoints=websecure
-      - traefik.http.routers.mailu-front-patz-app.tls.certresolver=patz.app
-      - traefik.http.routers.mailu-front-patz-app.tls.domains[0].main=patz.app
-      - traefik.http.routers.mailu-front-patz-app.tls.domains[0].sans=mail.patz.app,smtp.patz.app
-      - traefik.http.routers.mailu-front-patz-app.service=mailu-front
-
-      - traefik.http.routers.mailu-front-patz-family.rule=Host(`mail.${DOMAIN}`)
-      - traefik.http.routers.mailu-front-patz-family.entrypoints=websecure
-      - traefik.http.routers.mailu-front-patz-family.tls.certresolver=${DOMAIN}
-      - traefik.http.routers.mailu-front-patz-family.tls.domains[0].main=${DOMAIN}
-      - traefik.http.routers.mailu-front-patz-family.tls.domains[0].sans=mail.${DOMAIN},smtp.${DOMAIN}
-      - traefik.http.routers.mailu-front-patz-family.service=mailu-front
 
     depends_on:
       - certdumper
