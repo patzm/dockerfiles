@@ -30,7 +30,7 @@ volumes:
 services:
   mariadb:
     image: mariadb:10.8.2
-    restart: unless-stopped
+    restart: always
     security_opt:
       - seccomp:unconfined
       - apparmor:unconfined
@@ -51,7 +51,7 @@ services:
     image: photoprism/photoprism:220730-bullseye
     depends_on:
       - mariadb
-    restart: unless-stopped
+    restart: always
     security_opt:
       - seccomp:unconfined
       - apparmor:unconfined
