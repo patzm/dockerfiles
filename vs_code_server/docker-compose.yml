@@ -11,11 +11,11 @@ services:
   code_server:
     image: lscr.io/linuxserver/code-server:4.7.0
     environment:
+      - PUID=${UID}
+      - PGID=${GID}
       - TZ=Europe/Berlin
     volumes:
       - ${HOME}:/config
-      - PUID=${UID}
-      - PGID=${GID}
     ports:
       - 8443
     networks:
