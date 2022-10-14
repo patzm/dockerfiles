@@ -3,11 +3,6 @@
 Code from anywhere, right inside your browser!
 
 ## Setup
-Make sure that the following environment variables are set:
+Make sure that the following environment variables are set within the container to match the folder you want to mount:
 * `PUID`
 * `PGID`
-
-For instance, bring up this stack by invoking
-```bash
-UID=$(id -u) GID=$(id -g) docker-compose up -d
-```
