@@ -10,6 +10,17 @@ For instance, bring up this stack by invoking
 PUID=$(id -u) PGID=$(id -g) docker-compose up -d
 ```
 
+## How to boot-strap without `docker-compose`
+```bash
+docker run -it --rm \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v $(pwd):/bootstrap \
+    -e PUID=$(id -u) \
+    -e PGID=$(id -g) \
+    patzm/compose \
+    up -d --remove-orphans
+```
+
 ## Authenticate any resource with forward authentication
 
 Guides I used:

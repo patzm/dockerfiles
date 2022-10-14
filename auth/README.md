@@ -4,7 +4,7 @@
 
 ## Setup
 Create the internal network
-```shell
+```bash
 docker network create auth_internal
 ```
 can also be done with the `init.sh` script in the root of the repo.
@@ -13,6 +13,19 @@ Set the following environment variables in Portainer or store them in a `secrets
 - `LDAP_ADMIN_PASSWORD`
 - `DB_PASSWORD` and `POSTGRES_PASSWORD` (must be the same)
 - `KEYCLOAK_PASSWORD`: this is the initial password for the `admin` user. It can be changed later.
+
+## How to boot-strap without `docker-compose`
+```bash
+docker run -it --rm \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v $(pwd):/bootstrap \
+    -e LDAP_ADMIN_PASSWORD=<ADMIN_PASSWORD> \
+    -e DB_PASSWORD=<DB_PASSWORD> \
+    -e POSTGRES_PASSWORD=<DB_PASSWORD> \
+    -e KEYCLOAK_PASSWORD=something-temporary \
+    patzm/compose \
+    up -d --remove-orphans
+```
 
 ## Debugging
 If authentication issues arise, check the logs.
