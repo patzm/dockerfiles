@@ -16,6 +16,8 @@ Set the following (sensitive) environment variables in Portainer:
 - `DB_PASSWORD` and `POSTGRES_PASSWORD` (must be the same)
 - `KEYCLOAK_PASSWORD`: this is the initial password for the `admin` user. It can be changed later.
 
+The values should be wrapped in quotes (`"` or `'`).
+
 ## How to boot-strap without `docker-compose`
 ```bash
 docker run -it --rm \
