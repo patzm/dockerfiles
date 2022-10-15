@@ -7,6 +7,7 @@ services:
     tty: true
     environment:
       JWT_ENABLED: "true"
+      JWT_SECRET: ${JWT_SECRET}
     networks:
       - traefik
     volumes:
