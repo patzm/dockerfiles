@@ -2,12 +2,11 @@ version: "3.2"
 
 services:
   document:
-    image: onlyoffice/documentserver:${DOCUMENT_TAG}
+    image: onlyoffice/documentserver:7.2.0
     stdin_open: true
     tty: true
-    env_file:
-      - .env
-      - secrets.env
+    environment:
+      JWT_ENABLED: "true"
     networks:
       - traefik
     volumes:
