@@ -2,7 +2,7 @@
 
 ## Setup
 
-Set the following environment variables:
+Set the following (sensitive) environment variables:
 * `DB_PASSWORD`
 * `MYSQL_PASSWORD`
 * `MYSQL_ROOT_PASSWORD`

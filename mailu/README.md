@@ -2,7 +2,7 @@
 
 ## Setup
 
-Set the following environment variables:
+Set the following (sensitive) environment variables:
 * `RELAYUSER`
 * `RELAYPASSWORD`
 

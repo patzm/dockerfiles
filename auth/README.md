@@ -11,7 +11,7 @@ can also be done with the `init.sh` script in the root of the repo.
 
 Upload the `keycloak.env` file into Portainer and populate the environment.
 
-For your first setup, set the following environment variables in Portainer:
+Set the following (sensitive) environment variables in Portainer:
 - `LDAP_ADMIN_PASSWORD`
 - `DB_PASSWORD` and `POSTGRES_PASSWORD` (must be the same)
 - `KEYCLOAK_PASSWORD`: this is the initial password for the `admin` user. It can be changed later.
