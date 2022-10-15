@@ -11,7 +11,6 @@ services:
   openldap:
     image: osixia/openldap
     hostname: openldap
-    env_file: /mnt/ssd-1tb/docker/auth/secrets.env
     environment:
       - LDAP_DOMAIN=patz.app
       - LDAP_ORGANISATION=Family Patz
@@ -52,7 +51,6 @@ services:
   keycloak-db:
     image: postgres:10.1
     env_file:
-      - /mnt/ssd-1tb/docker/auth/secrets.env
       - keycloak.env
     volumes:
       - /mnt/ssd-1tb/docker/auth/keycloak/db:/var/lib/postgresql/data
@@ -66,7 +64,6 @@ services:
   keycloak:
     image: jboss/keycloak:16.1.1
     env_file:
-      - /mnt/ssd-1tb/docker/auth/secrets.env
       - keycloak.env
     depends_on:
       - keycloak-db
