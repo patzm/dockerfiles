@@ -11,15 +11,16 @@ services:
       - 32400:32400/tcp
     volumes:
       - transcode:/transcode
-      - ${MOUNT_CONFIG}:/config
-      - ${MOUNT_DATA}/audiobooks:/data/audiobooks
-      - ${MOUNT_DATA}/plex:/data/plex
-      - ${MOUNT_DATA}/movies:/data/movies
-      - ${MOUNT_DATA}/music:/data/music
-      - ${MOUNT_DATA}/tv-shows:/data/tv-shows
+      - /mnt/ssd-1tb/docker/plex/config:/config
+      - /mnt/hdd-16tb/media/audiobooks:/data/audiobooks
+      - /mnt/hdd-16tb/media/plex:/data/plex
+      - /mnt/hdd-16tb/media/movies:/data/movies
+      - /mnt/hdd-16tb/media/music:/data/music
+      - /mnt/hdd-16tb/media/tv-shows:/data/tv-shows
     labels:
       - traefik.enable=false
-    env_file:
-      - .env
-      - /mnt/ssd-1tb/docker/plex/secrets.env
-
+    environment:
+      ADVERTISE_IP: http://arnold.local:32400/
+      PLEX_UID: 1001
+      PLEX_GID: 1002
+      TZ: Europe/Berlin
