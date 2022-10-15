@@ -68,7 +68,7 @@ services:
       PHOTOPRISM_PUBLIC: "false"                     # no authentication required (disables password protection)
       PHOTOPRISM_READONLY: "true"                    # don't modify originals directory (reduced functionality)
       PHOTOPRISM_EXPERIMENTAL: "false"               # enables experimental features
-      PHOTOPRISM_DISABLE_CHOWN: "false"              # disables storage permission updates on startup
+      PHOTOPRISM_DISABLE_CHOWN: "true"               # disables storage permission updates on startup
       PHOTOPRISM_DISABLE_WEBDAV: "true"              # disables built-in WebDAV server
       PHOTOPRISM_DISABLE_SETTINGS: "false"           # disables Settings in Web UI
       PHOTOPRISM_DISABLE_TENSORFLOW: "false"         # disables all features depending on TensorFlow
