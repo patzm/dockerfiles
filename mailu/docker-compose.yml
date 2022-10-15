@@ -27,8 +27,7 @@ services:
   front:
     image: mailu/nginx:${MAILU_VERSION}
     restart: always
-    env_file:
-      - .env
+    env_file: ../stack.env
     logging:
       driver: json-file
     ports:
@@ -63,8 +62,7 @@ services:
   admin:
     image: mailu/admin:${MAILU_VERSION}
     restart: always
-    env_file:
-      - .env
+    env_file: ../stack.env
     labels:
       - traefik.enable=false
     volumes:
@@ -76,8 +74,7 @@ services:
   imap:
     image: mailu/dovecot:${MAILU_VERSION}
     restart: always
-    env_file:
-      - .env
+    env_file: ../stack.env
     labels:
       - traefik.enable=false
     volumes:
@@ -91,9 +88,7 @@ services:
   smtp:
     image: mailu/postfix:${MAILU_VERSION}
     restart: always
-    env_file:
-      - .env
-      - secrets.env
+    env_file: ../stack.env
     labels:
       - traefik.enable=false
     volumes:
@@ -108,8 +103,7 @@ services:
     image: mailu/rspamd:${MAILU_VERSION}
     hostname: antispam
     restart: always
-    env_file:
-      - .env
+    env_file: ../stack.env
     labels:
       - traefik.enable=false
     volumes:
@@ -123,8 +117,7 @@ services:
   webmail:
     image: mailu/roundcube:${MAILU_VERSION}
     restart: always
-    env_file:
-      - .env
+    env_file: ../stack.env
     labels:
       - traefik.enable=false
     networks:
