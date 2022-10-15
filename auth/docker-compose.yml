@@ -50,8 +50,7 @@ services:
 
   keycloak-db:
     image: postgres:10.1
-    env_file:
-      - keycloak.env
+    env_file: ../stack.env
     volumes:
       - /mnt/ssd-1tb/docker/auth/keycloak/db:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
@@ -63,8 +62,7 @@ services:
 
   keycloak:
     image: jboss/keycloak:16.1.1
-    env_file:
-      - keycloak.env
+    env_file: ../stack.env
     depends_on:
       - keycloak-db
     volumes:
