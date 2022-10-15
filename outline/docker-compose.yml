@@ -1,5 +1,9 @@
 version: "3.7"
 
+volumes:
+  redis:
+
+
 networks:
   auth_internal:
     external: true
@@ -43,6 +47,7 @@ services:
     networks:
       - outline
     volumes:
+      - redis:/data
       - ./redis.conf:/redis.conf
     command: ["redis-server", "/redis.conf"]
     healthcheck:

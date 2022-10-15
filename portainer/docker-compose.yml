@@ -7,6 +7,7 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - unused_data:/data
       - /mnt/ssd-1tb/docker/portainer:/mnt/ssd-1tb/docker/portainer
     networks:
       - auth_internal
@@ -20,6 +21,9 @@ services:
       - "traefik.http.routers.portainer.tls.domains[0].main=patz.app"
       - "traefik.http.routers.portainer.tls.domains[0].sans=portainer.patz.app"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+
+volumes:
+  unused_data:
 
 networks:
   auth_internal:
