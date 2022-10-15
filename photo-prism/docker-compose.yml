@@ -87,22 +87,18 @@ services:
       PHOTOPRISM_SITE_CAPTION: "Familie Patz"
       PHOTOPRISM_SITE_DESCRIPTION: ""
       PHOTOPRISM_SITE_AUTHOR: "Martin Patz"
-      PHOTOPRISM_INIT: "gpu tensorflow"
-      PHOTOPRISM_FFMPEG_ENCODER: "nvidia"
+      PHOTOPRISM_INIT: "tensorflow"
       ## Hardware video transcoding config (optional)
       # PHOTOPRISM_FFMPEG_BUFFERS: "64"              # FFmpeg capture buffers (default: 32)
       # PHOTOPRISM_FFMPEG_BITRATE: "32"              # FFmpeg encoding bitrate limit in Mbit/s (default: 50)
+      # PHOTOPRISM_FFMPEG_ENCODER: "h264_v4l2m2m"    # use Video4Linux for AVC transcoding (default: libx264)
+      # PHOTOPRISM_FFMPEG_ENCODER: "h264_qsv"        # use Intel Quick Sync Video for AVC transcoding (default: libx264)
       # PHOTOPRISM_INIT: "intel-graphics tensorflow-amd64-avx2" # enable TensorFlow AVX2 & Intel Graphics support
       PHOTOPRISM_UID: 1001
       PHOTOPRISM_GID: 1002
       # PHOTOPRISM_UMASK: 0000
       HOME: "/photoprism"
     working_dir: "/photoprism"
-    devices:
-      - "/dev/nvidia0:/dev/nvidia0"
-      - "/dev/nvidiactl:/dev/nvidiactl"
-      - "/dev/nvidia-uvm:/dev/nvidia-uvm"
-      - "/dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools"
     volumes:
       - "lib:/var/lib/photoprism"
       - "/mnt/hdd-16tb/docker/photo-prism/storage:/photoprism/storage"
