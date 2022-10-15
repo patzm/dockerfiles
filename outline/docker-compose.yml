@@ -59,7 +59,7 @@ services:
       - traefik.enable=false
 
   postgres:
-    image: postgres
+    image: postgres:14
     restart: always
     env_file: ../stack.env
     networks:
