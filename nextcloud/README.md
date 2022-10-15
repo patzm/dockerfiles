@@ -9,4 +9,4 @@ Set the following (sensitive) environment variables:
 
 Note that `DB_PASSWORD` and `MYSQL_PASSWORD` must match.
 
-Then upload the `.env` file into Portainer and populate the environment.
+Then upload the `nextcloud.env` file into Portainer and populate the environment.
