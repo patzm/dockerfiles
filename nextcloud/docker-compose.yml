@@ -7,9 +7,7 @@ services:
       - ${MOUNT_DB}:/var/lib/mysql
     networks:
       - traefik
-    env_file:
-      - .env
-      - /mnt/ssd-1tb/docker/nextcloud/secrets.env
+    env_file: ../stack.env
     labels:
       - traefik.enable=false
     restart: always
@@ -38,9 +36,7 @@ services:
       - ${MOUNT_MEDIA}/tv-shows:/external/tv-shows:ro
     networks:
       - traefik
-    env_file:
-      - .env
-      - /mnt/ssd-1tb/docker/nextcloud/secrets.env
+    env_file: ../stack.env
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.patz-nc-websecure.entrypoints=websecure"
@@ -70,9 +66,7 @@ services:
       - ${MOUNT_DATA}:/data
     networks:
       - traefik
-    env_file:
-      - .env
-      - /mnt/ssd-1tb/docker/nextcloud/secrets.env
+    env_file: ../stack.env
     environment:
       - "SIDECAR_CRON=1"
       - "CRON_PERIOD=*/15 * * * *"

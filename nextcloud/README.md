@@ -1,13 +1,12 @@
 # Nextcloud
 
-## `secrets.env`
-Place a file called `secrets.env` in this directory.
-It is ignored by `git`, don't add it forcefully.
-The file should define the following variables:
-```
-DB_PASSWORD=<database-password>
-MYSQL_PASSWORD=<database-password>
-MYSQL_ROOT_PASSWORD=<mysql-root-password>
-```
+## Setup
+
+Set the following environment variables:
+* `DB_PASSWORD`
+* `MYSQL_PASSWORD`
+* `MYSQL_ROOT_PASSWORD`
+
 Note that `DB_PASSWORD` and `MYSQL_PASSWORD` must match.
 
+Then upload the `.env` file into Portainer and populate the environment.
