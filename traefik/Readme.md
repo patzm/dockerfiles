@@ -14,11 +14,11 @@ PUID=$(id -u) PGID=$(id -g) docker-compose up -d
 ```bash
 docker run -it --rm \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    -v $(pwd):/bootstrap \
+    -v $(pwd):$(pwd) \
     -e PUID=$(id -u) \
     -e PGID=$(id -g) \
     patzm/compose \
-    up -d --remove-orphans
+    $(pwd) up -d --remove-orphans
 ```
 
 ## Authenticate any resource with forward authentication

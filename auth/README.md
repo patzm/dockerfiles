@@ -22,13 +22,13 @@ The values should be wrapped in quotes (`"` or `'`).
 ```bash
 docker run -it --rm \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    -v $(pwd):/bootstrap \
+    -v $(pwd):$(pwd) \
     -e LDAP_ADMIN_PASSWORD=<ADMIN_PASSWORD> \
     -e DB_PASSWORD=<DB_PASSWORD> \
     -e POSTGRES_PASSWORD=<DB_PASSWORD> \
     -e KEYCLOAK_PASSWORD=something-temporary \
     patzm/compose \
-    up -d --remove-orphans
+    $(pwd) up -d --remove-orphans
 ```
 
 ## Debugging

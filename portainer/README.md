@@ -5,7 +5,7 @@
 ```bash
 docker run -it --rm \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    -v $(pwd):/bootstrap \
+    -v $(pwd):$(pwd) \
     patzm/compose \
-    up -d --remove-orphans
+    $(pwd) up -d --remove-orphans
 ```
