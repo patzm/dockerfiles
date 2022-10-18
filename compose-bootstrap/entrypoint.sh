@@ -5,7 +5,9 @@ printf "Changing to ${1}\n"
 cd "${1}"
 shift;
 
-printf "Environment variables:\n$(env)\n"
+echo "Environment variables:"
+env
+printf "\n"
 
 set -x
 docker-compose "$@"
