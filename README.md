@@ -25,3 +25,4 @@ The recommended order in which to bring up this project is:
 2. Bring up the authentication stack `auth`.
 3. Bring up Traefik with the `traefik` stack.
 4. Bring up Portainer with the `portainer` stack.
+5. Use Portainer to bring up all the other stacks.
