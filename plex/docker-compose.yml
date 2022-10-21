@@ -24,3 +24,4 @@ services:
       PLEX_UID: 1001
       PLEX_GID: 1002
       TZ: Europe/Berlin
+      PLEX_CLAIM: ${PLEX_CLAIM}
