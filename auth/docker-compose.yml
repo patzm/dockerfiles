@@ -53,7 +53,7 @@ services:
     volumes:
       - /mnt/ssd-1tb/docker/auth/keycloak/db:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
-    env_file: keykloak.env
+    env_file: keycloak.env
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     networks:
@@ -66,7 +66,7 @@ services:
     image: jboss/keycloak:16.1.1
     depends_on:
       - keycloak-db
-    env_file: keykloak.env
+    env_file: keycloak.env
     environment:
       - LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD}
       - DB_PASSWORD=${DB_PASSWORD}
