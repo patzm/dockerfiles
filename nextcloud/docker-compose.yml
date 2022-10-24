@@ -23,7 +23,7 @@ services:
     restart: always
 
   nextcloud:
-    image: crazymax/nextcloud:${NEXTCLOUD_TAG}
+    image: crazymax/nextcloud:${NEXTCLOUD_TAG:-24.0.5}
     depends_on:
       - db
       - redis

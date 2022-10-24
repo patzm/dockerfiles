@@ -9,4 +9,7 @@ Set the following (sensitive) environment variables:
 
 Note that `DB_PASSWORD` and `MYSQL_PASSWORD` must match.
 
+Additionally, set / override the following variables:
+* `NEXTCLOUD_TAG`: the Docker :whale: image tag
+
 Then upload the `nextcloud.env` file into Portainer and populate the environment.
