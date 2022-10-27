@@ -49,6 +49,7 @@ services:
       - traefik.http.routers.vpn-admin.tls.certresolver=patz.app
       - traefik.http.routers.vpn-admin.tls.domains[0].main=patz.app
       - traefik.http.routers.vpn-admin.tls.domains[0].sans=vpn-admin.patz.app
+      - traefik.http.routers.vpn-admin.service=vpn-admin
       - traefik.http.services.vpn-admin.loadbalancer.server.port=9700
 
       - traefik.http.routers.vpn.entrypoints=websecure
@@ -57,6 +58,7 @@ services:
       - traefik.http.routers.vpn.tls.certresolver=patz.app
       - traefik.http.routers.vpn.tls.domains[0].main=patz.app
       - traefik.http.routers.vpn.tls.domains[0].sans=vpn.patz.app
+      - traefik.http.routers.vpn.service=vpn
       - traefik.http.services.vpn.loadbalancer.server.port=443
 
 volumes:
