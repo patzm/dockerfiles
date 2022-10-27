@@ -1,0 +1,61 @@
+version: "3"
+
+
+services:
+  mongo:
+    image: mongo:6
+    restart: always
+    networks:
+      - private
+    volumes:
+      - /mnt/ssd-1tb/docker/vpn/db:/data/db
+      - db_config:/data/configdb
+
+  pritunl:
+    image: goofball222/pritunl:${PRITUNL_TAG:-latest}
+    restart: always
+    privileged: true
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
+    networks:
+      - private
+      - traefik
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 1194:1194
+      - 1194:1194/udp
+      - 1195:1195/udp
+    expose:
+      - 9700
+    environment:
+      - TZ=UTC+2
+      - MONGODB_URI=mongodb://mongo:27017/pritunl
+      - REVERSE_PROXY=true
+      # - WIREGUARD=true
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.vpn.entrypoints=websecure
+      - traefik.http.routers.vpn.rule=Host(`vpn.patz.app`)
+      - traefik.http.routers.vpn.tls=true
+      - traefik.http.routers.vpn.tls.certresolver=patz.app
+      - traefik.http.routers.vpn.tls.domains[0].main=patz.app
+      - traefik.http.routers.vpn.tls.domains[0].sans=vpn.patz.app
+      - traefik.http.services.vpn.loadbalancer.server.port=9700
+
+volumes:
+  db:
+  db_config:
+
+networks:
+  traefik:
+    external:
+      name: traefik
+  private:
+    driver: bridge
+    internal: true
