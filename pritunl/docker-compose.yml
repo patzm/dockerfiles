@@ -52,14 +52,12 @@ services:
       - traefik.http.routers.vpn-admin.service=vpn-admin
       - traefik.http.services.vpn-admin.loadbalancer.server.port=9700
 
-      - traefik.http.routers.vpn.entrypoints=websecure
-      - traefik.http.routers.vpn.rule=Host(`vpn.patz.app`)
-      - traefik.http.routers.vpn.tls=true
-      - traefik.http.routers.vpn.tls.certresolver=patz.app
-      - traefik.http.routers.vpn.tls.domains[0].main=patz.app
-      - traefik.http.routers.vpn.tls.domains[0].sans=vpn.patz.app
-      - traefik.http.routers.vpn.service=vpn
-      - traefik.http.services.vpn.loadbalancer.server.port=443
+      - traefik.tcp.routers.vpn.entrypoints=websecure
+      - traefik.tcp.routers.vpn.rule=HostSNI(`vpn.patz.app`)
+      - traefik.tcp.routers.vpn.tls=true
+      - traefik.tcp.routers.vpn.tls.passthrough=true
+      - traefik.tcp.routers.vpn.service=vpn
+      - traefik.tcp.services.vpn.loadbalancer.server.port=443
 
 volumes:
   db:
