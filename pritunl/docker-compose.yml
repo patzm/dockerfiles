@@ -10,6 +10,8 @@ services:
     volumes:
       - /mnt/ssd-1tb/docker/vpn/db:/data/db
       - db_config:/data/configdb
+    labels:
+      - traefik.enable=false
 
   pritunl:
     image: goofball222/pritunl:${PRITUNL_TAG:-latest}
