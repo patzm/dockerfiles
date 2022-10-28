@@ -1,0 +1,47 @@
+version: "3.7"
+
+networks:
+  traefik:
+    external:
+      name: traefik
+
+services:
+  storage:
+    image: minio/minio
+    restart: always
+    networks:
+      - traefik
+    entrypoint: sh
+    command: -c 'minio server /data --console-address ":9001"'
+    volumes:
+      - /mnt/ssd-1tb/docker/s3/storage:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    environment:
+      - "MINIO_ROOT_USER=admin"
+      - "MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}"
+      - "MINIO_BROWSER_REDIRECT_URL=s3-admin.patz.app"
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.routers.s3.entrypoints=websecure
+      - traefik.http.routers.s3.service=s3
+      - traefik.http.routers.s3.middlewares=ssl-header@file
+      - traefik.http.routers.s3.rule=Host(`s3.patz.app`)
+      - traefik.http.routers.s3.tls=true
+      - traefik.http.routers.s3.tls.certresolver=patz.app
+      - traefik.http.routers.s3.tls.domains[0].main=patz.app
+      - traefik.http.routers.s3.tls.domains[0].sans=s3.patz.app
+      - traefik.http.services.s3.loadbalancer.server.port=9000
+
+      - traefik.http.routers.s3-admin.entrypoints=websecure
+      - traefik.http.routers.s3-admin.service=s3-admin
+      - traefik.http.routers.s3-admin.rule=Host(`s3-admin.patz.app`)
+      - traefik.http.routers.s3-admin.tls=true
+      - traefik.http.routers.s3-admin.tls.certresolver=patz.app
+      - traefik.http.routers.s3-admin.tls.domains[0].main=patz.app
+      - traefik.http.routers.s3-admin.tls.domains[0].sans=s3-admin.patz.app
+      - traefik.http.services.s3-admin.loadbalancer.server.port=9001
