@@ -15,7 +15,7 @@ services:
       - PGID=${GID}
       - TZ=Europe/Berlin
     volumes:
-      - ${HOME}:/config
+      - ${HOME_DIR}:/config
     ports:
       - 8443
     networks:
