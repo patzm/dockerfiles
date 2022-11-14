@@ -88,16 +88,15 @@ services:
       PHOTOPRISM_SITE_DESCRIPTION: ""
       PHOTOPRISM_SITE_AUTHOR: "Martin Patz"
       PHOTOPRISM_INIT: "tensorflow"
-      ## Hardware video transcoding config (optional)
-      # PHOTOPRISM_FFMPEG_BUFFERS: "64"              # FFmpeg capture buffers (default: 32)
-      # PHOTOPRISM_FFMPEG_BITRATE: "32"              # FFmpeg encoding bitrate limit in Mbit/s (default: 50)
-      # PHOTOPRISM_FFMPEG_ENCODER: "h264_v4l2m2m"    # use Video4Linux for AVC transcoding (default: libx264)
-      # PHOTOPRISM_FFMPEG_ENCODER: "h264_qsv"        # use Intel Quick Sync Video for AVC transcoding (default: libx264)
-      # PHOTOPRISM_INIT: "intel-graphics tensorflow-amd64-avx2" # enable TensorFlow AVX2 & Intel Graphics support
-      PHOTOPRISM_UID: 1001
+      ## Hardware Video Transcoding:
+      ## see https://docs.photoprism.app/getting-started/advanced/transcoding/#nvidia-container-toolkit
+      PHOTOPRISM_FFMPEG_ENCODER: "nvidia"
+      PHOTOPRISM_FFMPEG_BITRATE: "50"
+      NVIDIA_VISIBLE_DEVICES: "all"
+      NVIDIA_DRIVER_CAPABILITIES: "compute,video,utility"
+      ## Run as a non-root user after initialization (supported: 0, 33, 50-99, 500-600, and 900-1200):
       PHOTOPRISM_GID: 1002
       # PHOTOPRISM_UMASK: 0000
-      HOME: "/photoprism"
     working_dir: "/photoprism"
     volumes:
       - "lib:/var/lib/photoprism"
@@ -107,6 +106,13 @@ services:
       - "/mnt/hdd-16tb/media/plex/Martin:/photoprism/originals/Martin"
       - "/mnt/hdd-16tb/media/plex/Kasandra:/photoprism/originals/Kasandra"
       # - "~/Import:/photoprism/import"                  # *optional* base folder from which files can be imported to originals
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: "nvidia"
+              count: 1
+              capabilities: [gpu]
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.photo-prism.entrypoints=websecure"
