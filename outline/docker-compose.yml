@@ -16,7 +16,7 @@ networks:
 services:
 
   outline:
-    image: outlinewiki/outline
+    image: outlinewiki/outline:${OUTLINE_TAG:-latest}
     restart: always
     env_file: ../stack.env
     networks:
