@@ -7,3 +7,6 @@ URL: https://www.openproject.org/
 During the initial bring-up, database initialization takes quite some time.
 Sometimes up to 5 minutes.
 The `seeder` service is responsible for that (I think).
+
+The following optional and _non-sensitive_ environment variables can be set:
+* `OPENPROJECT_TAG`: overwrites the Docker :whale: image tag

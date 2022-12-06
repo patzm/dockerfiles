@@ -17,7 +17,7 @@ x-op-restart-policy: &restart_policy
   labels:
     - traefik.enable=false
 x-op-image: &image
-  image: openproject/community:12.3.0
+  image: openproject/community:${OPENPROJECT_TAG:-latest}
 x-op-app: &app
   <<: *image
   <<: *restart_policy
