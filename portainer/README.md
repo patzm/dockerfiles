@@ -9,3 +9,9 @@ docker run -it --rm \
     patzm/compose \
     $(pwd) up -d --remove-orphans
 ```
+
+or simply
+```bash
+make up    # for creating the stack
+make down  # for tearing it down again
+```
