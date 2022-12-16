@@ -26,3 +26,5 @@ The recommended order in which to bring up this project is:
 3. Bring up Traefik with the `traefik` stack.
 4. Bring up Portainer with the `portainer` stack.
 5. Use Portainer to bring up all the other stacks.
+   If a local portainer dataset already existed, the entire node configuration with all stacks will still exist, too.
+   Simply _Pull & redeploy_ each stack.
