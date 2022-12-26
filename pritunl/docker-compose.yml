@@ -32,7 +32,9 @@ services:
       - 1194:1194
       - 1194:1194/udp
     expose:
+      - 22
       - 443
+      - 2222
       - 9700
     environment:
       - TZ=UTC+2
