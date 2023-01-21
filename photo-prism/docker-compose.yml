@@ -87,6 +87,7 @@ services:
       PHOTOPRISM_SITE_CAPTION: "Familie Patz"
       PHOTOPRISM_SITE_DESCRIPTION: ""
       PHOTOPRISM_SITE_AUTHOR: "Martin Patz"
+      PHOTOPRISM_SPONSOR: "true"
       PHOTOPRISM_INIT: "tensorflow"
       ## Hardware video transcoding config (optional)
       # PHOTOPRISM_FFMPEG_BUFFERS: "64"              # FFmpeg capture buffers (default: 32)
