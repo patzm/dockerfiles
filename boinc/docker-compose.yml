@@ -7,6 +7,9 @@ services:
     restart: always
     # network_mode: host
     pid: host
+    ports:
+      - 1043:1043
+      - 31416:31416
     volumes:
       - /mnt/ssd-1tb/docker/boinc:/var/lib/boinc
     networks:
