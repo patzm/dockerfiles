@@ -9,6 +9,8 @@ services:
     pid: host
     volumes:
       - /mnt/ssd-1tb/docker/boinc:/var/lib/boinc
+    networks:
+      - traefik
     environment:
       - BOINC_GUI_RPC_PASSWORD=${BOINC_GUI_RPC_PASSWORD}
       - BOINC_CMD_LINE_OPTIONS=--allow_remote_gui_rpc
@@ -21,4 +23,9 @@ services:
       - "traefik.http.routers.boinc.tls.domains[0].main=patz.app"
       - "traefik.http.routers.boinc.tls.domains[0].sans=boinc.patz.app"
       - "traefik.http.services.boinc.loadbalancer.server.port=31416"
-      - "traefik.http.services.boinc.loadbalancer.server.port=80"
+
+networks:
+  traefik:
+    external:
+      name: traefik
+
