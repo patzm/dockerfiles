@@ -15,8 +15,8 @@ services:
       - traefik
     environment:
       - OTR_USER=
-      - OTR_HOST=otrecorder.patz.app
-      - OTR_PORT=8083
+      - OTR_HOST=
+      - OTR_PORT=
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.owntracks-recorder-pub.entrypoints=websecure"
