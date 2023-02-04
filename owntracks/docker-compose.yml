@@ -20,7 +20,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.owntracks-recorder-pub.entrypoints=websecure"
-      - "traefik.http.routers.owntracks-recorder-pub.rule=Host(`otrecorder.patz.app`)"
+      - "traefik.http.routers.owntracks-recorder-pub.rule=Host(`otrecorder.patz.app`) && PathPrefix(`/pub`)"
       - "traefik.http.routers.owntracks-recorder-pub.tls=true"
       - "traefik.http.routers.owntracks-recorder-pub.tls.certresolver=patz.app"
       - "traefik.http.routers.owntracks-recorder-pub.service=owntracks-recorder"
