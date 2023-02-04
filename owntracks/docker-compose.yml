@@ -8,10 +8,10 @@ services:
     expose:
       - "8083"
     volumes:
-      - config:/config
-      - store:/store
+      - /mnt/ssd-1tb/docker/owntracks/config:/config
+      - /mnt/ssd-1tb/docker/owntracks/store:/store
     networks:
-      - owntracks
+      - default
       - traefik
     environment:
       - OTR_USER=
@@ -43,7 +43,7 @@ services:
     volumes:
       - ./config.js:/usr/share/nginx/html/config/config.js
     networks:
-      - owntracks
+      - default
       - traefik
     environment:
       - SERVER_HOST=otrecorder
@@ -60,16 +60,8 @@ services:
       - "traefik.http.routers.owntracks-frontend.middlewares=keycloak@file"
     restart: unless-stopped
 
-volumes:
-  store:
-  config:
-  mqtt-auth:
-  mqtt-config:
-  mqtt-data:
-  mqtt-log:
-
 networks:
-  owntracks:
+  default:
   traefik:
     external:
       name: traefik
