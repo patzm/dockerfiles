@@ -32,7 +32,6 @@ services:
     security_opt:
       - no-new-privileges:true
     pids_limit: 200
-    read_only: ${MATTERMOST_CONTAINER_READONLY}
     tmpfs:
       - /tmp
     volumes:
@@ -59,7 +58,6 @@ services:
 
       # additional settings
       - MM_SERVICESETTINGS_SITEURL
- 
     networks:
       - auth_internal
       - default
