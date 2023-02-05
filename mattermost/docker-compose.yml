@@ -58,6 +58,8 @@ services:
       - auth_internal
       - default
       - traefik
+    expose:
+      - "${CALLS_PORT}"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.mm.entrypoints=websecure"
