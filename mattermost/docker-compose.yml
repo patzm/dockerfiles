@@ -1,0 +1,79 @@
+version: "2.4"
+
+services:
+  postgres:
+    image: postgres:${POSTGRES_TAG}
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 100
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/run/postgresql
+    volumes:
+      - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data
+    environment:
+      # timezone inside container
+      - TZ
+
+      # necessary Postgres options/variables
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    networks:
+      - default
+
+  mattermost:
+    depends_on:
+      - postgres
+    image: mattermost/mattermost-team-edition:${MATTERMOST_TAG}
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 200
+    tmpfs:
+      - /tmp
+    volumes:
+      - ${MATTERMOST_CONFIG_PATH}:/mattermost/config:rw
+      - ${MATTERMOST_DATA_PATH}:/mattermost/data:rw
+      - ${MATTERMOST_LOGS_PATH}:/mattermost/logs:rw
+      - ${MATTERMOST_PLUGINS_PATH}:/mattermost/plugins:rw
+      - ${MATTERMOST_CLIENT_PLUGINS_PATH}:/mattermost/client/plugins:rw
+      - ${MATTERMOST_BLEVE_INDEXES_PATH}:/mattermost/bleve-indexes:rw
+    environment:
+      # timezone inside container
+      - TZ
+
+      # necessary Mattermost options/variables (see env.example)
+      - MM_SQLSETTINGS_DRIVERNAME
+      - MM_SQLSETTINGS_DATASOURCE
+
+      # necessary for bleve
+      - MM_BLEVESETTINGS_INDEXDIR
+
+      # additional settings
+      - MM_SERVICESETTINGS_SITEURL
+    networks:
+      - auth_internal
+      - default
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mm.entrypoints=websecure"
+      - "traefik.http.routers.mm.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.mm.tls=true"
+      - "traefik.http.routers.mm.tls.certresolver=patz.app"
+      - "traefik.http.routers.mm.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.mm.tls.domains[0].sans=${DOMAIN}"
+      - "traefik.http.services.mm.loadbalancer.server.port=${APP_PORT}"
+
+
+
+networks:
+  auth_internal:
+    external: true
+  default:
+  traefik:
+    external:
+      name: traefik
