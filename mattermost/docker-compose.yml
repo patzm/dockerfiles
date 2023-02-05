@@ -62,6 +62,16 @@ services:
       - auth_internal
       - default
       - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mm.entrypoints=websecure"
+      - "traefik.http.routers.mm.rule=Host(`mattermost.patz.app`)"
+      - "traefik.http.routers.mm.tls=true"
+      - "traefik.http.routers.mm.tls.certresolver=patz.app"
+      - "traefik.http.routers.mm.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.mm.tls.domains[0].sans=mattermost.patz.app"
+      - "traefik.http.services.mm.loadbalancer.server.port=8081"
+
 
 
 networks:
