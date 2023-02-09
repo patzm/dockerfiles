@@ -21,6 +21,7 @@ services:
       - "traefik.http.routers.mqtt.tls.certresolver=patz.app"
       - "traefik.http.routers.mqtt.middlewares=sslheader"
       - "traefik.http.services.mqtt.loadbalancer.server.port=9001"
+      - "traefik.http.services.mqtt.loadBalancer.sticky.cookie=true"
       - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
       - "traefik.tcp.routers.mqtt.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.mqtt.tls.certresolver=patz.app"
