@@ -1,0 +1,34 @@
+version: "3.3"
+
+services:
+  mqtt:
+    image: "eclipse-mosquitto"
+    expose:
+      - "8883"
+      - "9001"
+    environment:
+      - TZ=Europe/Berlin
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - /mnt/ssd-1tb/docker/mosquitto/data:/mosquitto/data
+      - /mnt/ssd-1tb/docker/mosquitto/config:/mosquitto/config
+      - /mnt/ssd-1tb/docker/mosquitto/log:/mosquitto/log
+    labels:
+      - "traefik.enable=true"
+
+      - "traefik.http.routers.mqtt.rule=Host(`mqtt.patz.app`)"
+      - "traefik.http.routers.mqtt.entrypoints=websecure"
+      - "traefik.http.routers.mqtt.tls.certresolver=patz.app"
+      - "traefik.http.services.mqtt.loadbalancer.server.port=9001"
+
+      - "traefik.tcp.routers.mqtt.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.mqtt.tls.certresolver=patz.app"
+      - "traefik.tcp.services.mqtt.loadbalancer.server.port=8883"
+      - "traefik.tcp.routers.mqtt.entrypoints=mqtt"
+      
+
+networks:
+  default:
+  traefik:
+    external:
+      name: traefik
