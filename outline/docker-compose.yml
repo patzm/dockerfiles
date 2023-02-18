@@ -17,6 +17,7 @@ services:
 
   outline:
     image: outlinewiki/outline:${OUTLINE_TAG:-latest}
+    command: sh -c "yarn db:migrate && yarn start"
     restart: always
     env_file: ../stack.env
     networks:
