@@ -76,4 +76,4 @@ http:
     vm:
       loadBalancer:
         servers:
-          - url: http://host.docker.internal:5800
+          - url: http://host.docker.internal:5900
