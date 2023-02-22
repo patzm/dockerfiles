@@ -14,7 +14,7 @@ Upload the `keycloak.env` file into Portainer and populate the environment.
 Set the following (sensitive) environment variables in Portainer:
 - `LDAP_ADMIN_PASSWORD`
 - `DB_PASSWORD` and `POSTGRES_PASSWORD` (must be the same)
-- `KEYCLOAK_PASSWORD`: this is the initial password for the `admin` user. It can be changed later.
+- `KEYCLOAK_ADMIN_PASSWORD`: this is the initial password for the `admin` user. It can be changed later.
 
 The values should be wrapped in quotes (`"` or `'`).
 
@@ -23,10 +23,10 @@ The values should be wrapped in quotes (`"` or `'`).
 docker run -it --rm \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v $(pwd):$(pwd) \
-    -e LDAP_ADMIN_PASSWORD=<ADMIN_PASSWORD> \
-    -e DB_PASSWORD=<DB_PASSWORD> \
-    -e POSTGRES_PASSWORD=<DB_PASSWORD> \
-    -e KEYCLOAK_PASSWORD=something-temporary \
+    -e LDAP_ADMIN_PASSWORD="${ADMIN_PASSWORD}" \
+    -e DB_PASSWORD="${DB_PASSWORD}" \
+    -e POSTGRES_PASSWORD="${DB_PASSWORD}" \
+    -e KEYCLOAK_ADMIN_PASSWORD=something-temporary \
     patzm/compose \
     $(pwd) up -d --remove-orphans
 ```
@@ -47,3 +47,4 @@ and restart the container.
 Wait for the initialization to complete.
 Once it has completed, you can uncomment that line again.
 Now start all dependent services again.
+

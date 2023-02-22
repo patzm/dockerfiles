@@ -63,14 +63,15 @@ services:
     restart: unless-stopped
 
   keycloak:
-    image: jboss/keycloak:16.1.1
+    image: quay.io/keycloak/keycloak:16.1.1
+    # command: start --proxy edge --hostname-strict=false
     depends_on:
       - keycloak-db
     env_file: keycloak.env
     environment:
       - LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD}
       - DB_PASSWORD=${DB_PASSWORD}
-      - KEYCLOAK_PASSWORD=${KEYCLOAK_PASSWORD}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
     volumes:
       - /etc/localtime:/etc/localtime:ro
     networks:
