@@ -26,20 +26,6 @@ http:
             sans:
               - "nas.patz.app"
       service: nas
-    vm:
-      entrypoints:
-        - websecure
-      middlewares:
-        - keycloak
-        - vm
-      rule: "Host(`vm.patz.app`)"
-      tls:
-        certResolver: patz.app
-        domains:
-          - main: "patz.app"
-            sans:
-              - "vm.patz.app"
-      service: vm
   middlewares:
     redirect-https:
       redirectScheme:
@@ -59,10 +45,6 @@ http:
         trustForwardHeader: true
         authResponseHeaders:
           - "X-Forwarded-User"
-    vm:
-      redirectRegex:
-        regex: "^https://vm.patz.app/$"
-        replacement: https://vm.patz.app/vnc.html?autoconnect=1
   services:
     noop:
       loadBalancer:
@@ -73,7 +55,3 @@ http:
       loadBalancer:
         servers:
           - url: http://host.docker.internal:81
-    vm:
-      loadBalancer:
-        servers:
-          - url: http://host.docker.internal:5900
