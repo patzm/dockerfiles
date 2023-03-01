@@ -43,6 +43,14 @@ certificatesResolvers:
       tlsChallenge: {}
       httpChallenge:
         entrypoint: web
+  whynot.holdings:
+    acme:
+      email: postmaster@martin-patz.de
+      storage: letsencrypt/whynot.holdings/acme.json
+      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      tlsChallenge: {}
+      httpChallenge:
+        entrypoint: web
 
 api:
   dashboard: true
