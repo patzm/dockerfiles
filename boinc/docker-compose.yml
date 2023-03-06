@@ -11,7 +11,7 @@ services:
       - 1043:1043
       - 31416:31416
     volumes:
-      - /mnt/ssd-1tb/docker/boinc:/var/lib/boinc
+      - /mnt/ssd-1tb-cache/docker/boinc:/var/lib/boinc
     networks:
       - traefik
     environment:
