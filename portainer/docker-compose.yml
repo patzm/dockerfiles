@@ -29,6 +29,5 @@ networks:
   auth_internal:
     external: true
   traefik:
-    external:
-      name: traefik
+    name: traefik
 

@@ -9,8 +9,7 @@ networks:
     external: true
   outline:
   traefik:
-    external:
-      name: traefik
+    name: traefik
 
 
 services:

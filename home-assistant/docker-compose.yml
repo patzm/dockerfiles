@@ -2,8 +2,7 @@ version: '3'
 
 networks:
   traefik:
-    external:
-      name: traefik
+    name: traefik
 
 services:
   homeassistant:

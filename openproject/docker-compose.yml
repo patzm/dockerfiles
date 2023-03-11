@@ -5,8 +5,7 @@ networks:
     external: true
   backend:
   traefik:
-    external:
-      name: traefik
+    name: traefik
 
 volumes:
   # unused, mounted to prevent anonymous volumes

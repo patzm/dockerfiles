@@ -60,8 +60,7 @@ volumes:
 
 networks:
   traefik:
-    external:
-      name: traefik
+    name: traefik
   private:
     driver: bridge
     internal: true

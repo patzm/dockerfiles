@@ -47,5 +47,4 @@ volumes:
 
 networks:
   traefik:
-    external:
-      name: traefik
+    name: traefik

@@ -80,5 +80,4 @@ networks:
     external: true
   default:
   traefik:
-    external:
-      name: traefik
+    name: traefik
