@@ -63,7 +63,6 @@ networks:
     name: traefik
   private:
     driver: bridge
-    external: true
     ipam:
       config:
         - subnet: 172.31.0.0/24
