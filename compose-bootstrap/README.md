@@ -32,7 +32,8 @@ docker buildx create --platform linux/arm64,linux/arm/v8 --name bob_der_baumeist
 Run
 ```bash
 docker buildx build \
-	--builder bob_der_baumeister \
-	-t patzm/compose \
-	--push .
+    --builder bob_der_baumeister \
+    -t patzm/compose:latest \
+    -t patzm/compose:v0.X \
+    --push .
 ```
