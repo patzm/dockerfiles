@@ -10,5 +10,5 @@ env
 printf "\n"
 
 set -x
-docker-compose "$@"
+docker compose "$@"
 set +x
