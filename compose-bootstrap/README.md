@@ -24,10 +24,15 @@ docker run -it --rm \
 will launch the `docker-compose.yml` file in the current working directory in a stack called `HELLO_WORLD` and detach afterwards.
 
 ## Building it
+First make sure an appropriate builder exists
+```bash
+docker buildx create --platform linux/arm64,linux/arm/v8 --name bob_der_baumeister
+```
+
 Run
 ```bash
 docker buildx build \
-	--platform linux/amd64,linux/arm64,linux/arm/v7 \
+	--builder bob_der_baumeister \
 	-t patzm/compose \
 	--push .
 ```
