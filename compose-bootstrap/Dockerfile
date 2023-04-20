@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM docker/compose
+FROM docker:23
 
 COPY entrypoint.sh /usr/local/bin
 
