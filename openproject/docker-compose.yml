@@ -15,11 +15,9 @@ x-op-restart-policy: &restart_policy
   restart: unless-stopped
   labels:
     - traefik.enable=false
-x-op-image: &image
-  image: openproject/community:${OPENPROJECT_TAG:-latest}
 x-op-app: &app
-  <<: *image
   <<: *restart_policy
+  image: openproject/community:${OPENPROJECT_TAG:-latest}
   environment:
     RAILS_CACHE_STORE: "memcache"
     OPENPROJECT_CACHE__MEMCACHE__SERVER: "cache:11211"
