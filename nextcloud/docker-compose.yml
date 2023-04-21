@@ -76,6 +76,23 @@ services:
     labels:
       - traefik.enable=false
     restart: always
+  
+  preview_generator:
+    image: crazymax/nextcloud:${NEXTCLOUD_TAG}
+    depends_on:
+      - nextcloud
+    volumes:
+      - ${MOUNT_DATA}:/data
+    networks:
+      - traefik
+    env_file: ../stack.env
+    environment:
+      - "SIDECAR_PREVIEWGEN=1"
+      - "PREVIEWGEN_PERIOD=0 * * * *"
+    labels:
+      - traefik.enable=false
+    restart: always
+
 
 volumes:
   redis:
