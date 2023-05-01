@@ -2,7 +2,7 @@
 
 
 ## How to boot-strap without `docker-compose`
-```bash
+```shell
 docker run -it --rm \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v $(pwd):$(pwd) \
@@ -11,7 +11,7 @@ docker run -it --rm \
 ```
 
 or simply
-```bash
+```shell
 make up    # for creating the stack
 make down  # for tearing it down again
 ```

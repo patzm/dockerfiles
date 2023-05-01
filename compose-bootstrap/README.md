@@ -2,7 +2,7 @@
 This image allows running `docker-compose` through an isolated Docker 🐳 container.
 
 ## Using it
-```bash
+```shell
 docker run -it --rm \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v $(pwd):$(pwd) \
@@ -14,7 +14,7 @@ Pass any environment variables that you want to be set using the `-e` flag.
 The first argument is used as the stack name.
 All subsequent arguments are passed to `docker-compose` as one would expect it.
 For instance:
-```bash
+```shell
 docker run -it --rm \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v $(pwd):$(pwd) \
@@ -25,12 +25,12 @@ will launch the `docker-compose.yml` file in the current working directory in a 
 
 ## Building it
 First make sure an appropriate builder exists
-```bash
+```shell
 docker buildx create --platform linux/arm64,linux/arm/v8 --name bob_der_baumeister
 ```
 
 Run
-```bash
+```shell
 docker buildx build \
     --builder bob_der_baumeister \
     -t patzm/compose:latest \

@@ -6,12 +6,12 @@ Make sure that the following environment variables are set:
 * `PGID`
 
 For instance, bring up this stack by invoking
-```bash
+```shell
 PUID=$(id -u) PGID=$(id -g) docker-compose up -d
 ```
 
 ## How to boot-strap without `docker-compose`
-```bash
+```shell
 docker run -it --rm \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v $(pwd):$(pwd) \

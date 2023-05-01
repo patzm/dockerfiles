@@ -4,7 +4,7 @@
 
 ## Setup
 Create the internal network
-```bash
+```shell
 docker network create auth_internal
 ```
 can also be done with the `init.sh` script in the root of the repo.
@@ -19,7 +19,7 @@ Set the following (sensitive) environment variables in Portainer:
 The values should be wrapped in quotes (`"` or `'`).
 
 ## How to boot-strap without `docker-compose`
-```bash
+```shell
 docker run -it --rm \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v $(pwd):$(pwd) \

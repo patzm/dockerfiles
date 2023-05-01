@@ -7,7 +7,7 @@ Set the following (sensitive) environment variables:
 * `RELAYPASSWORD`
 * `SECRET_KEY`: a 16 byte random key.
   Generate like this:
-  ```bash
+  ```shell
   apt-get install pwgen
   pwgen 16 1
   ```

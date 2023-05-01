@@ -10,7 +10,7 @@ Make sure that the following environment variables are set:
 * `PGID`
 
 For instance, bring up this stack by invoking
-```bash
+```shell
 PUID=$(id -u <user>) PGID=$(id -g <user>) docker-compose up -d
 ```
 Where `<user>` is the user whose permissions the file browser shall inherit.
