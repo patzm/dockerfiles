@@ -17,7 +17,7 @@ docker run -it --rm \
     -v $(pwd):$(pwd) \
     -e PUID=$(id -u) \
     -e PGID=$(id -g) \
-    patzm/compose \
+    patzm/compose:v0.2 \
     $(pwd) up -d --remove-orphans
 ```
 
