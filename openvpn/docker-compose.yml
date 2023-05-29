@@ -3,6 +3,7 @@ version: '3'
 networks:
   traefik:
     name: traefik
+    external: true
 
 services:
   openvpn:

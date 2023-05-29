@@ -6,6 +6,7 @@ networks:
     external: true
   traefik:
     name: traefik
+    external: true
 
 volumes:
   lib:

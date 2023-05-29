@@ -5,6 +5,7 @@ networks:
     external: true
   traefik:
     name: traefik
+    external: true
 
 services:
   code_server:

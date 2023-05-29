@@ -62,6 +62,7 @@ volumes:
 networks:
   traefik:
     name: traefik
+    external: true
   private:
     driver: bridge
     ipam:

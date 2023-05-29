@@ -3,6 +3,7 @@ version: "3.7"
 networks:
   traefik:
     name: traefik
+    external: true
 
 services:
   storage:

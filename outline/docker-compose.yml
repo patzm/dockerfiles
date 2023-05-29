@@ -3,13 +3,13 @@ version: "3.7"
 volumes:
   redis:
 
-
 networks:
   auth_internal:
     external: true
   outline:
   traefik:
     name: traefik
+    external: true
 
 
 services:

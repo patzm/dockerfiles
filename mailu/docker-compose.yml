@@ -143,3 +143,4 @@ networks:
         - subnet: 172.26.0.0/24
   traefik:
     name: traefik
+    external: true
