@@ -10,7 +10,7 @@ networks:
 services:
 
   affine:
-    image: toeverything/affine-self-hosted:${AFFINE_TAG:-latest}
+    image: ghcr.io/toeverything/affine-self-hosted:${AFFINE_TAG:-latest}
     restart: always
     env_file: ../stack.env
     networks:
