@@ -29,5 +29,5 @@ docker pull ghcr.io/mailu/dovecot:${MAILU_VERSION}
 docker pull ghcr.io/mailu/postfix:${MAILU_VERSION}
 docker pull ghcr.io/mailu/oletools:${MAILU_VERSION}
 docker pull ghcr.io/mailu/rspamd:${MAILU_VERSION}
-docker pull ghcr.io/mailu/roundcube:${MAILU_VERSION}
+docker pull ghcr.io/mailu/webmail:${MAILU_VERSION}
 ```
