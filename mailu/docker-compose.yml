@@ -169,7 +169,7 @@ services:
       - 172.26.0.254
 
   webmail:
-    image: ghcr.io/mailu/roundcube:${MAILU_VERSION}
+    image: ghcr.io/mailu/webmail:${MAILU_VERSION}
     restart: always
     env_file: ../stack.env
     labels:
