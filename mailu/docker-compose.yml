@@ -10,9 +10,23 @@ services:
       - traefik.enable=false
     volumes:
       - "/mnt/ssd-1tb/docker/mailu/redis:/data"
+    depends_on:
+      - resolver
+    dns:
+      - 172.26.0.254
+
+  resolver:
+    image: ghcr.io/mailu/unbound:${MAILU_VERSION}
+    env_file: mailu.env
+    restart: always
+    labels:
+      - traefik.enable=false
+    networks:
+      default:
+        ipv4_address: 172.26.0.254
 
   certdumper:
-    image: mailu/traefik-certdumper:${MAILU_VERSION}
+    image: ghcr.io/mailu/traefik-certdumper:${MAILU_VERSION}
     restart: always
     environment:
       - DOMAIN=${DOMAIN}
@@ -22,10 +36,12 @@ services:
       - "/mnt/ssd-1tb/docker/mailu/certs:/output"
     labels:
       - traefik.enable=false
+    dns:
+      - 172.26.0.254
 
   # Core services
   front:
-    image: mailu/nginx:${MAILU_VERSION}
+    image: ghcr.io/mailu/nginx:${MAILU_VERSION}
     restart: always
     env_file: ../stack.env
     logging:
@@ -61,12 +77,16 @@ services:
 
     depends_on:
       - certdumper
+      - resolver
     networks:
       - default
       - traefik
+      - webmail
+    dns:
+      - 172.26.0.254
 
   admin:
-    image: mailu/admin:${MAILU_VERSION}
+    image: ghcr.io/mailu/admin:${MAILU_VERSION}
     restart: always
     env_file: ../stack.env
     labels:
@@ -76,9 +96,12 @@ services:
       - "/mnt/ssd-1tb/docker/mailu/dkim:/dkim"
     depends_on:
       - redis
+      - resolver
+    dns:
+      - 172.26.0.254
 
   imap:
-    image: mailu/dovecot:${MAILU_VERSION}
+    image: ghcr.io/mailu/dovecot:${MAILU_VERSION}
     restart: always
     env_file: ../stack.env
     labels:
@@ -88,11 +111,14 @@ services:
       - "/mnt/ssd-1tb/docker/mailu/overrides/dovecot:/overrides:ro"
     depends_on:
       - front
+      - resolver
     networks:
       - default
+    dns:
+      - 172.26.0.254
 
   smtp:
-    image: mailu/postfix:${MAILU_VERSION}
+    image: ghcr.io/mailu/postfix:${MAILU_VERSION}
     restart: always
     env_file: ../stack.env
     labels:
@@ -104,9 +130,25 @@ services:
       - default
     depends_on:
       - front
+      - resolver
+    dns:
+      - 172.26.0.254
+
+  oletools:
+    image: ghcr.io/mailu/oletools:${MAILU_VERSION}
+    hostname: oletools
+    restart: always
+    labels:
+      - traefik.enable=false
+    networks:
+      - noinet
+    depends_on:
+      - resolver
+    dns:
+      - 172.26.0.254
 
   antispam:
-    image: mailu/rspamd:${MAILU_VERSION}
+    image: ghcr.io/mailu/rspamd:${MAILU_VERSION}
     hostname: antispam
     restart: always
     env_file: ../stack.env
@@ -117,22 +159,30 @@ services:
       - "/mnt/ssd-1tb/docker/mailu/overrides/rspamd:/etc/rspamd/override.d:ro"
     networks:
       - default
+      - noinet
     depends_on:
       - front
+      - redis
+      - oletools
+      - resolver
+    dns:
+      - 172.26.0.254
 
   webmail:
-    image: mailu/roundcube:${MAILU_VERSION}
+    image: ghcr.io/mailu/roundcube:${MAILU_VERSION}
     restart: always
     env_file: ../stack.env
     labels:
       - traefik.enable=false
     networks:
-      - default
+      - webmail
     volumes:
       - "/mnt/ssd-1tb/docker/mailu/webmail:/data"
       - "/mnt/ssd-1tb/docker/mailu/overrides/roundcube:/overrides:ro"
     depends_on:
-      - imap
+      - front
+    dns:
+      - 172.26.0.254
 
 networks:
   default:
@@ -141,6 +191,11 @@ networks:
       driver: default
       config:
         - subnet: 172.26.0.0/24
+  webmail:
+    driver: bridge
+  noinet:
+    driver: bridge
+    internal: true
   traefik:
     name: traefik
     external: true
