@@ -10,7 +10,7 @@ services:
         max-size: "10m"
         max-file: "3"
     extra_hosts:
-    - "host.docker.internal:host-gateway"
+      - "host.docker.internal:host-gateway"
     ports:
       - 80:80
       - 443:443
@@ -23,32 +23,9 @@ services:
     networks:
       - traefik
 
-  ddns:
-    image: qmcgaw/ddns-updater:v2.5.0
-    restart: always
-    user: "${PUID}:${PGID}"
-    labels:
-      - traefik.enable=false
-      # TODO: expose web UI behind forward auth
-    environment:
-      - PERIOD=5m
-      - UPDATE_COOLDOWN_PERIOD=5m
-      - PUBLICIP_FETCHERS=all
-      - PUBLICIP_HTTP_PROVIDERS=all
-      - PUBLICIPV4_HTTP_PROVIDERS=all
-      - PUBLICIPV6_HTTP_PROVIDERS=all
-      - PUBLICIP_DNS_PROVIDERS=all
-      - PUBLICIP_DNS_TIMEOUT=3s
-      - HTTP_TIMEOUT=10s
-      - LOG_LEVEL=info
-      - LOG_CALLER=hidden
-      - SHOUTRRR_ADDRESSES=
-      - TZ=Europe/Berlin
-    volumes:
-      - /mnt/ssd-1tb/docker/traefik/ddns:/updater/data
-
   forward_auth:
     image: thomseddon/traefik-forward-auth:2.2
+    restart: always
     environment:
       - DEFAULT_PROVIDER=oidc
       - PROVIDERS_OIDC_CLIENT_ID=traefik-forward-auth
@@ -72,7 +49,40 @@ services:
       - traefik.http.routers.forward-auth.tls.domains[0].sans=auth.patz.app
       - traefik.http.routers.forward-auth.middlewares=keycloak@file
       - traefik.http.services.forward-auth.loadbalancer.server.port=4181
+  
+  ddns:
+    image: qmcgaw/ddns-updater:v2.5.0
     restart: always
+    user: "${PUID}:${PGID}"
+    environment:
+      - PERIOD=5m
+      - UPDATE_COOLDOWN_PERIOD=5m
+      - PUBLICIP_FETCHERS=all
+      - PUBLICIP_HTTP_PROVIDERS=all
+      - PUBLICIPV4_HTTP_PROVIDERS=all
+      - PUBLICIPV6_HTTP_PROVIDERS=all
+      - PUBLICIP_DNS_PROVIDERS=all
+      - PUBLICIP_DNS_TIMEOUT=3s
+      - HTTP_TIMEOUT=10s
+      - LOG_LEVEL=info
+      - LOG_CALLER=hidden
+      - TZ=Europe/Berlin
+    networks:
+      - traefik
+    volumes:
+      - /mnt/ssd-1tb/docker/traefik/ddns:/updater/data
+    labels:
+    # doesn't work yet!
+      - traefik.enable=true
+      - traefik.http.routers.ddns.entrypoints=websecure
+      - traefik.http.routers.ddns.rule=Host(`ddns.patz.app`)
+      - traefik.http.routers.ddns.tls=true
+      - traefik.http.routers.ddns.tls.certresolver=patz.app
+      - traefik.http.routers.ddns.tls.domains[0].main=patz.app
+      - traefik.http.routers.ddns.tls.domains[0].sans=ddns.patz.app
+      - traefik.http.routers.ddns.middlewares=keycloak@file
+      - traefik.http.routers.ddns.service=ddns
+      - traefik.http.services.ddns.loadbalancer.server.port=8000
 
   whoami:
     image: "containous/whoami"
