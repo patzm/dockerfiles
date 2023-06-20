@@ -24,13 +24,13 @@ services:
       - traefik
 
   ddns:
-    image: qmcgaw/ddns-updater
+    image: qmcgaw/ddns-updater:v2.5.0
     restart: always
     user: "${PUID}:${PGID}"
     labels:
       - traefik.enable=false
+      # TODO: expose web UI behind forward auth
     environment:
-      - CONFIG=
       - PERIOD=5m
       - UPDATE_COOLDOWN_PERIOD=5m
       - PUBLICIP_FETCHERS=all
@@ -43,7 +43,7 @@ services:
       - LOG_LEVEL=info
       - LOG_CALLER=hidden
       - SHOUTRRR_ADDRESSES=
-    # TODO: expose web UI behind forward auth
+      - TZ=Europe/Berlin
     volumes:
       - /mnt/ssd-1tb/docker/traefik/ddns:/updater/data
 
