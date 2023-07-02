@@ -157,7 +157,7 @@ services:
       - traefik.enable=false
     volumes:
       - "/mnt/ssd-1tb/docker/mailu/filter:/var/lib/rspamd"
-      - "/mnt/ssd-1tb/docker/mailu/overrides/rspamd:/etc/rspamd/override.d:ro"
+      - "/mnt/ssd-1tb/docker/mailu/overrides/rspamd:/etc/rspamd/override.d"
     networks:
       - default
       - noinet
