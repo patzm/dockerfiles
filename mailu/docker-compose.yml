@@ -59,7 +59,7 @@ services:
       - "/mnt/ssd-1tb/docker/mailu/overrides/nginx:/overrides:ro"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mailu-front.rule=Host(`mail.${DOMAIN}`) || Host(`mail.patz.app`) || Host(`mail.whynot.holdings`)"
+      - "traefik.http.routers.mailu-front.rule=Host(`mail.${DOMAIN}`) || Host(`mail.patz.app`) || Host(`mail.whynot.holdings`) || Host(`mail.martin-patz.de`)"
       # - "traefik.http.routers.mailu-front.rule=Host(`mail.${DOMAIN}`) || Host(`mail.patz.app`) || Host(`mail.fam-patz.de`) || Host(`mail.whynot.holdings`) || Host(`mail.martin-patz.de`)"
       - "traefik.http.routers.mailu-front.entrypoints=websecure"
       - "traefik.http.routers.mailu-front.tls.certresolver=${DOMAIN}"
@@ -69,10 +69,10 @@ services:
       - "traefik.http.routers.mailu-front.tls.domains[1].sans=mail.patz.app,smtp.patz.app,imap.patz.app"
       - "traefik.http.routers.mailu-front.tls.domains[2].main=whynot.holdings"
       - "traefik.http.routers.mailu-front.tls.domains[2].sans=mail.whynot.holdings,smtp.whynot.holdings,imap.whynot.holdings"
-      # - "traefik.http.routers.mailu-front.tls.domains[3].main=fam-patz.de"
-      # - "traefik.http.routers.mailu-front.tls.domains[3].sans=mail.fam-patz.de,smtp.fam-patz.de,imap.fam-patz.de"
-      # - "traefik.http.routers.mailu-front.tls.domains[4].main=martin-patz.de"
-      # - "traefik.http.routers.mailu-front.tls.domains[4].sans=mail.martin-patz.de,smtp.martin-patz.de,imap.martin-patz.de"
+      - "traefik.http.routers.mailu-front.tls.domains[3].main=martin-patz.de"
+      - "traefik.http.routers.mailu-front.tls.domains[3].sans=mail.martin-patz.de,smtp.martin-patz.de,imap.martin-patz.de"
+      # - "traefik.http.routers.mailu-front.tls.domains[4].main=fam-patz.de"
+      # - "traefik.http.routers.mailu-front.tls.domains[4].sans=mail.fam-patz.de,smtp.fam-patz.de,imap.fam-patz.de"
       - "traefik.http.routers.mailu-front.service=mailu-front"
       - "traefik.http.services.mailu-front.loadbalancer.server.port=80"
 
