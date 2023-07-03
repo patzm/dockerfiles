@@ -63,6 +63,7 @@ services:
       - PUBLICIPV6_HTTP_PROVIDERS=all
       - PUBLICIP_DNS_PROVIDERS=all
       - PUBLICIP_DNS_TIMEOUT=3s
+      - RESOLVER_ADDRESS=1.1.1.1:53
       - HTTP_TIMEOUT=10s
       - LOG_LEVEL=info
       - LOG_CALLER=hidden
