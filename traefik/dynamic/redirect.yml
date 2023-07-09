@@ -39,6 +39,10 @@ http:
       headers:
         customRequestHeaders:
           X-Forwarded-Proto: https
+    no-follow-header:
+      headers:
+        customRequestHeaders:
+          X-Robots-Tag: "noindex, nofollow"
     keycloak:
       forwardAuth:
         address: "http://forward_auth:4181"

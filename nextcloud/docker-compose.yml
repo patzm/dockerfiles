@@ -36,7 +36,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.patz-nc-websecure.entrypoints=websecure"
       - "traefik.http.routers.patz-nc-websecure.rule=Host(`cloud.patz.app`)"
-      - "traefik.http.routers.patz-nc-websecure.middlewares=nc-dav-redirect,nc-rest-redirect,ssl-header@file"
+      - "traefik.http.routers.patz-nc-websecure.middlewares=nc-dav-redirect,nc-rest-redirect,no-follow-header@file,ssl-header@file"
       - "traefik.http.routers.patz-nc-websecure.tls=true"
       - "traefik.http.routers.patz-nc-websecure.tls.certresolver=patz.app"
       - "traefik.http.routers.patz-nc-websecure.tls.domains[0].main=patz.app"
