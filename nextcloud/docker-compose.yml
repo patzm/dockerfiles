@@ -51,8 +51,8 @@ services:
       - "traefik.http.middlewares.nc-rest-redirect.redirectregex.regex=https?://([^/]*)(/.well-known[^#]*)"
       - "traefik.http.middlewares.nc-rest-redirect.redirectregex.replacement=https://$${1}/index.php$${2"
 
-      - "traefik.http.middlewares.nc-headers.customrequestheaders.x-forwarded-proto=https"
-      - "traefik.http.middlewares.nc-headers.customrequestheaders.x-robots-tag=noindex,nofollow"
+      - "traefik.http.middlewares.nc-headers.headers.customrequestheaders.x-forwarded-proto=https"
+      - "traefik.http.middlewares.nc-headers.headers.customrequestheaders.x-robots-tag=noindex,nofollow"
     restart: always
 
   cron:
