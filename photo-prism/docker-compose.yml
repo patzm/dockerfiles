@@ -82,6 +82,7 @@ services:
       PHOTOPRISM_DATABASE_NAME: "photoprism"
       PHOTOPRISM_DATABASE_USER: "photoprism"
       PHOTOPRISM_DATABASE_PASSWORD: "insecure"
+      PHOTOPRISM_DISABLE_TLS: "true"
       PHOTOPRISM_ORIGINALS_LIMIT: "7000"
       PHOTOPRISM_SITE_TITLE: "Pictures"
       PHOTOPRISM_SITE_CAPTION: "Familie Patz"
