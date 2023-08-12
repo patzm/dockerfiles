@@ -9,15 +9,15 @@ networks:
 
 services:
   code_server:
-    image: lscr.io/linuxserver/code-server:${CODE_SERVER_TAG:-latest}
+    image: codercom/code-server:${CODE_SERVER_TAG:-latest}
     environment:
-      - PUID=${UID}
-      - PGID=${GID}
+      - DOCKER_USER=${USER}
       - TZ=Europe/Berlin
+    user: "${PUID}:${PGID}"
     volumes:
-      - ${HOME_DIR}:/config
+      - ${HOME_DIR}:/home/coder
     ports:
-      - 8443
+      - 8080
     networks:
       - auth_internal
       - traefik
@@ -29,5 +29,5 @@ services:
       - traefik.http.routers.vs-code.tls.domains[0].main=patz.app
       - traefik.http.routers.vs-code.tls.domains[0].sans=code.patz.app
       - traefik.http.routers.vs-code.middlewares=keycloak@file
-      - traefik.http.services.vs-code.loadbalancer.server.port=8443
+      - traefik.http.services.vs-code.loadbalancer.server.port=8080
     restart: always
