@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   portainer:
-    image: portainer/portainer-ee:2.18.4-alpine
+    image: portainer/portainer-ee:2.19.0-alpine
     command: -H unix:///var/run/docker.sock --data=/mnt/ssd-1tb/docker/portainer
     restart: always
     volumes:
