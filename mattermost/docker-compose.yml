@@ -65,6 +65,7 @@ services:
       - "${CALLS_PORT}"
     labels:
       - "traefik.enable=true"
+      # TODO: enable UDP for calls
       - "traefik.http.routers.mm.entrypoints=websecure"
       - "traefik.http.routers.mm.rule=Host(`${DOMAIN}`)"
       - "traefik.http.routers.mm.tls=true"
@@ -72,7 +73,6 @@ services:
       - "traefik.http.routers.mm.tls.domains[0].main=patz.app"
       - "traefik.http.routers.mm.tls.domains[0].sans=${DOMAIN}"
       - "traefik.http.services.mm.loadbalancer.server.port=${APP_PORT}"
-
 
 
 networks:
