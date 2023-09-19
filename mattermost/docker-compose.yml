@@ -64,6 +64,7 @@ services:
     expose:
       - "${CALLS_PORT}"
     labels:
+      - "autoheal=true"
       - "traefik.enable=true"
       # TODO: enable UDP for calls
       - "traefik.http.routers.mm.entrypoints=websecure"
