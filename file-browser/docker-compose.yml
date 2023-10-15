@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   file_browser:
-    image: filebrowser/filebrowser:v2.22.1
+    image: filebrowser/filebrowser:v2.25.0
     restart: always
     volumes:
       - srv:/srv
