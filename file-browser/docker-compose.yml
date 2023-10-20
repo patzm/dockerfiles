@@ -9,6 +9,7 @@ services:
       - /mnt/hdd-16tb/media:/srv/media
       - /mnt/hdd-16tb/programs:/srv/programs
       - /mnt/hdd-16tb/games:/srv/games
+      - /mnt/ssd-1tb/homes/kasandra:/srv/kasandra-home
       - /mnt/ssd-1tb/docker/file-browser/db:/database
       - /mnt/ssd-1tb/docker/file-browser/filebrowser.json:/.filebrowser.json
     user: "${PUID}:${PGID}"
