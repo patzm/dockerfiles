@@ -41,6 +41,7 @@ services:
       - traefik.enable=true
       - traefik.http.routers.dmarc.entrypoints=websecure
       - traefik.http.routers.dmarc.rule=Host(`dmarc.patz.app`)
+      - traefik.http.routers.dmarc.service=dmarc
       - traefik.http.routers.dmarc.tls=true
       - traefik.http.routers.dmarc.tls.certresolver=patz.app
       - traefik.http.routers.dmarc.tls.domains[0].main=patz.app
