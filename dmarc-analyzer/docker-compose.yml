@@ -50,7 +50,7 @@ services:
       - "MYSQL_DATABASE=dmarc_report"
       - "MYSQL_USER=dmarc_report"
     volumes:
-      - ./dmarc-report-db:/var/lib/mysql
+      - /mnt/ssd-1tb/docker/dmarc-analyzer/db:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
