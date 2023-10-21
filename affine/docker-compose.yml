@@ -23,7 +23,6 @@ services:
       - traefik.http.routers.affine.entrypoints=websecure
       - traefik.http.routers.affine.middlewares=ssl-header@file
       - traefik.http.routers.affine.rule=Host(`affine.patz.app`)
-      - traefik.http.routers.affine.tls=true
       - traefik.http.routers.affine.tls.certresolver=patz.app
       - traefik.http.routers.affine.tls.domains[0].main=patz.app
       - traefik.http.routers.affine.tls.domains[0].sans=affine.patz.app
