@@ -7,7 +7,7 @@ networks:
 
 services:
   storage:
-    image: minio/minio
+    image: minio/minio:${MINIO_TAG:-latest}
     restart: always
     networks:
       - traefik
