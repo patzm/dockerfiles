@@ -13,13 +13,11 @@ networks:
 services:
   dmarc-report:
     image: "gutmensch/dmarc-report:latest"
-    # hostname: dmarc-report
     restart: unless-stopped
     networks:
       - internal
       - auth_internal
       - traefik
-    # container_name: dmarc-report
     depends_on:
       - db
     env_file: ../stack.env
