@@ -2,6 +2,7 @@ version: "3.6"
 
 
 networks:
+  internal:
   auth_internal:
     external: true
   traefik:
@@ -14,6 +15,10 @@ services:
     image: "gutmensch/dmarc-report:latest"
     # hostname: dmarc-report
     restart: unless-stopped
+    networks:
+      - internal
+      - auth_internal
+      - traefik
     # container_name: dmarc-report
     depends_on:
       - db
@@ -45,6 +50,9 @@ services:
   db:
     image: mariadb:11
     command: --skip-innodb-read-only-compressed
+    restart: unless-stopped
+    networks:
+      - internal
     env_file: ../stack.env
     environment:
       - "MYSQL_DATABASE=dmarc_report"
