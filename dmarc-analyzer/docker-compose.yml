@@ -48,7 +48,7 @@ services:
 
 
   db:
-    image: mariadb:11
+    image: mariadb:10
     command: --skip-innodb-read-only-compressed
     restart: unless-stopped
     networks:
