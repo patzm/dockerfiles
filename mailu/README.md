@@ -19,7 +19,7 @@ Portainer doesn't support pulling images from https://ghcr.io right now.
 They have to be pulled manually first.
 Update the `MAILU_VERSION` in the snippet below and run it.
 
-```bash
+```shell
 export MAILU_VERSION=2.0
 docker pull ghcr.io/mailu/unbound:${MAILU_VERSION}
 docker pull ghcr.io/mailu/traefik-certdumper:${MAILU_VERSION}
