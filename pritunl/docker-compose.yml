@@ -9,7 +9,7 @@ services:
       private:
         ipv4_address: 172.31.0.3
     volumes:
-      - /mnt/ssd-1tb/docker/vpn/db:/data/db
+      - /mnt/ssd-1tb/docker/pritunl-vpn/db:/data/db
       - db_config:/data/configdb
     labels:
       - traefik.enable=false
