@@ -24,6 +24,7 @@ services:
       - net.ipv4.conf.all.src_valid_mark=1
     networks:
       - traefik
+    env_file: ../stack.env
     environment:
       - WG_HOST=wg.patz.app
     labels:
