@@ -5,6 +5,11 @@ networks:
   traefik:
     name: traefik
     external: true
+  private:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/24
 
 
 services:
@@ -23,7 +28,10 @@ services:
       - net.ipv4.ip_forward=1
       - net.ipv4.conf.all.src_valid_mark=1
     networks:
-      - traefik
+      - traefik:
+      - private:
+          ipv4_address: 172.19.0.2
+
     env_file: ../stack.env
     environment:
       - WG_HOST=wg.patz.app
