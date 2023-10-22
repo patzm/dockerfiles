@@ -1,0 +1,38 @@
+version: "3.8"
+
+
+networks:
+  traefik:
+    name: traefik
+    external: true
+
+
+services:
+  wg-easy:
+    image: weejewel/wg-easy:${WIREGUARD_TAG:-latest}
+    restart: unless-stopped
+    volumes:
+      - /mnt/ssd-1tb/docker/wireguard:/etc/wireguard
+    ports:
+      - "51820:51820/udp"
+      - "51821:51821/tcp"
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+    networks:
+      - traefik
+    environment:
+      - WG_HOST=wg.patz.app
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.wireguard.entrypoints=websecure
+      - traefik.http.routers.wireguard.middlewares=ssl-header@file
+      - traefik.http.routers.wireguard.rule=Host(`wg.patz.app`)
+      - traefik.http.routers.wireguard.tls=true
+      - traefik.http.routers.wireguard.tls.certresolver=patz.app
+      - traefik.http.routers.wireguard.tls.domains[0].main=patz.app
+      - traefik.http.routers.wireguard.tls.domains[0].sans=wg.patz.app
+      - traefik.http.services.wireguard.loadbalancer.server.port=51821
