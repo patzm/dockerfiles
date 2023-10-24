@@ -1,4 +1,5 @@
-# Wireguard
+# WireGuard
+Website: https://www.wireguard.com/
 
 ## Setup
 - `PASSWORD`: the password
