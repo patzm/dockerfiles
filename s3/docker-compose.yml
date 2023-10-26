@@ -8,7 +8,7 @@ networks:
 services:
   storage:
     image: minio/minio:${MINIO_TAG:-latest}
-    restart: always
+    restart: unless-stopped
     networks:
       - traefik
     entrypoint: sh

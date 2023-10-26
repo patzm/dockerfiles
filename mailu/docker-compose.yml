@@ -5,7 +5,7 @@ services:
   # External dependencies
   redis:
     image: redis:alpine
-    restart: always
+    restart: unless-stopped
     labels:
       - traefik.enable=false
     volumes:
@@ -18,7 +18,7 @@ services:
   resolver:
     image: ghcr.io/mailu/unbound:${MAILU_VERSION}
     env_file: mailu.env
-    restart: always
+    restart: unless-stopped
     labels:
       - traefik.enable=false
     networks:
@@ -27,7 +27,7 @@ services:
 
   certdumper:
     image: ghcr.io/mailu/traefik-certdumper:${MAILU_VERSION}
-    restart: always
+    restart: unless-stopped
     environment:
       - DOMAIN=${DOMAIN}
       - TRAEFIK_VERSION=v2
@@ -42,7 +42,7 @@ services:
   # Core services
   front:
     image: ghcr.io/mailu/nginx:${MAILU_VERSION}
-    restart: always
+    restart: unless-stopped
     env_file: ../stack.env
     logging:
       driver: json-file
@@ -83,7 +83,7 @@ services:
 
   admin:
     image: ghcr.io/mailu/admin:${MAILU_VERSION}
-    restart: always
+    restart: unless-stopped
     env_file: ../stack.env
     labels:
       - traefik.enable=false
@@ -98,7 +98,7 @@ services:
 
   imap:
     image: ghcr.io/mailu/dovecot:${MAILU_VERSION}
-    restart: always
+    restart: unless-stopped
     env_file: ../stack.env
     labels:
       - traefik.enable=false
@@ -115,7 +115,7 @@ services:
 
   smtp:
     image: ghcr.io/mailu/postfix:${MAILU_VERSION}
-    restart: always
+    restart: unless-stopped
     env_file: ../stack.env
     labels:
       - traefik.enable=false
@@ -133,7 +133,7 @@ services:
   oletools:
     image: ghcr.io/mailu/oletools:${MAILU_VERSION}
     hostname: oletools
-    restart: always
+    restart: unless-stopped
     labels:
       - traefik.enable=false
     networks:
@@ -146,7 +146,7 @@ services:
   antispam:
     image: ghcr.io/mailu/rspamd:${MAILU_VERSION}
     hostname: antispam
-    restart: always
+    restart: unless-stopped
     env_file: ../stack.env
     labels:
       - traefik.enable=false
@@ -166,7 +166,7 @@ services:
 
   webmail:
     image: ghcr.io/mailu/webmail:${MAILU_VERSION}
-    restart: always
+    restart: unless-stopped
     env_file: ../stack.env
     labels:
       - traefik.enable=false

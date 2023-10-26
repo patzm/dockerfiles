@@ -30,7 +30,7 @@ volumes:
 services:
   mariadb:
     image: mariadb:10.8.2
-    restart: always
+    restart: unless-stopped
     security_opt:
       - seccomp:unconfined
       - apparmor:unconfined
@@ -51,7 +51,7 @@ services:
     image: photoprism/photoprism:${PHOTOPRISM_TAG:-ubuntu}
     depends_on:
       - mariadb
-    restart: always
+    restart: unless-stopped
     security_opt:
       - seccomp:unconfined
       - apparmor:unconfined

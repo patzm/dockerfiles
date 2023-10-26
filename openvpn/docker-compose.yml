@@ -38,7 +38,7 @@ services:
       - "traefik.tcp.routers.openvpn.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.openvpn.service=openvpn"
       - "traefik.tcp.services.openvpn.loadbalancer.server.port=443"
-    restart: always
+    restart: unless-stopped
 
   certdumper:
     image: humenius/traefik-certs-dumper:alpine

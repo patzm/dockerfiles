@@ -3,7 +3,7 @@ version: "3.3"
 services:
   bergaufboardab:
     image: httpd:alpine
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./bergaufboardab.de:/usr/local/apache2/htdocs/
     networks:
@@ -19,7 +19,7 @@ services:
 
   patz.app:
     image: httpd:alpine
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./patz.app:/usr/local/apache2/htdocs/
     networks:
@@ -35,7 +35,7 @@ services:
 
   patz.family:
     image: httpd:alpine
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./patz.family:/usr/local/apache2/htdocs/
     networks:

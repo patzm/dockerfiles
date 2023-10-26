@@ -4,7 +4,7 @@ version: "3"
 services:
   mongo:
     image: mongo:6
-    restart: always
+    restart: unless-stopped
     networks:
       private:
         ipv4_address: 172.31.0.3
@@ -16,7 +16,7 @@ services:
 
   pritunl:
     image: goofball222/pritunl:${PRITUNL_TAG:-latest}
-    restart: always
+    restart: unless-stopped
     privileged: true
     sysctls:
       - net.ipv6.conf.all.disable_ipv6=0

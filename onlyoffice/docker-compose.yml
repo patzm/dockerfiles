@@ -34,7 +34,7 @@ services:
       - "traefik.http.middlewares.onlyoffice-ds-header.headers.stsPreload=true"
       - "traefik.http.middlewares.onlyoffice-ds-header.headers.stsIncludeSubdomains=true"
       - "traefik.http.middlewares.onlyoffice-ds-header.headers.browserXssFilter=true"
-    restart: always
+    restart: unless-stopped
 
 volumes:
   data:
