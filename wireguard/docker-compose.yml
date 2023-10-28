@@ -10,8 +10,8 @@ networks:
     ipam:
       config:
         - subnet: 172.19.0.0/24
-      driver_opts:
-        com.docker.network.bridge.name: eth-wg
+    driver_opts:
+      com.docker.network.bridge.name: eth-wg
 
 
 services:
