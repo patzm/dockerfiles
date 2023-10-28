@@ -27,7 +27,7 @@ services:
       - 51820:51820/udp
     networks:
       sites:
-        ipv4_address: 172.19.0.1
+        ipv4_address: 172.19.0.2
     environment:
       - PUID=1001
       - PGID=1003
