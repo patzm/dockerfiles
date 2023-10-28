@@ -46,7 +46,7 @@ services:
     image: weejewel/wg-easy:${WIREGUARD_EASY_TAG:-latest}
     restart: unless-stopped
     volumes:
-      - /mnt/ssd-1tb/docker/wireguard:/etc/wireguard
+      - /mnt/ssd-1tb/docker/wireguard/easy:/etc/wireguard
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
