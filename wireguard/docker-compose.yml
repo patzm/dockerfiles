@@ -26,16 +26,7 @@ services:
         ipv4_address: 172.21.0.23
     env_file: ../stack.env
     environment:
-      - WG_DEVICE=blub
       - WG_HOST=wg.patz.app
-      - WG_POST_UP=
-        iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth1 -j MASQUERADE;
-        iptables -A INPUT -p udp -m udp --dport 51820 -j ACCEPT;
-        iptables -A FORWARD -i wg0 -j ACCEPT;
-        iptables -A FORWARD -o wg0 -j ACCEPT;
-        iptables -A FORWARD -i eth1 -j ACCEPT;
-        iptables -A FORWARD -o eth1 -j ACCEPT;
-        # iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE;
     labels:
       - traefik.enable=true
       - traefik.http.routers.wireguard.entrypoints=websecure
