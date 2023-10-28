@@ -8,11 +8,8 @@ networks:
   private:
     driver: bridge
     ipam:
-      driver: default
       config:
         - subnet: 172.19.0.0/24
-    driver_opts:
-      com.docker.network.bridge.name: wg1
 
 
 services:
@@ -37,7 +34,7 @@ services:
     env_file: ../stack.env
     environment:
       - WG_HOST=wg.patz.app
-      - WG_DEVICE=wg1
+      - WG_DEVICE=eth1
     labels:
       - traefik.enable=true
       - traefik.http.routers.wireguard.entrypoints=websecure
