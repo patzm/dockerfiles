@@ -10,6 +10,8 @@ networks:
     ipam:
       config:
         - subnet: 172.19.0.0/24
+      driver_opts:
+        com.docker.network.bridge.name: eth-wg
 
 
 services:
@@ -28,14 +30,13 @@ services:
       - net.ipv4.ip_forward=1
       - net.ipv4.conf.all.src_valid_mark=1
     networks:
-      # this order matters
+      traefik:
       private:
           ipv4_address: 172.19.0.2
-      traefik:
-
     env_file: ../stack.env
     environment:
       - WG_HOST=wg.patz.app
+      - WG_DEVICE=eth-wg
     labels:
       - traefik.enable=true
       - traefik.http.routers.wireguard.entrypoints=websecure
