@@ -28,9 +28,10 @@ services:
       - net.ipv4.ip_forward=1
       - net.ipv4.conf.all.src_valid_mark=1
     networks:
-      traefik:
+      # this order matters
       private:
           ipv4_address: 172.19.0.2
+      traefik:
 
     env_file: ../stack.env
     environment:
