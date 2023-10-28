@@ -7,14 +7,40 @@ networks:
     external: true
 
 services:
+  wg-sites:
+    image: lscr.io/linuxserver/wireguard:${WIREGUARD_SITES_TAG:-latest}
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    volumes:
+      - /mnt/ssd-1tb/docker/wireguard/sites:/config
+      - /lib/modules:/lib/modules #optional
+    ports:
+      - 51820:51820/udp
+    environment:
+      - PUID=1001
+      - PGID=1003
+      - TZ=Europe/Berlin
+      - SERVERURL=wg.patz.app
+      - SERVERPORT=51820
+      - PEERDNS=auto
+      - INTERNAL_SUBNET=10.9.0.0
+      - ALLOWEDIPS=0.0.0.0/0
+      - PERSISTENTKEEPALIVE_PEERS=25
+      - LOG_CONFS=true
+      - PEERS=vat,
+      - SERVER_ALLOWEDIPS_PEER_vat=192.168.179.0/24
+
   wg-easy:
-    image: weejewel/wg-easy:${WIREGUARD_TAG:-latest}
+    image: weejewel/wg-easy:${WIREGUARD_EASY_TAG:-latest}
     restart: unless-stopped
     volumes:
       - /mnt/ssd-1tb/docker/wireguard:/etc/wireguard
     ports:
-      - "51820:51820/udp"
-      - "51821:51821/tcp"
+      - "51820:51821/udp"
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
@@ -27,6 +53,7 @@ services:
     env_file: ../stack.env
     environment:
       - WG_HOST=wg.patz.app
+      - WG_PORT=51821
     labels:
       - traefik.enable=true
       - traefik.http.routers.wireguard.entrypoints=websecure
