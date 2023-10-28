@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.7"
 
 
 networks:
@@ -8,6 +8,7 @@ networks:
   private:
     driver: bridge
     ipam:
+      driver: default
       config:
         - subnet: 172.19.0.0/24
     driver_opts:
@@ -32,7 +33,7 @@ services:
     networks:
       traefik:
       private:
-          ipv4_address: 172.19.0.2
+        ipv4_address: 172.19.0.2
     env_file: ../stack.env
     environment:
       - WG_HOST=wg.patz.app
