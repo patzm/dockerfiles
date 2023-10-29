@@ -22,7 +22,7 @@ services:
       - net.ipv4.conf.all.src_valid_mark=1
     volumes:
       - /mnt/ssd-1tb/docker/wireguard/sites:/config
-      - /lib/modules:/lib/modules #optional
+      - /lib/modules:/lib/modules
     ports:
       - 51820:51820/udp
     networks:
