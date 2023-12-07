@@ -21,6 +21,12 @@ docker run -it --rm \
     $(pwd) up -d --remove-orphans
 ```
 
+or simply
+```shell
+make up    # for creating the stack
+make down  # for tearing it down again
+```
+
 ## Authenticate any resource with forward authentication
 
 Guides I used:
