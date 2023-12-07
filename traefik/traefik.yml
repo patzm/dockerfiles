@@ -51,22 +51,6 @@ certificatesResolvers:
       tlsChallenge: {}
       httpChallenge:
         entrypoint: web
-  fam-patz.de:
-    acme:
-      email: postmaster@martin-patz.de
-      storage: letsencrypt/fam-patz.de/acme.json
-      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
-      tlsChallenge: {}
-      httpChallenge:
-        entrypoint: web
-  martin-patz.de:
-    acme:
-      email: postmaster@martin-patz.de
-      storage: letsencrypt/martin-patz.de/acme.json
-      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
-      tlsChallenge: {}
-      httpChallenge:
-        entrypoint: web
 
 api:
   dashboard: true
