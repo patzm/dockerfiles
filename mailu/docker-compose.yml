@@ -29,7 +29,7 @@ services:
     image: ghcr.io/mailu/traefik-certdumper:${MAILU_VERSION}
     restart: unless-stopped
     environment:
-      - DOMAIN=${DOMAIN}
+      - DOMAIN=mail.${DOMAIN}
       - TRAEFIK_VERSION=v2
     volumes:
       - "/mnt/ssd-1tb/docker/traefik/letsencrypt/patz.family:/traefik"
