@@ -42,8 +42,6 @@ services:
     image: redis
     restart: unless-stopped
     env_file: ../stack.env
-    ports:
-      - "6379:6379"
     networks:
       - outline
     volumes:
@@ -64,8 +62,6 @@ services:
     env_file: ../stack.env
     networks:
       - outline
-    ports:
-      - "5432:5432"
     volumes:
       - /mnt/ssd-1tb/docker/outline/db:/var/lib/postgresql/data
     healthcheck:
