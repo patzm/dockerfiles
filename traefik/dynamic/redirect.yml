@@ -19,6 +19,8 @@ http:
       entrypoints:
         - websecure
       rule: "Host(`nas.patz.app`)"
+      middlewares:
+        - keycloak
       tls:
         certResolver: patz.app
         domains:
