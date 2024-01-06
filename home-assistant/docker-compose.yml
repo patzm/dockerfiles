@@ -13,8 +13,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
     networks:
       - traefik
-    ports:
-      - 8123
     labels:
       - traefik.enable=true
       - traefik.http.routers.home-assistant.entrypoints=websecure

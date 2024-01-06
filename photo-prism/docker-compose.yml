@@ -55,8 +55,6 @@ services:
     security_opt:
       - seccomp:unconfined
       - apparmor:unconfined
-    ports:
-      - 2342
     networks:
       - auth_internal
       - default

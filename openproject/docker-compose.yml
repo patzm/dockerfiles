@@ -69,8 +69,6 @@ services:
       timeout: 3s
       retries: 3
       start_period: 30s
-    ports:
-      - "8080"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.op.entrypoints=websecure"
