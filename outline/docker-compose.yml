@@ -42,8 +42,6 @@ services:
     image: redis
     restart: unless-stopped
     env_file: ../stack.env
-    ports:
-      - "6379:6379"
     networks:
       - outline
     volumes:
