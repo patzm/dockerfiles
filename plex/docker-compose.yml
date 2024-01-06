@@ -1,5 +1,10 @@
 version: '3'
 
+networks:
+  traefik:
+    name: traefik
+    external: true
+
 volumes:
   transcode:
 
@@ -9,6 +14,8 @@ services:
     restart: unless-stopped
     ports:
       - 32400:32400/tcp
+    networks:
+      - traefik
     volumes:
       - transcode:/transcode
       - /mnt/ssd-1tb/docker/plex/config:/config
@@ -17,11 +24,19 @@ services:
       - /mnt/hdd-16tb/media/movies:/data/movies
       - /mnt/hdd-16tb/media/music:/data/music
       - /mnt/hdd-16tb/media/tv-shows:/data/tv-shows
-    labels:
-      - traefik.enable=false
     environment:
       ADVERTISE_IP: http://arnold.local:32400/
       PLEX_UID: 1001
       PLEX_GID: 1002
       TZ: Europe/Berlin
       PLEX_CLAIM: ${PLEX_CLAIM}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.plex.entrypoints=websecure"
+      - "traefik.http.routers.plex.rule=Host(`plex.patz.app`)"
+      - "traefik.http.routers.plex.tls=true"
+      - "traefik.http.routers.plex.tls.certresolver=patz.app"
+      - "traefik.http.routers.plex.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.plex.tls.domains[0].sans=plex.patz.app"
+      - "traefik.http.services.plex.loadbalancer.server.port=32400"
+
