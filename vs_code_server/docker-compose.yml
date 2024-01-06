@@ -16,8 +16,6 @@ services:
     user: "${PUID}:${PGID}"
     volumes:
       - ${HOME_DIR}:/home/coder
-    ports:
-      - 8080
     networks:
       - auth_internal
       - traefik
