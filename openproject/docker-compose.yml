@@ -23,6 +23,7 @@ x-op-app: &app
     RAILS_CACHE_STORE: "memcache"
     OPENPROJECT_CACHE__MEMCACHE__SERVER: "cache:11211"
     OPENPROJECT_RAILS__RELATIVE__URL__ROOT: "${OPENPROJECT_RAILS__RELATIVE__URL__ROOT:-}"
+    OPENPROJECT_LOG__LEVEL: "${OPENPROJECT_LOG__LEVEL:-warn}"
     DATABASE_URL: "postgres://postgres:p4ssw0rd@db/postgres?pool=20&encoding=unicode&reconnect=true"
     PORT: 8080
     RAILS_MIN_THREADS: 4
