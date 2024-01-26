@@ -28,10 +28,10 @@ services:
 
 
   mattermost:
-    depends_on:
-      - postgres
     image: mattermost/mattermost-team-edition:${MATTERMOST_TAG}
     restart: unless-stopped
+    depends_on:
+      - postgres
     security_opt:
       - no-new-privileges:true
     # pids_limit: 200

@@ -10,6 +10,7 @@ networks:
 services:
   code_server:
     image: codercom/code-server:${CODE_SERVER_TAG:-latest}
+    restart: unless-stopped
     environment:
       - DOCKER_USER=${USER}
       - TZ=Europe/Berlin
@@ -28,4 +29,3 @@ services:
       - traefik.http.routers.vs-code.tls.domains[0].sans=code.patz.app
       - traefik.http.routers.vs-code.middlewares=keycloak@file
       - traefik.http.services.vs-code.loadbalancer.server.port=8080
-    restart: unless-stopped

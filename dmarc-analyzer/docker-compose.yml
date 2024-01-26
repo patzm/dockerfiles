@@ -48,8 +48,8 @@ services:
 
   db:
     image: mariadb:10
-    command: --skip-innodb-read-only-compressed
     restart: unless-stopped
+    command: --skip-innodb-read-only-compressed
     networks:
       - internal
     env_file: ../stack.env

@@ -8,6 +8,7 @@ networks:
 services:
   homeassistant:
     image: ghcr.io/home-assistant/home-assistant:stable
+    restart: unless-stopped
     volumes:
       - /share/docker/home-assistant/volumes/config:/config
       - /etc/localtime:/etc/localtime:ro
@@ -22,5 +23,4 @@ services:
       - traefik.http.routers.home-assistant.tls.domains[0].main=patz.app
       - traefik.http.routers.home-assistant.tls.domains[0].sans=home.patz.app
       - traefik.http.services.home-assistant.loadbalancer.server.port=8123
-    restart: unless-stopped
 

@@ -11,6 +11,7 @@ services:
   openldap:
     image: osixia/openldap
     hostname: openldap
+    restart: unless-stopped
     environment:
       - LDAP_DOMAIN=patz.app
       - LDAP_ORGANISATION=Family Patz
@@ -23,10 +24,10 @@ services:
       - /mnt/ssd-1tb/docker/auth/openldap/config:/etc/ldap/slapd.d
     labels:
       - traefik.enable=false
-    restart: unless-stopped
 
   lam:
     image: jacksgt/ldap-account-manager
+    restart: unless-stopped
     networks:
       - auth_internal
       - traefik
@@ -46,10 +47,10 @@ services:
       - traefik.http.routers.auth-lam.tls.domains[0].sans=iam.patz.app
       - traefik.http.services.auth-lam.loadbalancer.server.port=8080
       - traefik.http.routers.auth-lam.middlewares=keycloak@file
-    restart: unless-stopped
 
   keycloak-db:
     image: postgres:10.1
+    restart: unless-stopped
     volumes:
       - /mnt/ssd-1tb/docker/auth/keycloak/db:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
@@ -60,10 +61,10 @@ services:
       - auth_internal
     labels:
       - traefik.enable=false
-    restart: unless-stopped
 
   keycloak:
     image: quay.io/keycloak/keycloak:16.1.1
+    restart: unless-stopped
     # command: start --proxy edge --hostname-strict=false
     depends_on:
       - keycloak-db
@@ -87,4 +88,3 @@ services:
       - traefik.http.routers.auth-keycloak.tls.domains[0].main=patz.app
       - traefik.http.routers.auth-keycloak.tls.domains[0].sans=keycloak.patz.app
       - traefik.http.services.auth-keycloak.loadbalancer.server.port=8080
-    restart: unless-stopped

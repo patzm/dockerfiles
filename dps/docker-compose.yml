@@ -11,6 +11,7 @@ services:
   dps:
     image: defreitas/dns-proxy-server
     hostname: dns.mageddo
+    restart: unless-stopped
     networks:
       - auth_internal
       - traefik
@@ -28,4 +29,3 @@ services:
       - traefik.http.routers.dps.tls.domains[0].sans=proxy.patz.app
       - traefik.http.routers.dps.middlewares=keycloak@file
       - traefik.http.services.dps.loadbalancer.server.port=5380
-    restart: unless-stopped

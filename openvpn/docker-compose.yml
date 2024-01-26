@@ -7,6 +7,7 @@ networks:
 
 services:
   openvpn:
+    restart: unless-stopped
     build: .
     cap_add:
       - NET_ADMIN
@@ -38,10 +39,10 @@ services:
       - "traefik.tcp.routers.openvpn.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.openvpn.service=openvpn"
       - "traefik.tcp.services.openvpn.loadbalancer.server.port=443"
-    restart: unless-stopped
 
   certdumper:
     image: humenius/traefik-certs-dumper:alpine
+    restart: unless-stopped
     network_mode: none
     volumes:
       - ../traefik/letsencrypt/patz.app:/traefik:ro

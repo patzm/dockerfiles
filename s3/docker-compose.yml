@@ -9,10 +9,10 @@ services:
   storage:
     image: minio/minio:${MINIO_TAG:-latest}
     restart: unless-stopped
+    command: -c 'minio server /data --console-address ":9001"'
+    entrypoint: sh
     networks:
       - traefik
-    entrypoint: sh
-    command: -c 'minio server /data --console-address ":9001"'
     volumes:
       - /mnt/ssd-1tb/docker/s3/storage:/data
     healthcheck:

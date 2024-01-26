@@ -12,10 +12,10 @@ services:
   plex:
     image: plexinc/pms-docker:plexpass
     restart: unless-stopped
-    ports:
-      - 32400:32400/tcp
     networks:
       - traefik
+    ports:
+      - 32400:32400/tcp
     volumes:
       - transcode:/transcode
       - /mnt/ssd-1tb/docker/plex/config:/config

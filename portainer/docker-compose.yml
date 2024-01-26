@@ -3,8 +3,8 @@ version: "3.3"
 services:
   portainer:
     image: portainer/portainer-ee:2.19.4-alpine
-    command: -H unix:///var/run/docker.sock --data=/mnt/ssd-1tb/docker/portainer
     restart: unless-stopped
+    command: -H unix:///var/run/docker.sock --data=/mnt/ssd-1tb/docker/portainer
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - unused_data:/data

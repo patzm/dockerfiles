@@ -49,9 +49,9 @@ services:
 
   photoprism:
     image: photoprism/photoprism:${PHOTOPRISM_TAG:-ubuntu}
+    restart: unless-stopped
     depends_on:
       - mariadb
-    restart: unless-stopped
     security_opt:
       - seccomp:unconfined
       - apparmor:unconfined

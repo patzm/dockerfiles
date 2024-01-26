@@ -3,6 +3,7 @@ version: "3.2"
 services:
   document:
     image: onlyoffice/documentserver:${ONLYOFFICE_TAG:-7.2.0}
+    restart: unless-stopped
     stdin_open: true
     tty: true
     environment:
@@ -34,7 +35,6 @@ services:
       - "traefik.http.middlewares.onlyoffice-ds-header.headers.stsPreload=true"
       - "traefik.http.middlewares.onlyoffice-ds-header.headers.stsIncludeSubdomains=true"
       - "traefik.http.middlewares.onlyoffice-ds-header.headers.browserXssFilter=true"
-    restart: unless-stopped
 
 volumes:
   data:
