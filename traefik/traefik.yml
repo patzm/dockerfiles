@@ -51,6 +51,14 @@ certificatesResolvers:
       tlsChallenge: {}
       httpChallenge:
         entrypoint: web
+  fungtional.bio:
+    acme:
+      email: admin@fungtional.bio
+      storage: letsencrypt/fungtional.bio/acme.json
+      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      tlsChallenge: {}
+      httpChallenge:
+        entrypoint: web
 
 api:
   dashboard: true
