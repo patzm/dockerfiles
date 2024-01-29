@@ -1,5 +1,13 @@
 version: "3.3"
 
+volumes:
+  redis:
+
+networks:
+  traefik:
+    name: traefik
+    external: true
+
 services:
   db:
     image: mariadb:10.2
@@ -85,12 +93,3 @@ services:
       - "PREVIEWGEN_PERIOD=0 * * * *"
     labels:
       - traefik.enable=false
-
-
-volumes:
-  redis:
-
-networks:
-  traefik:
-    name: traefik
-    external: true
