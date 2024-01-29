@@ -14,8 +14,6 @@ volumes:
 
 x-op-restart-policy: &restart_policy
   restart: unless-stopped
-  labels:
-    - traefik.enable=false
 x-op-app: &app
   <<: *restart_policy
   image: openproject/community:${OPENPROJECT_TAG:-latest}
@@ -46,12 +44,16 @@ services:
       POSTGRES_PASSWORD: p4ssw0rd
     networks:
       - backend
+    labels:
+      - traefik.enable=false
 
   cache:
     image: memcached
     <<: *restart_policy
     networks:
       - backend
+    labels:
+      - traefik.enable=false
 
   web:
     <<: *app
@@ -89,6 +91,8 @@ services:
       - db
       - cache
       - seeder
+    labels:
+      - traefik.enable=false
 
   cron:
     <<: *app
@@ -99,6 +103,8 @@ services:
       - db
       - cache
       - seeder
+    labels:
+      - traefik.enable=false
 
   seeder:
     <<: *app
@@ -106,4 +112,5 @@ services:
     restart: on-failure
     networks:
       - backend
-
+    labels:
+      - traefik.enable=false
