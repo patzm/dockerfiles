@@ -58,7 +58,7 @@ services:
 
       - "traefik.http.middlewares.nc-wellknown-redirect.redirectregex.permanent=true"
       - "traefik.http.middlewares.nc-wellknown-redirect.redirectregex.regex=https?://([^/]*)(/.well-known[^#]*)"
-      - "traefik.http.middlewares.nc-wellknown-redirect.redirectregex.replacement=https://$${1}/index.php$${2"
+      - "traefik.http.middlewares.nc-wellknown-redirect.redirectregex.replacement=https://$${1}/index.php$${2}"
 
       - "traefik.http.middlewares.nc-no-index.headers.customResponseHeaders.X-Robots-Tag=noindex,nofollow"
 
