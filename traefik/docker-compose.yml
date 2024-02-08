@@ -51,7 +51,7 @@ services:
       - traefik.http.services.forward-auth.loadbalancer.server.port=4181
   
   ddns:
-    image: qmcgaw/ddns-updater:v2.5.0
+    image: qmcgaw/ddns-updater:v2.6.0
     restart: unless-stopped
     user: "${PUID}:${PGID}"
     environment:
