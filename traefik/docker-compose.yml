@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   traefik:
-    image: traefik:v2.10.7
+    image: traefik:v2.11.0
     restart: unless-stopped
     user: "${PUID}:${PGID}"
     logging:
