@@ -1,0 +1,35 @@
+version: "3"
+
+networks:
+  auth_internal:
+    external: true
+  traefik:
+    name: traefik
+    external: true
+
+services:
+  pihole:
+    image: pihole/pihole:${PIHOLE_TAG:-latest}
+    restart: unless-stopped
+    networks:
+      - auth_internal
+      - traefik
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8082:80/tcp"
+    environment:
+      TZ: 'Europe/Berlin'
+    volumes:
+      - '/mnt/ssd-1tb/docker/pi-hole/etc-pihole:/etc/pihole'
+      - '/mnt/ssd-1tb/docker/pi-hole/etc-dnsmasq.d:/etc/dnsmasq.d'
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.pi-hole.entrypoints=websecure
+      - traefik.http.routers.pi-hole.rule=Host(`pihole.patz.app`)
+      - traefik.http.routers.pi-hole.tls=true
+      - traefik.http.routers.pi-hole.tls.certresolver=patz.app
+      - traefik.http.routers.pi-hole.tls.domains[0].main=patz.app
+      - traefik.http.routers.pi-hole.tls.domains[0].sans=pihole.patz.app
+      - traefik.http.routers.pi-hole.middlewares=keycloak@file
+      - traefik.http.services.pi-hole.loadbalancer.server.port=8082
