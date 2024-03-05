@@ -32,4 +32,4 @@ services:
       - traefik.http.routers.pi-hole.tls.domains[0].main=patz.app
       - traefik.http.routers.pi-hole.tls.domains[0].sans=pihole.patz.app
       - traefik.http.routers.pi-hole.middlewares=keycloak@file
-      - traefik.http.services.pi-hole.loadbalancer.server.port=8082
+      - traefik.http.services.pi-hole.loadbalancer.server.port=80
