@@ -19,14 +19,14 @@ services:
         condition: service_healthy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mm.entrypoints=websecure"
-      - "traefik.http.routers.mm.rule=Host(`${APP_DOMAIN}`)"
-      - "traefik.http.routers.mm.tls=true"
-      - "traefik.http.routers.mm.tls.certresolver=patz.app"
-      - "traefik.http.routers.mm.middlewares=ssl-header@file"
-      - "traefik.http.routers.mm.tls.domains[0].main=patz.app"
-      - "traefik.http.routers.mm.tls.domains[0].sans=${APP_DOMAIN}"
-      - "traefik.http.services.mm.loadbalancer.server.port=3000"
+      - "traefik.http.routers.maybe.entrypoints=websecure"
+      - "traefik.http.routers.maybe.rule=Host(`${APP_DOMAIN}`)"
+      - "traefik.http.routers.maybe.tls=true"
+      - "traefik.http.routers.maybe.tls.certresolver=patz.app"
+      - "traefik.http.routers.maybe.middlewares=ssl-header@file"
+      - "traefik.http.routers.maybe.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.maybe.tls.domains[0].sans=${APP_DOMAIN}"
+      - "traefik.http.services.maybe.loadbalancer.server.port=3000"
 
   postgres:
     image: postgres:16
