@@ -1,0 +1,56 @@
+services:
+
+  app:
+    image: ghcr.io/maybe-finance/maybe:latest
+    restart: unless-stopped
+    env_file:
+      - ../stack.env
+      - .env
+    networks:
+      - default
+      - traefik
+    environment:
+      DB_HOST: "postgres"
+      RAILS_ENV: "production"
+      RAILS_FORCE_SSL: false
+      RAILS_ASSUME_SSL: false
+    depends_on:
+      postgres:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mm.entrypoints=websecure"
+      - "traefik.http.routers.mm.rule=Host(`${APP_DOMAIN}`)"
+      - "traefik.http.routers.mm.tls=true"
+      - "traefik.http.routers.mm.tls.certresolver=patz.app"
+      - "traefik.http.routers.mm.middlewares=ssl-header@file"
+      - "traefik.http.routers.mm.tls.domains[0].main=patz.app"
+      - "traefik.http.routers.mm.tls.domains[0].sans=${APP_DOMAIN}"
+      - "traefik.http.services.mm.loadbalancer.server.port=3000"
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    env_file:
+      - ../stack.env
+      - .env
+    volumes:
+      - /mnt/ssd-1tb/docker/maybe/postgresql-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    labels:
+      - "traefik.enable=false"
+
+
+networks:
+  default:
+  traefik:
+    name: traefik
+    external: true
