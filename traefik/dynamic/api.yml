@@ -12,4 +12,3 @@ http:
             sans:
               - "traefik.patz.app"
       service: api@internal
-
