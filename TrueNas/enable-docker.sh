@@ -29,8 +29,7 @@ read -r -d '' JSON << END_JSON
     "native.cgroupdriver=cgroupfs"
   ],
   "iptables": true,
-  "bridge": "",
-  "dns": ["192.168.178.1"]
+  "bridge": ""
 }
 END_JSON
 
