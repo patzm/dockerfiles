@@ -14,10 +14,14 @@ volumes:
 
 x-op-restart-policy: &restart_policy
   restart: unless-stopped
+x-op-image: &image
+  image: openproject/openproject:${OPENPROJECT_TAG:-latest}
 x-op-app: &app
-  <<: *restart_policy
-  image: openproject/community:${OPENPROJECT_TAG:-latest}
+  <<: [*image, *restart_policy]
   environment:
+    OPENPROJECT_HTTPS: "${OPENPROJECT_HTTPS:-true}"
+    OPENPROJECT_HOST__NAME: "${OPENPROJECT_HOST__NAME:-localhost:8080}"
+    OPENPROJECT_HSTS: "${OPENPROJECT_HSTS:-true}"
     RAILS_CACHE_STORE: "memcache"
     OPENPROJECT_CACHE__MEMCACHE__SERVER: "cache:11211"
     OPENPROJECT_RAILS__RELATIVE__URL__ROOT: "${OPENPROJECT_RAILS__RELATIVE__URL__ROOT:-}"
@@ -67,12 +71,13 @@ services:
       - cache
       - seeder
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health_checks/default"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080${OPENPROJECT_RAILS__RELATIVE__URL__ROOT:-}/health_checks/default"]
       interval: 10s
       timeout: 3s
       retries: 3
       start_period: 30s
     labels:
+      - autoheal=true
       - "traefik.enable=true"
       - "traefik.http.routers.op.entrypoints=websecure"
       - "traefik.http.routers.op.rule=Host(`openproject.patz.app`)"
@@ -81,6 +86,16 @@ services:
       - "traefik.http.routers.op.tls.domains[0].main=patz.app"
       - "traefik.http.routers.op.tls.domains[0].sans=openproject.patz.app"
       - "traefik.http.services.op.loadbalancer.server.port=8080"
+
+  autoheal:
+    image: willfarrell/autoheal:1.2.0
+    <<: *restart_policy
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: autoheal
+      AUTOHEAL_START_PERIOD: 600
+      AUTOHEAL_INTERVAL: 30
 
   worker:
     <<: *app
