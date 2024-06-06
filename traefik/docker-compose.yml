@@ -26,12 +26,11 @@ services:
   forward_auth:
     image: thomseddon/traefik-forward-auth:2.2
     restart: unless-stopped
+    env_file: .env
     environment:
       - DEFAULT_PROVIDER=oidc
       - PROVIDERS_OIDC_CLIENT_ID=traefik-forward-auth
-      - PROVIDERS_OIDC_CLIENT_SECRET=5v5C4sHLU5XtZcE34yMTX73W3XdhprpH
       - PROVIDERS_OIDC_ISSUER_URL=https://keycloak.patz.app/auth/realms/patz
-      - SECRET=LH49wCZ4ZijgUTfm8etb
       - AUTH_HOST=auth.patz.app
       - COOKIE_DOMAIN=patz.app
       - URL_PATH=/_oauth

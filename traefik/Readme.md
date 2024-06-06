@@ -4,6 +4,10 @@
 Make sure that the following environment variables are set:
 * `PUID`
 * `PGID`
+* from KeyCloak, set in `.env`:
+    * `PROVIDERS_OIDC_CLIENT_SECRET`
+    * `SECRET`
+
 
 For instance, bring up this stack by invoking
 ```shell
