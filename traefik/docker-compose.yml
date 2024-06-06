@@ -37,6 +37,7 @@ services:
       - INSECURE_COOKIE=false
       - LOG_LEVEL=debug
     networks:
+      - auth_internal
       - traefik
     labels:
       - traefik.enable=true
@@ -102,6 +103,8 @@ volumes:
   traefik:
 
 networks:
+  auth_internal:
+    external: true
   traefik:
     name: traefik
     external: true
