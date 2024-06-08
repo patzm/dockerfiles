@@ -28,6 +28,18 @@ http:
             sans:
               - "nas.patz.app"
       service: nas
+    home-assistant:
+     entrypoints:
+       - websecure
+     rule: "Host(`home.patz.app`)"
+     tls:
+       certResolver: patz.app
+       domains:
+         - main: "patz.app"
+           sans:
+             - "home.patz.app"
+     service: home_assistant
+
   middlewares:
     redirect-https:
       redirectScheme:
@@ -47,6 +59,7 @@ http:
         trustForwardHeader: true
         authResponseHeaders:
           - "X-Forwarded-User"
+
   services:
     noop:
       loadBalancer:
@@ -57,3 +70,7 @@ http:
       loadBalancer:
         servers:
           - url: http://host.docker.internal:81
+    home_assistant:
+     loadBalancer:
+       servers:
+         - url: http://192.168.1.3:8123
