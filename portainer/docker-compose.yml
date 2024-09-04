@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   portainer:
-    image: portainer/portainer-ee:2.20.3
+    image: portainer/portainer-ee:2.21.0
     restart: unless-stopped
     command: -H unix:///var/run/docker.sock --data=/mnt/ssd-1tb/docker/portainer
     volumes:
