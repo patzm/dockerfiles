@@ -64,10 +64,11 @@ services:
     volumes:
       - /mnt/ssd-1tb/docker/outline/db:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "pg_isready -U user"]
+      test: ["CMD", "pg_isready", "-d", "outline", "-U", "user"]
       interval: 30s
-      timeout: 20s
-      retries: 3
+      timeout: 60s
+      retries: 5
+      start_period: 80s  
     environment:
       POSTGRES_USER: user
       POSTGRES_DB: outline
