@@ -56,7 +56,7 @@ services:
       - "51821:51820/udp"
     networks:
       traefik:
-    env_file: ../stack.env
+    env_file: stack.env
     environment:
       - WG_HOST=wg.patz.app
       - WG_PORT=51821
