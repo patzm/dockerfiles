@@ -10,7 +10,7 @@ services:
   affine:
     image: ghcr.io/toeverything/affine-self-hosted:${AFFINE_TAG:-latest}
     restart: unless-stopped
-    env_file: stack.env
+    env_file: ../stack.env
     networks:
       - traefik
       - affine

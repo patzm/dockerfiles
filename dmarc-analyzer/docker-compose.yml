@@ -18,7 +18,7 @@ services:
       - traefik
     depends_on:
       - db
-    env_file: stack.env
+    env_file: ../stack.env
     environment:
       - "REPORT_DB_HOST=db"
       - "REPORT_DB_PORT=3306"
@@ -49,7 +49,7 @@ services:
     command: --skip-innodb-read-only-compressed
     networks:
       - internal
-    env_file: stack.env
+    env_file: ../stack.env
     environment:
       - "MYSQL_DATABASE=dmarc_report"
       - "MYSQL_USER=dmarc_report"

@@ -11,7 +11,7 @@ services:
     image: ghcr.io/maybe-finance/maybe:latest
     restart: unless-stopped
     env_file:
-      - stack.env
+      - ../stack.env
       - .env
     networks:
       - default
@@ -39,7 +39,7 @@ services:
     image: postgres:16
     restart: unless-stopped
     env_file:
-      - stack.env
+      - ../stack.env
       - .env
     volumes:
       - /mnt/ssd-1tb/docker/maybe/postgresql-data:/var/lib/postgresql/data
