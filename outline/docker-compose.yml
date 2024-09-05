@@ -16,7 +16,7 @@ services:
     image: outlinewiki/outline:${OUTLINE_TAG:-latest}
     restart: unless-stopped
     command: sh -c "yarn db:migrate --env=production-ssl-disabled && yarn start --env=production-ssl-disabled"
-    env_file: ../stack.env
+    env_file: stack.env
     networks:
       - traefik
       - outline
@@ -39,7 +39,7 @@ services:
   redis:
     image: redis
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file: stack.env
     networks:
       - outline
     volumes:
@@ -57,7 +57,7 @@ services:
   postgres:
     image: postgres:14
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file: stack.env
     networks:
       - outline
     volumes:
@@ -76,7 +76,7 @@ services:
   storage:
     image: minio/minio
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file: stack.env
     networks:
       - outline
       - traefik
