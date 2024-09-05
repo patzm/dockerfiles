@@ -1,5 +1,3 @@
-version: "3"
-
 networks:
   auth_internal:
     external: true
