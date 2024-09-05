@@ -1,4 +1,17 @@
+volumes:
+  traefik:
+
+
+networks:
+  auth_internal:
+    external: true
+  traefik:
+    name: traefik
+    external: true
+
+
 services:
+
   traefik:
     image: traefik:v2.11.2
     restart: unless-stopped
@@ -96,13 +109,3 @@ services:
       - "traefik.http.routers.whoami.tls.domains[0].sans=whoami.patz.app"
     networks:
       - traefik
-
-volumes:
-  traefik:
-
-networks:
-  auth_internal:
-    external: true
-  traefik:
-    name: traefik
-    external: true

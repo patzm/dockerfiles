@@ -8,6 +8,7 @@ networks:
 
 
 services:
+
   dmarc-report:
     image: "gutmensch/dmarc-report:latest"
     restart: unless-stopped
@@ -17,7 +18,7 @@ services:
       - traefik
     depends_on:
       - db
-    env_file: ../stack.env
+    env_file: stack.env
     environment:
       - "REPORT_DB_HOST=db"
       - "REPORT_DB_PORT=3306"
@@ -42,14 +43,13 @@ services:
       - traefik.http.routers.dmarc.middlewares=keycloak@file
       - traefik.http.services.dmarc.loadbalancer.server.port=80
 
-
   db:
     image: mariadb:10
     restart: unless-stopped
     command: --skip-innodb-read-only-compressed
     networks:
       - internal
-    env_file: ../stack.env
+    env_file: stack.env
     environment:
       - "MYSQL_DATABASE=dmarc_report"
       - "MYSQL_USER=dmarc_report"

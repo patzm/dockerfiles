@@ -5,7 +5,9 @@ networks:
     name: traefik
     external: true
 
+
 services:
+
   dps:
     image: defreitas/dns-proxy-server
     hostname: dns.mageddo

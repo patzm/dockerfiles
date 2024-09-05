@@ -1,3 +1,20 @@
+networks:
+  default:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.26.0.0/24
+  webmail:
+    driver: bridge
+  noinet:
+    driver: bridge
+    internal: true
+  traefik:
+    name: traefik
+    external: true
+
+
 services:
 
   # External dependencies
@@ -41,7 +58,7 @@ services:
   front:
     image: ghcr.io/mailu/nginx:${MAILU_VERSION}
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file: stack.env
     logging:
       driver: json-file
     depends_on:
@@ -81,7 +98,7 @@ services:
   admin:
     image: ghcr.io/mailu/admin:${MAILU_VERSION}
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file: stack.env
     labels:
       - traefik.enable=false
     volumes:
@@ -96,7 +113,7 @@ services:
   imap:
     image: ghcr.io/mailu/dovecot:${MAILU_VERSION}
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file: stack.env
     labels:
       - traefik.enable=false
     volumes:
@@ -113,7 +130,7 @@ services:
   smtp:
     image: ghcr.io/mailu/postfix:${MAILU_VERSION}
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file: stack.env
     labels:
       - traefik.enable=false
     volumes:
@@ -144,7 +161,7 @@ services:
     image: ghcr.io/mailu/rspamd:${MAILU_VERSION}
     hostname: antispam
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file: stack.env
     labels:
       - traefik.enable=false
     volumes:
@@ -164,7 +181,7 @@ services:
   webmail:
     image: ghcr.io/mailu/webmail:${MAILU_VERSION}
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file: stack.env
     labels:
       - traefik.enable=false
     networks:
@@ -176,19 +193,3 @@ services:
       - front
     dns:
       - 172.26.0.254
-
-networks:
-  default:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.26.0.0/24
-  webmail:
-    driver: bridge
-  noinet:
-    driver: bridge
-    internal: true
-  traefik:
-    name: traefik
-    external: true
