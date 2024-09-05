@@ -3,7 +3,7 @@ services:
     image: httpd:alpine
     restart: unless-stopped
     volumes:
-      - ./bergaufboardab.de:/usr/local/apache2/htdocs/
+      - ${REPO_ROOT}/dockerfiles/bergaufboardab.de:/usr/local/apache2/htdocs/
     networks:
       - traefik
     labels:
@@ -19,7 +19,7 @@ services:
     image: httpd:alpine
     restart: unless-stopped
     volumes:
-      - ./patz.app:/usr/local/apache2/htdocs/
+      - ${REPO_ROOT}/dockerfiles/patz.app:/usr/local/apache2/htdocs/
     networks:
       - traefik
     labels:
@@ -35,7 +35,7 @@ services:
     image: httpd:alpine
     restart: unless-stopped
     volumes:
-      - ./patz.family:/usr/local/apache2/htdocs/
+      - ${REPO_ROOT}/dockerfiles/patz.family:/usr/local/apache2/htdocs/
     networks:
       - traefik
     labels:
