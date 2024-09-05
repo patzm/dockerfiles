@@ -11,11 +11,10 @@ services:
   portainer:
     image: portainer/portainer-ee:2.20.3
     restart: unless-stopped
-    command: -H unix:///var/run/docker.sock --data=/mnt/ssd-1tb/docker/portainer
+    command: -H unix:///var/run/docker.sock
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - unused_data:/data
-      - /mnt/ssd-1tb/docker/portainer:/mnt/ssd-1tb/docker/portainer
+      - /mnt/ssd-1tb/docker/portainer:/data
     networks:
       - auth_internal
       - traefik
