@@ -8,7 +8,9 @@ networks:
     name: traefik
     external: true
 
+
 services:
+
   wg-sites:
     image: lscr.io/linuxserver/wireguard:${WIREGUARD_SITES_TAG:-latest}
     restart: unless-stopped

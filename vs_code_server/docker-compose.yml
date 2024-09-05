@@ -5,7 +5,9 @@ networks:
     name: traefik
     external: true
 
+
 services:
+
   code_server:
     image: codercom/code-server:${CODE_SERVER_TAG:-latest}
     restart: unless-stopped

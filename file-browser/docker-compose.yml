@@ -1,4 +1,16 @@
+volumes:
+  srv:
+
+networks:
+  auth_internal:
+    external: true
+  traefik:
+    name: traefik
+    external: true
+
+
 services:
+
   file_browser:
     image: filebrowser/filebrowser:v2.25.0
     restart: unless-stopped
@@ -22,16 +34,3 @@ services:
       - "traefik.http.routers.file-browser.tls.domains[0].main=patz.app"
       - "traefik.http.routers.file-browser.tls.domains[0].sans=files.patz.app"
       - "traefik.http.services.file-browser.loadbalancer.server.port=80"
-
-volumes:
-  srv:
-
-networks:
-  auth_internal:
-    external: true
-  traefik:
-    name: traefik
-    external: true
-
-
-

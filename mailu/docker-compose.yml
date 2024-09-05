@@ -1,3 +1,20 @@
+networks:
+  default:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.26.0.0/24
+  webmail:
+    driver: bridge
+  noinet:
+    driver: bridge
+    internal: true
+  traefik:
+    name: traefik
+    external: true
+
+
 services:
 
   # External dependencies
@@ -176,19 +193,3 @@ services:
       - front
     dns:
       - 172.26.0.254
-
-networks:
-  default:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.26.0.0/24
-  webmail:
-    driver: bridge
-  noinet:
-    driver: bridge
-    internal: true
-  traefik:
-    name: traefik
-    external: true

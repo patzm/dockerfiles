@@ -3,10 +3,13 @@ networks:
     name: traefik
     external: true
 
+
 volumes:
   transcode:
 
+
 services:
+
   plex:
     image: plexinc/pms-docker:plexpass
     restart: unless-stopped

@@ -21,4 +21,3 @@ services:
       - traefik.http.routers.home-assistant.tls.domains[0].main=patz.app
       - traefik.http.routers.home-assistant.tls.domains[0].sans=home.patz.app
       - traefik.http.services.home-assistant.loadbalancer.server.port=8123
-

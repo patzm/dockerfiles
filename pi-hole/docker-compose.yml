@@ -5,7 +5,9 @@ networks:
     name: traefik
     external: true
 
+
 services:
+
   pihole:
     image: pihole/pihole:${PIHOLE_TAG:-latest}
     restart: unless-stopped

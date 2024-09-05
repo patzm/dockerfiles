@@ -1,6 +1,7 @@
 volumes:
   redis:
 
+
 networks:
   auth_internal:
     external: true
