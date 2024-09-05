@@ -38,7 +38,7 @@ services:
       - ${MOUNT_DATA}:/data
     networks:
       - traefik
-    env_file: stack.env
+    env_file: ../stack.env
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.patz-nc-websecure.entrypoints=websecure"
@@ -69,7 +69,7 @@ services:
       - ${MOUNT_DATA}:/data
     networks:
       - traefik
-    env_file: stack.env
+    env_file: ../stack.env
     environment:
       - "SIDECAR_CRON=1"
       - "CRON_PERIOD=*/15 * * * *"
@@ -85,7 +85,7 @@ services:
       - ${MOUNT_DATA}:/data
     networks:
       - traefik
-    env_file: tack.env
+    env_file: ../stack.env
     environment:
       - "SIDECAR_PREVIEWGEN=1"
       - "PREVIEWGEN_PERIOD=0 * * * *"
