@@ -52,10 +52,6 @@ http:
         regex: "^https?://(?:www\\.)?(.+)"
         replacement: "https://${1}"
         permanent: true
-    ssl-header:
-      headers:
-        customRequestHeaders:
-          X-Forwarded-Proto: https
     security-headers:
       headers:
         customResponseHeaders:
