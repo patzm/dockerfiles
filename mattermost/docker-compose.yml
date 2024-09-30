@@ -29,7 +29,7 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
       - POSTGRES_DB
-    env_file: stack.env
+    env_file: ../stack.env
     networks:
       - default
     labels:
@@ -65,7 +65,7 @@ services:
 
       # additional settings
       - MM_SERVICESETTINGS_SITEURL
-    env_file: stack.env
+    env_file: ../stack.env
     networks:
       - auth_internal
       - default
