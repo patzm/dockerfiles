@@ -21,7 +21,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.onlyoffice-ds-websecure.entrypoints=websecure"
       - "traefik.http.routers.onlyoffice-ds-websecure.rule=Host(`office.patz.app`)"
-      - "traefik.http.routers.onlyoffice-ds-websecure.middlewares=onlyoffice-ds-header,security-headers@file"
+      - "traefik.http.routers.onlyoffice-ds-websecure.middlewares=security-headers@file,onlyoffice-ds-header"
       - "traefik.http.routers.onlyoffice-ds-websecure.tls=true"
       - "traefik.http.routers.onlyoffice-ds-websecure.tls.certresolver=patz.app"
       - "traefik.http.routers.onlyoffice-ds-websecure.tls.domains[0].main=patz.app"
