@@ -29,7 +29,7 @@ services:
 
       - traefik.http.routers.s3.entrypoints=websecure
       - traefik.http.routers.s3.service=s3
-      - traefik.http.routers.s3.middlewares=ssl-security@file
+      - traefik.http.routers.s3.middlewares=security-headers@file
       - traefik.http.routers.s3.rule=Host(`s3.patz.app`)
       - traefik.http.routers.s3.tls=true
       - traefik.http.routers.s3.tls.certresolver=patz.app
