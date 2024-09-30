@@ -52,10 +52,24 @@ http:
         regex: "^https?://(?:www\\.)?(.+)"
         replacement: "https://${1}"
         permanent: true
-    ssl-header:
+    security-headers:
       headers:
+        customResponseHeaders:
+          X-Robots-Tag: "none,noarchive,nosnippet,notranslate,noimageindex"
+          server: ""
+        sslProxyHeaders:
+          X-Forwarded-Proto: https
         customRequestHeaders:
           X-Forwarded-Proto: https
+        referrerPolicy: "same-origin"
+        hostsProxyHeaders:
+          - "X-Forwarded-Host"
+        contentTypeNosniff: true
+        browserXssFilter: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsSeconds: 63072000
+        stsPreload: true
     keycloak:
       forwardAuth:
         address: "http://forward_auth:4181"

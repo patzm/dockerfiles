@@ -30,7 +30,7 @@ services:
       - "traefik.http.routers.maybe.rule=Host(`${APP_DOMAIN}`)"
       - "traefik.http.routers.maybe.tls=true"
       - "traefik.http.routers.maybe.tls.certresolver=patz.app"
-      - "traefik.http.routers.maybe.middlewares=ssl-header@file"
+      - "traefik.http.routers.maybe.middlewares=security-headers@file"
       - "traefik.http.routers.maybe.tls.domains[0].main=patz.app"
       - "traefik.http.routers.maybe.tls.domains[0].sans=${APP_DOMAIN}"
       - "traefik.http.services.maybe.loadbalancer.server.port=3000"

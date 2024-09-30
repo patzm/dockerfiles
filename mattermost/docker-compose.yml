@@ -85,7 +85,7 @@ services:
       - "traefik.http.routers.mm.rule=Host(`${DOMAIN}`)"
       - "traefik.http.routers.mm.tls=true"
       - "traefik.http.routers.mm.tls.certresolver=patz.app"
-      - "traefik.http.routers.mm.middlewares=ssl-header@file"
+      - "traefik.http.routers.mm.middlewares=security-headers@file"
       - "traefik.http.routers.mm.tls.domains[0].main=patz.app"
       - "traefik.http.routers.mm.tls.domains[0].sans=${DOMAIN}"
       - "traefik.http.services.mm.loadbalancer.server.port=${APP_PORT}"
