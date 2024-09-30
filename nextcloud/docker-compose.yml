@@ -43,7 +43,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.patz-nc-websecure.entrypoints=websecure"
       - "traefik.http.routers.patz-nc-websecure.rule=Host(`cloud.patz.app`)"
-      - "traefik.http.routers.patz-nc-websecure.middlewares=nc-dav-redirect,nc-wellknown-redirect,nc-no-index,ssl-header@file"
+      - "traefik.http.routers.patz-nc-websecure.middlewares=nc-dav-redirect,nc-wellknown-redirect,ssl-security@file"
       - "traefik.http.routers.patz-nc-websecure.tls=true"
       - "traefik.http.routers.patz-nc-websecure.tls.certresolver=patz.app"
       - "traefik.http.routers.patz-nc-websecure.tls.domains[0].main=patz.app"
@@ -57,8 +57,6 @@ services:
       - "traefik.http.middlewares.nc-wellknown-redirect.redirectregex.permanent=true"
       - "traefik.http.middlewares.nc-wellknown-redirect.redirectregex.regex=https?://([^/]*)(/.well-known[^#]*)"
       - "traefik.http.middlewares.nc-wellknown-redirect.redirectregex.replacement=https://$${1}/index.php$${2}"
-
-      - "traefik.http.middlewares.nc-no-index.headers.customResponseHeaders.X-Robots-Tag=noindex,nofollow"
 
   cron:
     image: crazymax/nextcloud:${NEXTCLOUD_TAG}
