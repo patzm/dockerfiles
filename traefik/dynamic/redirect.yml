@@ -1,5 +1,7 @@
 http:
+
   routers:
+
     redirect-https:
       entrypoints:
         - web
@@ -41,6 +43,7 @@ http:
      service: home_assistant
 
   middlewares:
+
     redirect-https:
       redirectScheme:
         scheme: https
@@ -61,6 +64,7 @@ http:
           - "X-Forwarded-User"
 
   services:
+
     noop:
       loadBalancer:
         servers:
