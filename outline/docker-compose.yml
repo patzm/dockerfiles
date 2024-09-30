@@ -29,7 +29,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.outline.entrypoints=websecure
-      - traefik.http.routers.outline.middlewares=ssl-header@file
+      - traefik.http.routers.outline.middlewares=ssl-security@file
       - traefik.http.routers.outline.rule=Host(`outline.patz.app`)
       - traefik.http.routers.outline.tls=true
       - traefik.http.routers.outline.tls.certresolver=patz.app
@@ -96,7 +96,7 @@ services:
 
       - traefik.http.routers.outline-data.entrypoints=websecure
       - traefik.http.routers.outline-data.service=outline-data
-      - traefik.http.routers.outline-data.middlewares=ssl-header@file
+      - traefik.http.routers.outline-data.middlewares=ssl-security@file
       - traefik.http.routers.outline-data.rule=Host(`outline-data.patz.app`)
       - traefik.http.routers.outline-data.tls=true
       - traefik.http.routers.outline-data.tls.certresolver=patz.app
