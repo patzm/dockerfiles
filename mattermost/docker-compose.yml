@@ -32,8 +32,6 @@ services:
     env_file: ../stack.env
     networks:
       - default
-    labels:
-      - traefik.enable=false
 
   mattermost:
     image: mattermost/mattermost-team-edition:${MATTERMOST_TAG}

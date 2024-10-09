@@ -52,8 +52,6 @@ services:
       interval: 10s
       timeout: 30s
       retries: 3
-    labels:
-      - traefik.enable=false
 
   postgres:
     image: postgres:14
@@ -72,8 +70,6 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_DB: outline
-    labels:
-      - traefik.enable=false
 
   storage:
     image: minio/minio

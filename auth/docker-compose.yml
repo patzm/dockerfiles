@@ -20,8 +20,6 @@ services:
     volumes:
       - /mnt/ssd-1tb/docker/auth/openldap/db:/var/lib/ldap
       - /mnt/ssd-1tb/docker/auth/openldap/config:/etc/ldap/slapd.d
-    labels:
-      - traefik.enable=false
 
   lam:
     image: jacksgt/ldap-account-manager
@@ -57,8 +55,6 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     networks:
       - auth_internal
-    labels:
-      - traefik.enable=false
 
   keycloak:
     image: quay.io/keycloak/keycloak:16.1.1

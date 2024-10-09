@@ -40,8 +40,6 @@ services:
       - LOG_CONFS=true
       - PEERS=vat,
       - SERVER_ALLOWEDIPS_PEER_vat=192.168.179.0/24
-    labels:
-      - traefik.enable=false
 
   wg-easy:
     image: weejewel/wg-easy:${WIREGUARD_EASY_TAG:-latest}

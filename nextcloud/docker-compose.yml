@@ -15,8 +15,6 @@ services:
     networks:
       - traefik
     env_file: ../stack.env
-    labels:
-      - traefik.enable=false
 
   redis:
     image: redis:4.0-alpine
@@ -25,8 +23,6 @@ services:
       - redis:/data
     networks:
       - traefik
-    labels:
-      - traefik.enable=false
 
   nextcloud:
     image: crazymax/nextcloud:${NEXTCLOUD_TAG:-24.0.5}
@@ -71,8 +67,6 @@ services:
     environment:
       - "SIDECAR_CRON=1"
       - "CRON_PERIOD=*/15 * * * *"
-    labels:
-      - traefik.enable=false
   
   preview_generator:
     image: crazymax/nextcloud:${NEXTCLOUD_TAG}
@@ -87,5 +81,3 @@ services:
     environment:
       - "SIDECAR_PREVIEWGEN=1"
       - "PREVIEWGEN_PERIOD=0 * * * *"
-    labels:
-      - traefik.enable=false

@@ -42,8 +42,6 @@ services:
       MYSQL_DATABASE: photoprism
       MYSQL_USER: photoprism
       MYSQL_PASSWORD: insecure
-    labels:
-      - traefik.enable=false
 
   photoprism:
     image: photoprism/photoprism:${PHOTOPRISM_TAG:-ubuntu}

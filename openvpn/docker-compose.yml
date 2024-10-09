@@ -47,8 +47,6 @@ services:
       - ./cert-dump/patz.app:/output:rw
     environment:
       - DOMAIN=vpn.patz.app
-    labels:
-      - traefik.enable=false
 
 volumes:
   config:
