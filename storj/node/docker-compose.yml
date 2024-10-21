@@ -12,7 +12,8 @@ services:
     restart: unless-stopped
     stop_grace_period: 300s
     ports:
-      - "${PORT}:28967"
+      - "${PORT}:28967/tcp"
+      - "${PORT}:28967/udp"
     networks:
       - traefik
     env_file:
