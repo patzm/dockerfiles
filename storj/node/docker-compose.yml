@@ -12,12 +12,12 @@ services:
     restart: unless-stopped
     stop_grace_period: 300s
     ports:
-      - "${SJ_PORT}:28967"
+      - "${PORT}:28967"
     env_file:
       - ../../stack.env
     environment:
       - AUTO_UPDATE=true
-      - ADDRESS=storj.patz.app:${SJ_PORT}
+      - ADDRESS=storj.patz.app:${PORT}
       - EMAIL=martin@patz.family
     user: "${UID}:${GID}"
     volumes:
