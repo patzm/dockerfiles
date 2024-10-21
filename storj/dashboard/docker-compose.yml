@@ -1,0 +1,25 @@
+
+networks:
+
+  traefik:
+    name: traefik
+    external: true
+
+
+services:
+
+  multinode:
+    image: storjlabs/multinode:latest
+    restart: unless-stopped
+    networks:
+      - traefik
+    volumes:
+      - /mnt/ssd-1tb/docker/storj/multinode/identity:/app/identity
+      - /mnt/ssd-1tb/docker/storj/multinode/config:/app/config
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.multinode.entrypoints=websecure
+      - traefik.http.routers.multinode.rule=Host(`dashboard.storj.patz.app`)
+      - traefik.http.routers.multinode.tls=true
+      - traefik.http.routers.multinode.tls.certresolver=patz.app
+      - traefik.http.services.multinode.loadbalancer.server.port=15002
