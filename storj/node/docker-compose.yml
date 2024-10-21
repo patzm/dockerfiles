@@ -19,7 +19,7 @@ services:
       - AUTO_UPDATE=true
       - ADDRESS=storj.patz.app:${PORT}
       - EMAIL=martin@patz.family
-    user: "${UID}:${GID}"
+    user: "${UID:-0}:${GID:-0}"
     volumes:
       - /mnt/${NODE}/storj/identity:/app/identity
       - /mnt/${NODE}/storj/config:/app/config
