@@ -29,7 +29,7 @@ services:
       - traefik.enable=true
       - traefik.http.routers.${NODE}.entrypoints=websecure
       - traefik.http.routers.${NODE}.rule=Host(`${NODE}.storj.patz.app`)
-      - traefik.http.routers.${NODE}.tls.enable=true
+      - traefik.http.routers.${NODE}.tls=true
       - traefik.http.routers.${NODE}.tls.certresolver=patz.app
       - traefik.http.routers.${NODE}.middlewares=keycloak@file
       - traefik.http.services.${NODE}.loadbalancer.server.port=14002
