@@ -13,6 +13,8 @@ services:
     stop_grace_period: 300s
     ports:
       - "${PORT}:28967"
+    networks:
+      - traefik
     env_file:
       - ../../stack.env
     environment:
