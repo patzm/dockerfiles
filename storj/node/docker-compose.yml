@@ -1,0 +1,32 @@
+networks:
+
+  traefik:
+    name: traefik
+    external: true
+
+
+services:
+
+  storagenode:
+    image: storjlabs/storagenode:latest
+    restart: unless-stopped
+    stop_grace_period: 300s
+    ports:
+      - "${SJ_PORT}:28967"
+    env_file:
+      - ../../stack.env
+    environment:
+      - AUTO_UPDATE=true
+      - ADDRESS=storj.patz.app:${SJ_PORT}
+      - EMAIL=martin@patz.family
+    user: "${UID}:${GID}"
+    volumes:
+      - /mnt/${NODE}/storj/identity:/app/identity
+      - /mnt/${NODE}/storj/config:/app/config
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.${NODE}.entrypoints=websecure
+      - traefik.http.routers.${NODE}.rule=Host(`storj.patz.app`) && PathPrefix(`/${NODE}`)
+      - traefik.http.routers.${NODE}.tls.certresolver=patz.app
+      - traefik.http.routers.${NODE}.middlewares=keycloak@file
+      - traefik.http.services.${NODE}.loadbalancer.server.port=14002
