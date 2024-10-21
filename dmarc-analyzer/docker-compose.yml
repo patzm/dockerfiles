@@ -1,4 +1,5 @@
 networks:
+
   internal:
   auth_internal:
     external: true

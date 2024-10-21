@@ -1,12 +1,17 @@
 volumes:
+
   redis:
 
+
 networks:
+
   traefik:
     name: traefik
     external: true
 
+
 services:
+
   db:
     image: mariadb:10.2
     restart: unless-stopped
