@@ -21,8 +21,8 @@ services:
       - EMAIL=martin@patz.family
     user: "${UID:-0}:${GID:-0}"
     volumes:
-      - /mnt/${NODE}/storj/identity:/app/identity
-      - /mnt/${NODE}/storj/config:/app/config
+      - ${DATA_ROOT}/identity:/app/identity
+      - ${DATA_ROOT}/config:/app/config
     labels:
       - traefik.enable=true
       - traefik.http.routers.${NODE}.entrypoints=websecure
