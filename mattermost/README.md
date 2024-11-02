@@ -9,6 +9,5 @@ An open-source communication platform, inspired by [Slack](https://slack.com/).
 ## Setup
 
 The following optional and _non-sensitive_ environment variables can be set:
-* `POSTGRES_TAG`: overwrites the Docker :whale: image tag of the database container.
 * `MATTERMOST_TAG`: overwrites the Docker :whale: image tag of the MatterMost container.
 * `POSTGRES_PASSWORD`: the password 🔑 for the database.
