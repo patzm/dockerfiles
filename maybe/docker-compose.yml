@@ -1,5 +1,7 @@
 networks:
+
   default:
+
   traefik:
     name: traefik
     external: true

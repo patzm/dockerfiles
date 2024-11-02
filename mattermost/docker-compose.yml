@@ -1,7 +1,10 @@
 networks:
+
   auth_internal:
     external: true
+
   default:
+
   traefik:
     name: traefik
     external: true

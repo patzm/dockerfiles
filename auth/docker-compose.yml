@@ -1,11 +1,15 @@
 networks:
+
   auth_internal:
     external: true
+
   traefik:
     name: traefik
     external: true
 
+
 services:
+
   openldap:
     image: osixia/openldap
     hostname: openldap

@@ -1,11 +1,13 @@
+volumes:
+
+  transcode:
+
+
 networks:
+
   traefik:
     name: traefik
     external: true
-
-
-volumes:
-  transcode:
 
 
 services:

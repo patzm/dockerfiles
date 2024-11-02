@@ -1,4 +1,5 @@
 networks:
+
   traefik:
     name: traefik
     external: true

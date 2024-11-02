@@ -1,4 +1,12 @@
+networks:
+
+  traefik:
+    name: traefik
+    external: true
+
+
 services:
+
   bergaufboardab:
     image: httpd:alpine
     restart: unless-stopped
@@ -40,8 +48,3 @@ services:
       - "traefik.http.routers.patz-family.entrypoints=websecure"
       - "traefik.http.routers.patz-family.tls.certresolver=patz.family"
       - "traefik.http.services.patz-family.loadbalancer.server.port=80"
-
-networks:
-  traefik:
-    name: traefik
-    external: true

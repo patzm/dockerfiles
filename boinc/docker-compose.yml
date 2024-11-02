@@ -1,4 +1,12 @@
+networks:
+
+  traefik:
+    name: traefik
+    external: true
+
+
 services:
+
   boinc:
     image: boinc/client:${BOINC_TAG}
     container_name: boinc
@@ -22,8 +30,3 @@ services:
       - "traefik.http.routers.boinc.tls=true"
       - "traefik.http.routers.boinc.tls.certresolver=patz.app"
       - "traefik.http.services.boinc.loadbalancer.server.port=80"
-
-networks:
-  traefik:
-    name: traefik
-    external: true

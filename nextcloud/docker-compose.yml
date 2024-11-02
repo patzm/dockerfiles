@@ -73,7 +73,7 @@ services:
     environment:
       - "SIDECAR_CRON=1"
       - "CRON_PERIOD=*/15 * * * *"
-  
+
   preview_generator:
     image: crazymax/nextcloud:${NEXTCLOUD_TAG}
     restart: unless-stopped

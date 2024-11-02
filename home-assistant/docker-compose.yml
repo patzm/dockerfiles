@@ -1,7 +1,9 @@
 networks:
+
   traefik:
     name: traefik
     external: true
+
 
 services:
   homeassistant:

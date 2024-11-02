@@ -1,11 +1,15 @@
 volumes:
+
   redis:
 
 
 networks:
+
   auth_internal:
     external: true
+
   outline:
+
   traefik:
     name: traefik
     external: true
@@ -66,7 +70,7 @@ services:
       interval: 30s
       timeout: 60s
       retries: 5
-      start_period: 80s  
+      start_period: 80s
     environment:
       POSTGRES_USER: user
       POSTGRES_DB: outline

@@ -1,4 +1,21 @@
+volumes:
+  data:
+  db:
+  fonts:
+  lib:
+  logs:
+  rabbitmq:
+  redis:
+
+networks:
+
+  traefik:
+    name: traefik
+    external: true
+
+
 services:
+
   document:
     image: onlyoffice/documentserver:${ONLYOFFICE_TAG:-7.2.0}
     restart: unless-stopped
@@ -26,17 +43,3 @@ services:
       - "traefik.http.routers.onlyoffice-ds-websecure.tls.certresolver=patz.app"
       - "traefik.http.services.onlyoffice-ds.loadbalancer.server.port=80"
       - "traefik.http.middlewares.onlyoffice-ds-header.headers.referrerPolicy=no-referrer"
-
-volumes:
-  data:
-  db:
-  fonts:
-  lib:
-  logs:
-  rabbitmq:
-  redis:
-
-networks:
-  traefik:
-    name: traefik
-    external: true

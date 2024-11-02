@@ -1,9 +1,11 @@
 networks:
+
   sites:
     driver: bridge
     ipam:
       config:
         - subnet: 172.19.0.0/24
+
   traefik:
     name: traefik
     external: true

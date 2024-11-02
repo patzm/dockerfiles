@@ -4,15 +4,19 @@ volumes:
 
 
 networks:
+
   default:
+
   auth_internal:
     external: true
+
   traefik:
     name: traefik
     external: true
 
 
 services:
+
   mariadb:
     image: mariadb:10.8.2
     restart: unless-stopped

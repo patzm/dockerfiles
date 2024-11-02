@@ -1,3 +1,12 @@
+networks:
+
+  default:
+
+  traefik:
+    name: traefik
+    external: true
+
+
 services:
 
   otrecorder:
@@ -57,11 +66,5 @@ services:
       - "traefik.http.routers.owntracks-frontend.tls.certresolver=patz.app"
       - "traefik.http.routers.owntracks-frontend.tls.domains[0].main=patz.app"
       - "traefik.http.routers.owntracks-frontend.tls.domains[0].sans=owntracks.patz.app"
-      - "traefik.http.services.owntracks-frontend.loadbalancer.server.port=80"      
+      - "traefik.http.services.owntracks-frontend.loadbalancer.server.port=80"
       - "traefik.http.routers.owntracks-frontend.middlewares=keycloak@file"
-
-networks:
-  default:
-  traefik:
-    name: traefik
-    external: true

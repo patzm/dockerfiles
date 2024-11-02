@@ -1,9 +1,17 @@
+volumes:
+
+  config:
+
+
 networks:
+
   traefik:
     name: traefik
     external: true
 
+
 services:
+
   openvpn:
     restart: unless-stopped
     build: .
@@ -45,6 +53,3 @@ services:
       - ./cert-dump/patz.app:/output:rw
     environment:
       - DOMAIN=vpn.patz.app
-
-volumes:
-  config:

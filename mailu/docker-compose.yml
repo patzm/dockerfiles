@@ -1,15 +1,19 @@
 networks:
+
   default:
     driver: bridge
     ipam:
       driver: default
       config:
         - subnet: 172.26.0.0/24
+
   webmail:
     driver: bridge
+
   noinet:
     driver: bridge
     internal: true
+
   traefik:
     name: traefik
     external: true

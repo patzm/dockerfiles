@@ -1,14 +1,19 @@
+volumes:
+  # unused, mounted to prevent anonymous volumes
+  pgdata:
+
+
 networks:
+
   auth_internal:
     external: true
+
   backend:
+
   traefik:
     name: traefik
     external: true
 
-volumes:
-  # unused, mounted to prevent anonymous volumes
-  pgdata:
 
 x-op-restart-policy: &restart_policy
   restart: unless-stopped
@@ -34,7 +39,9 @@ x-op-app: &app
     - /mnt/ssd-1tb/docker/openproject/opdata:/var/openproject/assets
     - pgdata:/var/openproject/pgdata
 
+
 services:
+
   db:
     image: postgres:13
     <<: *restart_policy
