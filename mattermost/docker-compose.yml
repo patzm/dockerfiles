@@ -63,7 +63,7 @@ services:
       - MM_SQLSETTINGS_DATASOURCE=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable&connect_timeout=10
 
       # necessary for bleve
-      - MM_BLEVESETTINGS_INDEXDIR
+      - MM_BLEVESETTINGS_INDEXDIR=/mattermost/bleve-indexes
 
       # additional settings
       - MM_SERVICESETTINGS_SITEURL=https://${DOMAIN}
