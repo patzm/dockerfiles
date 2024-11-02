@@ -10,7 +10,7 @@ networks:
 services:
 
   postgres:
-    image: postgres:${POSTGRES_TAG}
+    image: postgres:13-alpine
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
