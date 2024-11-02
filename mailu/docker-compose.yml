@@ -86,7 +86,6 @@ services:
       - "traefik.http.routers.mailu-front.tls.domains[1].sans=mail.patz.app,smtp.patz.app,imap.patz.app"
       - "traefik.http.routers.mailu-front.tls.domains[2].main=whynot.holdings"
       - "traefik.http.routers.mailu-front.tls.domains[2].sans=mail.whynot.holdings,smtp.whynot.holdings,imap.whynot.holdings"
-      - "traefik.http.routers.mailu-front.service=mailu-front"
       - "traefik.http.services.mailu-front.loadbalancer.server.port=80"
 
   admin:

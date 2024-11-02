@@ -29,6 +29,5 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.file-browser.rule=Host(`files.patz.app`)"
       - "traefik.http.routers.file-browser.entrypoints=websecure"
-      - "traefik.http.routers.file-browser.service=file-browser"
       - "traefik.http.routers.file-browser.tls.certresolver=patz.app"
       - "traefik.http.services.file-browser.loadbalancer.server.port=80"

@@ -28,7 +28,6 @@ services:
       - traefik.enable=true
 
       - traefik.http.routers.s3.entrypoints=websecure
-      - traefik.http.routers.s3.service=s3
       - traefik.http.routers.s3.middlewares=security-headers@file
       - traefik.http.routers.s3.rule=Host(`s3.patz.app`)
       - traefik.http.routers.s3.tls=true
@@ -38,7 +37,6 @@ services:
       - traefik.http.services.s3.loadbalancer.server.port=9000
 
       - traefik.http.routers.s3-admin.entrypoints=websecure
-      - traefik.http.routers.s3-admin.service=s3-admin
       - traefik.http.routers.s3-admin.rule=Host(`s3-admin.patz.app`)
       - traefik.http.routers.s3-admin.tls=true
       - traefik.http.routers.s3-admin.tls.certresolver=patz.app

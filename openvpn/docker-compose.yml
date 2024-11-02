@@ -29,13 +29,11 @@ services:
       - "traefik.enable=true"
       - "traefik.tcp.routers.openvpn-config.entrypoints=websecure"
       - "traefik.tcp.routers.openvpn-config.rule=HostSNI(`vpn.patz.app`)"
-      - "traefik.tcp.routers.openvpn-config.service=openvpn-config"
       - "traefik.tcp.routers.openvpn-config.tls=true"
       - "traefik.tcp.routers.openvpn-config.tls.passthrough=true"
       - "traefik.tcp.services.openvpn-config.loadbalancer.server.port=943"
       - "traefik.tcp.routers.openvpn.entrypoints=websecure"
       - "traefik.tcp.routers.openvpn.rule=HostSNI(`*`)"
-      - "traefik.tcp.routers.openvpn.service=openvpn"
       - "traefik.tcp.services.openvpn.loadbalancer.server.port=443"
 
   certdumper:
@@ -50,4 +48,3 @@ services:
 
 volumes:
   config:
-

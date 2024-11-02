@@ -89,7 +89,6 @@ services:
 #      - traefik.http.routers.ddns.tls=true
 #      - traefik.http.routers.ddns.tls.certresolver=patz.app
 #      - traefik.http.routers.ddns.middlewares=keycloak@file
-#      - traefik.http.routers.ddns.service=ddns
 #      - traefik.http.services.ddns.loadbalancer.server.port=8000
 
   whoami:
