@@ -13,7 +13,7 @@ Upload the `keycloak.env` file into Portainer and populate the environment.
 
 Set the following (sensitive) environment variables in Portainer:
 - `LDAP_ADMIN_PASSWORD`
-- `DB_PASSWORD` and `POSTGRES_PASSWORD` (must be the same)
+- `DB_PASSWORD`
 - `KEYCLOAK_ADMIN_PASSWORD`: this is the initial password for the `admin` user. It can be changed later.
 
 The values should be wrapped in quotes (`"` or `'`).

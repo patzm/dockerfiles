@@ -1,14 +1,12 @@
+SHELL := /bin/bash
+
 COMPOSE_TAG=v0.2
-COMPOSE_CMD=. /mnt/ssd-1tb/docker/auth/secrets.env && \
-	docker run -it --rm \
-		-v /var/run/docker.sock:/var/run/docker.sock \
-		-v $(CURDIR):$(CURDIR) \
-		-e LDAP_ADMIN_PASSWORD="${ADMIN_PASSWORD}" \
-		-e DB_PASSWORD="${DB_PASSWORD}" \
-		-e POSTGRES_PASSWORD="${DB_PASSWORD}" \
-		-e KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD} \
-		patzm/compose:${COMPOSE_TAG} \
-		$(CURDIR)
+COMPOSE_CMD=docker run -it --rm \
+	--env-file /mnt/ssd-1tb/docker/auth/secrets.env \
+	-v /var/run/docker.sock:/var/run/docker.sock \
+	-v $(CURDIR):$(CURDIR) \
+	patzm/compose:${COMPOSE_TAG} \
+	$(CURDIR)
 
 compose:
 	$(COMPOSE_CMD) $(ACTION)
