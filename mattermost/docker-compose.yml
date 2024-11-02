@@ -20,7 +20,7 @@ services:
       - /tmp
       - /var/run/postgresql
     volumes:
-      - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data
+      - /mnt/ssd-1tb/docker/mattermost/db/var/lib/postgresql/data:/var/lib/postgresql/data
     environment:
       # timezone inside container
       - TZ
@@ -44,12 +44,14 @@ services:
     tmpfs:
       - /tmp
     volumes:
-      - ${MATTERMOST_CONFIG_PATH}:/mattermost/config:rw
-      - ${MATTERMOST_DATA_PATH}:/mattermost/data:rw
-      - ${MATTERMOST_LOGS_PATH}:/mattermost/logs:rw
-      - ${MATTERMOST_PLUGINS_PATH}:/mattermost/plugins:rw
-      - ${MATTERMOST_CLIENT_PLUGINS_PATH}:/mattermost/client/plugins:rw
-      - ${MATTERMOST_BLEVE_INDEXES_PATH}:/mattermost/bleve-indexes:rw
+      ## Inside the container the uid and gid is 2000. The folder owner can be set with
+      ## `sudo chown -R 2000:2000 ./volumes/app/mattermost`.
+      - /mnt/ssd-1tb/docker/mattermost/config:/mattermost/config:rw
+      - /mnt/ssd-1tb/docker/mattermost/data:/mattermost/data:rw
+      - /mnt/ssd-1tb/docker/mattermost/logs:/mattermost/logs:rw
+      - /mnt/ssd-1tb/docker/mattermost/plugins:/mattermost/plugins:rw
+      - /mnt/ssd-1tb/docker/mattermost/client/plugins:/mattermost/client/plugins:rw
+      - /mnt/ssd-1tb/docker/mattermost/bleve-indexes:/mattermost/bleve-indexes:rw
     environment:
       # timezone inside container
       - TZ
