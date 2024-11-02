@@ -29,7 +29,9 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
       - POSTGRES_DB
-    env_file: ../stack.env
+    env_file:
+      - ../stack.env
+      - .env
     networks:
       - default
 
@@ -65,7 +67,10 @@ services:
 
       # additional settings
       - MM_SERVICESETTINGS_SITEURL
-    env_file: ../stack.env
+      - MM_CALLS_GROUP_CALLS_ALLOWED=true
+    env_file:
+      - ../stack.env
+      - .env
     networks:
       - auth_internal
       - default
