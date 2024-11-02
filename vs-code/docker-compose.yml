@@ -25,7 +25,5 @@ services:
       - traefik.http.routers.vs-code.rule=Host(`code.patz.app`)
       - traefik.http.routers.vs-code.entrypoints=websecure
       - traefik.http.routers.vs-code.tls.certresolver=patz.app
-      - traefik.http.routers.vs-code.tls.domains[0].main=patz.app
-      - traefik.http.routers.vs-code.tls.domains[0].sans=code.patz.app
       - traefik.http.routers.vs-code.middlewares=keycloak@file
       - traefik.http.services.vs-code.loadbalancer.server.port=8080

@@ -65,6 +65,4 @@ services:
       - traefik.http.routers.wireguard.entrypoints=websecure
       - traefik.http.routers.wireguard.rule=Host(`wg.patz.app`)
       - traefik.http.routers.wireguard.tls.certresolver=patz.app
-      - traefik.http.routers.wireguard.tls.domains[0].main=patz.app
-      - traefik.http.routers.wireguard.tls.domains[0].sans=wg.patz.app
       - traefik.http.services.wireguard.loadbalancer.server.port=51821

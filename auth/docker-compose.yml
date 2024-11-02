@@ -39,8 +39,6 @@ services:
       - traefik.http.routers.auth-lam.rule=Host(`iam.patz.app`)
       - traefik.http.routers.auth-lam.tls=true
       - traefik.http.routers.auth-lam.tls.certresolver=patz.app
-      - traefik.http.routers.auth-lam.tls.domains[0].main=patz.app
-      - traefik.http.routers.auth-lam.tls.domains[0].sans=iam.patz.app
       - traefik.http.services.auth-lam.loadbalancer.server.port=8080
       - traefik.http.routers.auth-lam.middlewares=keycloak@file
 
@@ -79,6 +77,4 @@ services:
       - traefik.http.routers.auth-keycloak.rule=Host(`keycloak.patz.app`)
       - traefik.http.routers.auth-keycloak.tls=true
       - traefik.http.routers.auth-keycloak.tls.certresolver=patz.app
-      - traefik.http.routers.auth-keycloak.tls.domains[0].main=patz.app
-      - traefik.http.routers.auth-keycloak.tls.domains[0].sans=keycloak.patz.app
       - traefik.http.services.auth-keycloak.loadbalancer.server.port=8080

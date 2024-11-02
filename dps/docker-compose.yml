@@ -25,7 +25,5 @@ services:
       - traefik.http.routers.dps.rule=Host(`proxy.patz.app`)
       - traefik.http.routers.dps.tls=true
       - traefik.http.routers.dps.tls.certresolver=patz.app
-      - traefik.http.routers.dps.tls.domains[0].main=patz.app
-      - traefik.http.routers.dps.tls.domains[0].sans=proxy.patz.app
       - traefik.http.routers.dps.middlewares=keycloak@file
       - traefik.http.services.dps.loadbalancer.server.port=5380

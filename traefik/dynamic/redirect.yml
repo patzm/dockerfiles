@@ -25,10 +25,6 @@ http:
         - keycloak
       tls:
         certResolver: patz.app
-        domains:
-          - main: "patz.app"
-            sans:
-              - "nas.patz.app"
       service: nas
     home-assistant:
      entrypoints:
@@ -36,10 +32,6 @@ http:
      rule: "Host(`home.patz.app`)"
      tls:
        certResolver: patz.app
-       domains:
-         - main: "patz.app"
-           sans:
-             - "home.patz.app"
      service: home_assistant
 
   middlewares:

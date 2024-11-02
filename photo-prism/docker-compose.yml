@@ -109,6 +109,4 @@ services:
       - "traefik.http.routers.photo-prism.rule=Host(`pictures.patz.app`)"
       - "traefik.http.routers.photo-prism.tls=true"
       - "traefik.http.routers.photo-prism.tls.certresolver=patz.app"
-      - "traefik.http.routers.photo-prism.tls.domains[0].main=patz.app"
-      - "traefik.http.routers.photo-prism.tls.domains[0].sans=pictures.patz.app"
       - "traefik.http.services.photo-prism.loadbalancer.server.port=2342"

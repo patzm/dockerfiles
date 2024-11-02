@@ -56,11 +56,9 @@ services:
       - traefik.http.routers.forward-auth.rule=Host(`auth.patz.app`)
       - traefik.http.routers.forward-auth.tls=true
       - traefik.http.routers.forward-auth.tls.certresolver=patz.app
-      - traefik.http.routers.forward-auth.tls.domains[0].main=patz.app
-      - traefik.http.routers.forward-auth.tls.domains[0].sans=auth.patz.app
       - traefik.http.routers.forward-auth.middlewares=keycloak@file
       - traefik.http.services.forward-auth.loadbalancer.server.port=4181
-  
+
 #  ddns:
 #    image: qmcgaw/ddns-updater:v2.6.0
 #    restart: unless-stopped
@@ -90,8 +88,6 @@ services:
 #      - traefik.http.routers.ddns.rule=Host(`ddns.patz.app`)
 #      - traefik.http.routers.ddns.tls=true
 #      - traefik.http.routers.ddns.tls.certresolver=patz.app
-#      - traefik.http.routers.ddns.tls.domains[0].main=patz.app
-#      - traefik.http.routers.ddns.tls.domains[0].sans=ddns.patz.app
 #      - traefik.http.routers.ddns.middlewares=keycloak@file
 #      - traefik.http.routers.ddns.service=ddns
 #      - traefik.http.services.ddns.loadbalancer.server.port=8000
@@ -105,7 +101,5 @@ services:
       - "traefik.http.routers.whoami.rule=Host(`whoami.patz.app`)"
       - "traefik.http.routers.whoami.tls=true"
       - "traefik.http.routers.whoami.tls.certresolver=patz.app"
-      - "traefik.http.routers.whoami.tls.domains[0].main=patz.app"
-      - "traefik.http.routers.whoami.tls.domains[0].sans=whoami.patz.app"
     networks:
       - traefik

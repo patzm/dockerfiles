@@ -7,8 +7,4 @@ http:
         - keycloak@file
       tls:
         certResolver: patz.app
-        domains:
-          - main: "patz.app"
-            sans:
-              - "traefik.patz.app"
       service: api@internal

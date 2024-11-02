@@ -37,7 +37,4 @@ services:
       - "traefik.http.routers.plex.rule=Host(`plex.patz.app`)"
       - "traefik.http.routers.plex.tls=true"
       - "traefik.http.routers.plex.tls.certresolver=patz.app"
-      - "traefik.http.routers.plex.tls.domains[0].main=patz.app"
-      - "traefik.http.routers.plex.tls.domains[0].sans=plex.patz.app"
       - "traefik.http.services.plex.loadbalancer.server.port=32400"
-

@@ -11,8 +11,6 @@ services:
       - "traefik.http.routers.bergaufboardab.rule=Host(`bergaufboardab.de`)"
       - "traefik.http.routers.bergaufboardab.entrypoints=websecure"
       - "traefik.http.routers.bergaufboardab.tls.certresolver=bergaufboardab.de"
-      - "traefik.http.routers.bergaufboardab.tls.domains[0].main=bergaufboardab.de"
-      - "traefik.http.routers.bergaufboardab.tls.domains[0].sans=www.bergaufboardab.de"
       - "traefik.http.services.bergaufboardab.loadbalancer.server.port=80"
 
   patz.app:
@@ -27,8 +25,6 @@ services:
       - "traefik.http.routers.patz-app.rule=Host(`patz.app`)"
       - "traefik.http.routers.patz-app.entrypoints=websecure"
       - "traefik.http.routers.patz-app.tls.certresolver=patz.app"
-      - "traefik.http.routers.patz-app.tls.domains[0].main=patz.app"
-      - "traefik.http.routers.patz-app.tls.domains[0].sans=www.patz.app"
       - "traefik.http.services.patz-app.loadbalancer.server.port=80"
 
   patz.family:
@@ -43,8 +39,6 @@ services:
       - "traefik.http.routers.patz-family.rule=Host(`patz.family`)"
       - "traefik.http.routers.patz-family.entrypoints=websecure"
       - "traefik.http.routers.patz-family.tls.certresolver=patz.family"
-      - "traefik.http.routers.patz-family.tls.domains[0].main=patz.family"
-      - "traefik.http.routers.patz-family.tls.domains[0].sans=www.patz.family"
       - "traefik.http.services.patz-family.loadbalancer.server.port=80"
 
 networks:
