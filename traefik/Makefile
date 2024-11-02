@@ -7,6 +7,9 @@ COMPOSE_CMD=docker run -it --rm \
 	patzm/compose:${COMPOSE_TAG} \
 	$(CURDIR)
 
+compose:
+	$(COMPOSE_CMD) $(ACTION)
+
 up:
 	$(MAKE) compose ACTION="up -d --remove-orphans"
 
@@ -15,8 +18,5 @@ down:
 
 logs:
 	$(MAKE) compose ACTION="logs -f"
-
-compose:
-	$(COMPOSE_CMD) $(ACTION)
 
 .PHONY: up down logs compose

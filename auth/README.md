@@ -4,7 +4,7 @@
 
 ## Setup
 Create the internal network
-```shell
+```bash
 docker network create auth_internal
 ```
 can also be done with the `init.sh` script in the root of the repo.
@@ -19,17 +19,17 @@ Set the following (sensitive) environment variables in Portainer:
 The values should be wrapped in quotes (`"` or `'`).
 
 ## How to boot-strap without `docker-compose`
-```shell
-docker run -it --rm \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    -v $(pwd):$(pwd) \
-    -e LDAP_ADMIN_PASSWORD="${ADMIN_PASSWORD}" \
-    -e DB_PASSWORD="${DB_PASSWORD}" \
-    -e POSTGRES_PASSWORD="${DB_PASSWORD}" \
-    -e KEYCLOAK_ADMIN_PASSWORD=something-temporary \
-    patzm/compose \
-    $(pwd) up -d --remove-orphans
+To bring up / update the stack, simply run:
+
+```bash
+make up
 ```
+
+And to destroy it, accordingly
+```bash
+make down
+```
+
 
 ## Debugging
 If authentication issues arise, check the logs.
@@ -47,4 +47,3 @@ and restart the container.
 Wait for the initialization to complete.
 Once it has completed, you can uncomment that line again.
 Now start all dependent services again.
-
