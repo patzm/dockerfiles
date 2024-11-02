@@ -10,7 +10,7 @@ networks:
 services:
 
   postgres:
-    image: postgres:${POSTGRES_TAG}
+    image: postgres:13-alpine
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -20,7 +20,7 @@ services:
       - /tmp
       - /var/run/postgresql
     volumes:
-      - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data
+      - /mnt/ssd-1tb/docker/mattermost/db/var/lib/postgresql/data:/var/lib/postgresql/data
     environment:
       # timezone inside container
       - TZ
@@ -29,7 +29,9 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
       - POSTGRES_DB
-    env_file: ../stack.env
+    env_file:
+      - ../stack.env
+      - .env
     networks:
       - default
 
@@ -44,32 +46,37 @@ services:
     tmpfs:
       - /tmp
     volumes:
-      - ${MATTERMOST_CONFIG_PATH}:/mattermost/config:rw
-      - ${MATTERMOST_DATA_PATH}:/mattermost/data:rw
-      - ${MATTERMOST_LOGS_PATH}:/mattermost/logs:rw
-      - ${MATTERMOST_PLUGINS_PATH}:/mattermost/plugins:rw
-      - ${MATTERMOST_CLIENT_PLUGINS_PATH}:/mattermost/client/plugins:rw
-      - ${MATTERMOST_BLEVE_INDEXES_PATH}:/mattermost/bleve-indexes:rw
+      ## Inside the container the uid and gid is 2000. The folder owner can be set with
+      ## `sudo chown -R 2000:2000 ./volumes/app/mattermost`.
+      - /mnt/ssd-1tb/docker/mattermost/config:/mattermost/config:rw
+      - /mnt/ssd-1tb/docker/mattermost/data:/mattermost/data:rw
+      - /mnt/ssd-1tb/docker/mattermost/logs:/mattermost/logs:rw
+      - /mnt/ssd-1tb/docker/mattermost/plugins:/mattermost/plugins:rw
+      - /mnt/ssd-1tb/docker/mattermost/client/plugins:/mattermost/client/plugins:rw
+      - /mnt/ssd-1tb/docker/mattermost/bleve-indexes:/mattermost/bleve-indexes:rw
     environment:
       # timezone inside container
       - TZ
 
       # necessary Mattermost options/variables (see env.example)
-      - MM_SQLSETTINGS_DRIVERNAME
-      - MM_SQLSETTINGS_DATASOURCE
+      - MM_SQLSETTINGS_DRIVERNAME=postgres
+      - MM_SQLSETTINGS_DATASOURCE=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable&connect_timeout=10
 
       # necessary for bleve
       - MM_BLEVESETTINGS_INDEXDIR
 
       # additional settings
-      - MM_SERVICESETTINGS_SITEURL
-    env_file: ../stack.env
+      - MM_SERVICESETTINGS_SITEURL=https://${DOMAIN}
+      - MM_CALLS_GROUP_CALLS_ALLOWED=true
+    env_file:
+      - ../stack.env
+      - .env
     networks:
       - auth_internal
       - default
       - traefik
     expose:
-      - "${CALLS_PORT}"
+      - 8443  # calls
     healthcheck:
       test: "curl -f http://localhost:${APP_PORT}/api/v4/system/ping || bash -c 'kill -s 15 -1 && (sleep 10; kill -s 9 -1)'"
       interval: 30s
