@@ -59,15 +59,14 @@ services:
       - TZ
 
       # necessary Mattermost options/variables (see env.example)
-      - MM_SQLSETTINGS_DRIVERNAME
-      - MM_SQLSETTINGS_DATASOURCE
+      - MM_SQLSETTINGS_DRIVERNAME=postgres
       - MM_SQLSETTINGS_DATASOURCE=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable&connect_timeout=10
 
       # necessary for bleve
       - MM_BLEVESETTINGS_INDEXDIR
 
       # additional settings
-      - MM_SERVICESETTINGS_SITEURL
+      - MM_SERVICESETTINGS_SITEURL=https://${DOMAIN}
       - MM_CALLS_GROUP_CALLS_ALLOWED=true
     env_file:
       - ../stack.env
