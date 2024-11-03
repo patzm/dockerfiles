@@ -41,7 +41,7 @@ services:
       - "traefik.http.routers.owntracks-recorder-frontend.tls.certresolver=patz.app"
       - "traefik.http.routers.owntracks-recorder-frontend.tls.domains[0].main=patz.app"
       - "traefik.http.routers.owntracks-recorder-frontend.tls.domains[0].sans=owntracks-recorder.patz.app"
-      - "traefik.http.routers.owntracks-recorder-frontend.service=owntracks-recorder"
+      - "traefik.http.routers.owntracks-recorder-frontend.service=owntracks-recorder-frontend"
       - "traefik.http.routers.owntracks-recorder-frontend.middlewares=keycloak@file"
 
       - "traefik.http.services.owntracks-recorder.loadbalancer.server.port=8083"
