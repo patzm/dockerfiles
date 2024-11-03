@@ -22,12 +22,12 @@ The values should be wrapped in quotes (`"` or `'`).
 To bring up / update the stack, simply run:
 
 ```bash
-make up
+docker compose --env-file /mnt/ssd-1tb/docker/auth/secrets.env up -d
 ```
 
 And to destroy it, accordingly
 ```bash
-make down
+docker compose --env-file /mnt/ssd-1tb/docker/auth/secrets.env down -v --remove-orphans
 ```
 
 
