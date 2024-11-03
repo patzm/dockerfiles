@@ -95,6 +95,7 @@ services:
       - traefik.enable=true
 
       - traefik.http.routers.outline-data.entrypoints=websecure
+      - traefik.http.routers.outline-data.service=outline-data
       - traefik.http.routers.outline-data.middlewares=security-headers@file
       - traefik.http.routers.outline-data.rule=Host(`outline-data.patz.app`)
       - traefik.http.routers.outline-data.tls=true
@@ -104,6 +105,7 @@ services:
       - traefik.http.services.outline-data.loadbalancer.server.port=9000
 
       - traefik.http.routers.outline-data-admin.entrypoints=websecure
+      - traefik.http.routers.outline-data-admin.service=outline-data-admin
       - traefik.http.routers.outline-data-admin.rule=Host(`outline-data-admin.patz.app`)
       - traefik.http.routers.outline-data-admin.tls=true
       - traefik.http.routers.outline-data-admin.tls.certresolver=patz.app
