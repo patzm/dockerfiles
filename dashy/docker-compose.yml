@@ -1,0 +1,29 @@
+networks:
+
+  traefik:
+    name: traefik
+    external: true
+
+
+services:
+
+  dashy:
+    image: lissy93/dashy
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'node', '/app/services/healthcheck']
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      - /mnt/ssd-1tb/docker/dashy/my-config.yml:/app/user-data/conf.yml
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashy-patz-app.rule=Host(`patz.app`)"
+      - "traefik.http.routers.dashy-patz-app.entrypoints=websecure"
+      - "traefik.http.routers.dashy-patz-app.tls.certresolver=patz.app"
+      - "traefik.http.routers.dashy-patz-app.middlewares=keycloak@file"
+      - "traefik.http.services.dashy-patz-app.loadbalancer.server.port=8080"
