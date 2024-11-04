@@ -1,0 +1,23 @@
+networks:
+
+  traefik:
+    name: traefik
+    external: true
+
+
+services:
+
+  grobid:
+    image: lfoppiano/grobid:0.8.1
+    restart: unless-stopped
+    ulimits:
+      core: 0
+    networks:
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.grobid.rule=Host(`grobid.patz.app`)
+      - traefik.http.routers.grobid.entrypoints=websecure
+      - traefik.http.routers.grobid.tls.certresolver=patz.app
+      - traefik.http.services.grobid.loadbalancer.server.port=8070
