@@ -17,7 +17,7 @@ services:
       retries: 3
       start_period: 40s
     volumes:
-      - ./user-data/:/app/user-data/
+      - /mnt/ssd-1tb/docker/dashy/conf.yml:/app/conf.yml
     networks:
       - traefik
     labels:
