@@ -21,20 +21,6 @@ services:
       - "traefik.http.routers.bergaufboardab.tls.certresolver=bergaufboardab.de"
       - "traefik.http.services.bergaufboardab.loadbalancer.server.port=80"
 
-  patz.app:
-    image: httpd:alpine
-    restart: unless-stopped
-    volumes:
-      - ${REPO_ROOT}/www/patz.app:/usr/local/apache2/htdocs/
-    networks:
-      - traefik
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.patz-app.rule=Host(`patz.app`)"
-      - "traefik.http.routers.patz-app.entrypoints=websecure"
-      - "traefik.http.routers.patz-app.tls.certresolver=patz.app"
-      - "traefik.http.services.patz-app.loadbalancer.server.port=80"
-
   patz.family:
     image: httpd:alpine
     restart: unless-stopped
