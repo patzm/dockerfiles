@@ -17,7 +17,7 @@ services:
       retries: 3
       start_period: 40s
     volumes:
-      - ./conf.yml:/app/user-data/conf.yml
+      - ${PWD}/conf.yml:/app/user-data/conf.yml
     networks:
       - traefik
     labels:
