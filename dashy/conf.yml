@@ -66,6 +66,12 @@ sections:
         url: https://mail.patz.family
         target: sametab
         id: 0_1366_email
+      - title: DMARC Analyzer
+        description: checks and analyzes DMARC reports
+        icon: fas fa-envelopes-bulk
+        url: https://dmarc.patz.app
+        target: sametab
+        id: 0_1367_dmarc
       - title: Mattermost
         description: chat
         icon: hl-mattermost
