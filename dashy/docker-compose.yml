@@ -17,7 +17,7 @@ services:
       retries: 3
       start_period: 40s
     volumes:
-      - ./user-data:/app/user-data
+      - ./user-data/:/app/user-data/
     networks:
       - traefik
     labels:
