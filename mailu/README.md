@@ -11,6 +11,7 @@ Set the following (sensitive) environment variables:
   apt-get install pwgen
   pwgen 16 1
   ```
+* `API_TOKEN`: a random string of at least 3 characters. Use `pwgen`.
 
 Then upload the `mailu.env` file into Portainer and populate the environment.
 
