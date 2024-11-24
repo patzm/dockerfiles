@@ -80,19 +80,6 @@ services:
       default:
         ipv4_address: 172.26.0.254
 
-  certdumper:
-    image: ghcr.io/mailu/traefik-certdumper:${MAILU_VERSION}
-    restart: unless-stopped
-    dns:
-      - 172.26.0.254
-    environment:
-      - DOMAIN=${DOMAIN}
-      - TRAEFIK_VERSION=v2
-    volumes:
-      - "/mnt/ssd-1tb/docker/traefik/letsencrypt/patz.family:/traefik"
-      - "/mnt/ssd-1tb/docker/mailu/certs:/output"
-
-
   admin:
     image: ghcr.io/mailu/admin:${MAILU_VERSION}
     restart: unless-stopped
@@ -166,6 +153,11 @@ services:
     dns:
       - 172.26.0.254
 
+  # Optional services
+
+
+
+  # Webmail
   webmail:
     image: ghcr.io/mailu/webmail:${MAILU_VERSION}
     restart: unless-stopped
@@ -179,3 +171,16 @@ services:
       - front
     dns:
       - 172.26.0.254
+
+  # Certdumper from Traefik
+  certdumper:
+    image: ghcr.io/mailu/traefik-certdumper:${MAILU_VERSION}
+    restart: unless-stopped
+    dns:
+      - 172.26.0.254
+    environment:
+      - DOMAIN=${DOMAIN}
+      - TRAEFIK_VERSION=v2
+    volumes:
+      - "/mnt/ssd-1tb/docker/traefik/letsencrypt/patz.family:/traefik"
+      - "/mnt/ssd-1tb/docker/mailu/certs:/output"
