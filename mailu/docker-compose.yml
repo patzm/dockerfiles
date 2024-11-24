@@ -58,7 +58,6 @@ services:
       - "/mnt/ssd-1tb/docker/mailu/certs:/certs"
       - "/mnt/ssd-1tb/docker/mailu/overrides/nginx:/overrides:ro"
     depends_on:
-      - certdumper
       - resolver
     dns:
       - 172.26.0.254
