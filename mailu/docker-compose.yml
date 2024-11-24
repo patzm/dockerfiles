@@ -50,26 +50,26 @@ services:
       driver: journald
       options:
         tag: mailu-front
-    depends_on:
-      - certdumper
-      - resolver
+    ports:
+      - "127.0.0.1:25:25"
+      - "127.0.0.1:465:465"
+      - "127.0.0.1:587:587"
+      - "127.0.0.1:110:110"
+      - "127.0.0.1:995:995"
+      - "127.0.0.1:143:143"
+      - "127.0.0.1:993:993"
     networks:
       - default
       - traefik
       - webmail
-    dns:
-      - 172.26.0.254
-    ports:
-      - "25:25"
-      - "110:110"
-      - "143:143"
-      - "465:465"
-      - "587:587"
-      - "993:993"
-      - "995:995"
     volumes:
       - "/mnt/ssd-1tb/docker/mailu/certs:/certs"
       - "/mnt/ssd-1tb/docker/mailu/overrides/nginx:/overrides:ro"
+    depends_on:
+      - certdumper
+      - resolver
+    dns:
+      - 172.26.0.254
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.mailu-front.rule=Host(`mail.${DOMAIN}`) || Host(`mail.patz.app`) || Host(`mail.whynot.holdings`)"
