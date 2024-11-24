@@ -222,11 +222,11 @@ services:
       driver: journald
       options:
         tag: mailu-webmail
-    networks:
-      - webmail
     volumes:
       - "/mnt/ssd-1tb/docker/mailu/webmail:/data"
       - "/mnt/ssd-1tb/docker/mailu/overrides/roundcube:/overrides:ro"
+    networks:
+      - webmail
     depends_on:
       - front
     dns:
