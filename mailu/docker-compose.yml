@@ -32,26 +32,6 @@ services:
     dns:
       - 172.26.0.254
 
-  resolver:
-    image: ghcr.io/mailu/unbound:${MAILU_VERSION}
-    restart: unless-stopped
-    env_file: mailu.env
-    networks:
-      default:
-        ipv4_address: 172.26.0.254
-
-  certdumper:
-    image: ghcr.io/mailu/traefik-certdumper:${MAILU_VERSION}
-    restart: unless-stopped
-    dns:
-      - 172.26.0.254
-    environment:
-      - DOMAIN=${DOMAIN}
-      - TRAEFIK_VERSION=v2
-    volumes:
-      - "/mnt/ssd-1tb/docker/traefik/letsencrypt/patz.family:/traefik"
-      - "/mnt/ssd-1tb/docker/mailu/certs:/output"
-
   # Core services
   front:
     image: ghcr.io/mailu/nginx:${MAILU_VERSION}
@@ -91,6 +71,27 @@ services:
       - "traefik.http.routers.mailu-front.tls.domains[2].main=whynot.holdings"
       - "traefik.http.routers.mailu-front.tls.domains[2].sans=mail.whynot.holdings,smtp.whynot.holdings,imap.whynot.holdings"
       - "traefik.http.services.mailu-front.loadbalancer.server.port=80"
+
+  resolver:
+    image: ghcr.io/mailu/unbound:${MAILU_VERSION}
+    restart: unless-stopped
+    env_file: mailu.env
+    networks:
+      default:
+        ipv4_address: 172.26.0.254
+
+  certdumper:
+    image: ghcr.io/mailu/traefik-certdumper:${MAILU_VERSION}
+    restart: unless-stopped
+    dns:
+      - 172.26.0.254
+    environment:
+      - DOMAIN=${DOMAIN}
+      - TRAEFIK_VERSION=v2
+    volumes:
+      - "/mnt/ssd-1tb/docker/traefik/letsencrypt/patz.family:/traefik"
+      - "/mnt/ssd-1tb/docker/mailu/certs:/output"
+
 
   admin:
     image: ghcr.io/mailu/admin:${MAILU_VERSION}
