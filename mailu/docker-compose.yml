@@ -64,11 +64,16 @@ services:
     labels:
       - "traefik.enable=true"
 
+      # the second part is important to ensure Mailu can get certificates from letsencrypt for all hostnames
+      - "traefik.http.routers.mailu-web.rule=Host(`mail.${DOMAIN}`) || PathPrefix(`/.well-known/acme-challenge/`)"
+      - "traefik.http.routers.mailu-web.entrypoints=web"
+      - "traefik.http.services.mailu-web.loadbalancer.server.port=80"
+
       # HTTP Router for Webmail and Admin Interface
-      - "traefik.http.routers.mailu-http.rule=Host(`mail.${DOMAIN}`) || Host(`mail.patz.app`) || Host(`mail.whynot.holdings`)"
-      - "traefik.http.routers.mailu-http.entrypoints=websecure"
-      - "traefik.http.routers.mailu-http.tls.certresolver=${DOMAIN}"
-      - "traefik.http.services.mailu-http.loadbalancer.server.port=80"
+      - "traefik.tcp.routers.mailu-https.rule=HostSNI(`mail.${DOMAIN}`) || HostSNI(`mail.patz.app`) || HostSNI(`mail.whynot.holdings`)"
+      - "traefik.tcp.routers.mailu-https.entrypoints=websecure"
+      - "traefik.tcp.routers.mailu-https.tls.passthrough=true"
+      - "traefik.tcp.services.mailu-https.loadbalancer.server.port=443"
 
       # TCP Routers for Mail Protocols
 
