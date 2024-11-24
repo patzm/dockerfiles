@@ -43,7 +43,9 @@ services:
   front:
     image: ${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}nginx:${MAILU_VERSION:-2024.06}
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file:
+      - ../stack.env
+      - mailu.env
     logging:
       driver: journald
       options:
@@ -83,12 +85,14 @@ services:
 
   resolver:
     image: ${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}unbound:${MAILU_VERSION:-2024.06}
+    env_file:
+      - ../stack.env
+      - mailu.env
     logging:
       driver: journald
       options:
         tag: mailu-resolver
     restart: unless-stopped
-    env_file: mailu.env
     networks:
       default:
         ipv4_address: 172.26.0.254
@@ -96,7 +100,9 @@ services:
   admin:
     image: ${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}admin:${MAILU_VERSION:-2024.06}
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file:
+      - ../stack.env
+      - mailu.env
     logging:
       driver: journald
       options:
@@ -113,7 +119,9 @@ services:
   imap:
     image: ${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}dovecot:${MAILU_VERSION:-2024.06}
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file:
+      - ../stack.env
+      - mailu.env
     logging:
       driver: journald
       options:
@@ -134,7 +142,9 @@ services:
   smtp:
     image: ${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}postfix:${MAILU_VERSION:-2024.06}
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file:
+      - ../stack.env
+      - mailu.env
     logging:
       driver: journald
       options:
@@ -190,7 +200,9 @@ services:
     image: ${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}rspamd:${MAILU_VERSION:-2024.06}
     hostname: antispam
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file:
+      - ../stack.env
+      - mailu.env
     logging:
       driver: journald
       options:
@@ -217,7 +229,9 @@ services:
   webmail:
     image: ${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}webmail:${MAILU_VERSION:-2024.06}
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file:
+      - ../stack.env
+      - mailu.env
     logging:
       driver: journald
       options:
