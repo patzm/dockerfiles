@@ -17,6 +17,10 @@ networks:
     driver: bridge
     internal: true
 
+  fts_attachments:
+    driver: bridge
+    internal: true
+
   traefik:
     name: traefik
     external: true
@@ -103,11 +107,13 @@ services:
     volumes:
       - "/mnt/ssd-1tb/docker/mailu/mail:/mail"
       - "/mnt/ssd-1tb/docker/mailu/overrides/dovecot:/overrides:ro"
-    depends_on:
-      - front
-      - resolver
     networks:
       - default
+      - fts_attachments
+    depends_on:
+      - front
+      - fts_attachments
+      - resolver
     dns:
       - 172.26.0.254
 
@@ -136,6 +142,27 @@ services:
       - resolver
     dns:
       - 172.26.0.254
+
+  fts_attachments:
+    image: apache/tika:2.9.2.1-full
+    hostname: tika
+    logging:
+      driver: journald
+      options:
+        tag: mailu-tika
+    restart: unless-stopped
+    networks:
+      - fts_attachments
+    depends_on:
+      - resolver
+    dns:
+      - 172.26.0.254
+    healthcheck:
+      test: ["CMD-SHELL", "wget -nv -t1 -O /dev/null http://127.0.0.1:9998/tika || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   antispam:
     image: ghcr.io/mailu/rspamd:${MAILU_VERSION}
