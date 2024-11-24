@@ -195,12 +195,12 @@ services:
       driver: journald
       options:
         tag: mailu-antispam
-    volumes:
-      - "/mnt/ssd-1tb/docker/mailu/filter:/var/lib/rspamd"
-      - "/mnt/ssd-1tb/docker/mailu/overrides/rspamd:/etc/rspamd/override.d"
     networks:
       - default
       - oletools
+    volumes:
+      - "/mnt/ssd-1tb/docker/mailu/filter:/var/lib/rspamd"
+      - "/mnt/ssd-1tb/docker/mailu/overrides/rspamd:/overrides:ro"
     depends_on:
       - front
       - redis
