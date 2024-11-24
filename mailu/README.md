@@ -1,6 +1,8 @@
 # Mailu
 
 ## Setup
+Set the following environment variables:
+* `Domain`: the TLD
 
 Set the following (sensitive) environment variables:
 * `RELAYUSER`
