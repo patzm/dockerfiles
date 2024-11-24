@@ -153,8 +153,6 @@ services:
     volumes:
       - "/mnt/ssd-1tb/docker/mailu/mailqueue:/queue"
       - "/mnt/ssd-1tb/docker/mailu/overrides/postfix:/overrides:ro"
-    networks:
-      - default
     depends_on:
       - front
       - resolver
