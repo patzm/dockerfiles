@@ -10,6 +10,23 @@ entryPoints:
   websecure:
     address: ":443"
 
+  # Mailu EntryPoints
+  smtp:
+    address: ":25"
+  smtps:
+    address: ":465"
+  submission:
+    address: ":587"
+  pop3:
+    address: ":110"
+  pop3s:
+    address: ":995"
+  imap:
+    address: ":143"
+  imaps:
+    address: ":993"
+
+
 providers:
   docker:
     network: traefik

@@ -50,15 +50,6 @@ services:
       driver: journald
       options:
         tag: mailu-front
-    ports:
-      - "127.0.0.1:25:25"
-      - "127.0.0.1:465:465"
-      - "127.0.0.1:587:587"
-      - "127.0.0.1:110:110"
-      - "127.0.0.1:995:995"
-      - "127.0.0.1:143:143"
-      - "127.0.0.1:993:993"
-      # - "127.0.0.1:4190:4190" -> Sieve, not needed
     networks:
       - default
       - traefik
@@ -73,16 +64,63 @@ services:
       - 172.26.0.254
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mailu-front.rule=Host(`mail.${DOMAIN}`) || Host(`mail.patz.app`) || Host(`mail.whynot.holdings`)"
-      - "traefik.http.routers.mailu-front.entrypoints=websecure"
-      - "traefik.http.routers.mailu-front.tls.certresolver=${DOMAIN}"
-      - "traefik.http.routers.mailu-front.tls.domains[0].main=${DOMAIN}"
-      - "traefik.http.routers.mailu-front.tls.domains[0].sans=mail.${DOMAIN},smtp.${DOMAIN},imap.${DOMAIN}"
-      - "traefik.http.routers.mailu-front.tls.domains[1].main=patz.app"
-      - "traefik.http.routers.mailu-front.tls.domains[1].sans=mail.patz.app,smtp.patz.app,imap.patz.app"
-      - "traefik.http.routers.mailu-front.tls.domains[2].main=whynot.holdings"
-      - "traefik.http.routers.mailu-front.tls.domains[2].sans=mail.whynot.holdings,smtp.whynot.holdings,imap.whynot.holdings"
-      - "traefik.http.services.mailu-front.loadbalancer.server.port=80"
+
+      # HTTP Router for Webmail and Admin Interface
+      - "traefik.http.routers.mailu-http.rule=Host(`mail.${DOMAIN}`) || Host(`mail.patz.app`) || Host(`mail.whynot.holdings`)"
+      - "traefik.http.routers.mailu-http.entrypoints=websecure"
+      - "traefik.http.routers.mailu-http.tls.certresolver=${DOMAIN}"
+      - "traefik.http.services.mailu-http.loadbalancer.server.port=80"
+
+      # TCP Routers for Mail Protocols
+
+      # SMTP (Port 25) - Cannot reliably use HostSNI due to lack of SNI in many connections
+      - "traefik.tcp.routers.mailu-smtp.entrypoints=smtp"
+      - "traefik.tcp.routers.mailu-smtp.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.mailu-smtp.service=mailu-smtp"
+      - "traefik.tcp.routers.mailu-smtp.tls.passthrough=true"
+      - "traefik.tcp.services.mailu-smtp.loadbalancer.server.port=25"
+
+      # SMTPS (Port 465)
+      - "traefik.tcp.routers.mailu-smtps.entrypoints=smtps"
+      - "traefik.tcp.routers.mailu-smtps.rule=HostSNI(`mail.${DOMAIN}`, `mail.patz.app`, `mail.whynot.holdings`)"
+      - "traefik.tcp.routers.mailu-smtps.service=mailu-smtps"
+      - "traefik.tcp.routers.mailu-smtps.tls.passthrough=true"
+      - "traefik.tcp.services.mailu-smtps.loadbalancer.server.port=465"
+
+      # Submission (Port 587)
+      - "traefik.tcp.routers.mailu-submission.entrypoints=submission"
+      - "traefik.tcp.routers.mailu-submission.rule=HostSNI(`mail.${DOMAIN}`, `mail.patz.app`, `mail.whynot.holdings`)"
+      - "traefik.tcp.routers.mailu-submission.service=mailu-submission"
+      - "traefik.tcp.routers.mailu-submission.tls.passthrough=true"
+      - "traefik.tcp.services.mailu-submission.loadbalancer.server.port=587"
+
+      # IMAP (Port 143) - If needed
+      - "traefik.tcp.routers.mailu-imap.entrypoints=imap"
+      - "traefik.tcp.routers.mailu-imap.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.mailu-imap.service=mailu-imap"
+      - "traefik.tcp.routers.mailu-imap.tls.passthrough=true"
+      - "traefik.tcp.services.mailu-imap.loadbalancer.server.port=143"
+
+      # IMAPS (Port 993)
+      - "traefik.tcp.routers.mailu-imaps.entrypoints=imaps"
+      - "traefik.tcp.routers.mailu-imaps.rule=HostSNI(`mail.${DOMAIN}`, `mail.patz.app`, `mail.whynot.holdings`)"
+      - "traefik.tcp.routers.mailu-imaps.service=mailu-imaps"
+      - "traefik.tcp.routers.mailu-imaps.tls.passthrough=true"
+      - "traefik.tcp.services.mailu-imaps.loadbalancer.server.port=993"
+
+      # POP3 (Port 110) - If needed
+      - "traefik.tcp.routers.mailu-pop3.entrypoints=pop3"
+      - "traefik.tcp.routers.mailu-pop3.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.mailu-pop3.service=mailu-pop3"
+      - "traefik.tcp.routers.mailu-pop3.tls.passthrough=true"
+      - "traefik.tcp.services.mailu-pop3.loadbalancer.server.port=110"
+
+      # POP3S (Port 995)
+      - "traefik.tcp.routers.mailu-pop3s.entrypoints=pop3s"
+      - "traefik.tcp.routers.mailu-pop3s.rule=HostSNI(`mail.${DOMAIN}`, `mail.patz.app`, `mail.whynot.holdings`)"
+      - "traefik.tcp.routers.mailu-pop3s.service=mailu-pop3s"
+      - "traefik.tcp.routers.mailu-pop3s.tls.passthrough=true"
+      - "traefik.tcp.services.mailu-pop3s.loadbalancer.server.port=995"
 
   resolver:
     image: ${DOCKER_ORG:-ghcr.io/mailu}/${DOCKER_PREFIX:-}unbound:${MAILU_VERSION:-2024.06}
@@ -242,16 +280,3 @@ services:
       - webmail
     depends_on:
       - front
-
-  # Certdumper from Traefik
-  certdumper:
-    image: ghcr.io/mailu/traefik-certdumper:${MAILU_VERSION}
-    restart: unless-stopped
-    dns:
-      - 172.26.0.254
-    environment:
-      - DOMAIN=${DOMAIN}
-      - TRAEFIK_VERSION=v2
-    volumes:
-      - "/mnt/ssd-1tb/docker/traefik/letsencrypt/patz.family:/traefik"
-      - "/mnt/ssd-1tb/docker/mailu/certs:/output"

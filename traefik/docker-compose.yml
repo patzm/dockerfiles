@@ -27,6 +27,15 @@ services:
     ports:
       - 80:80
       - 443:443
+
+      # Mailu
+      - 25:25
+      - 465:465
+      - 587:587
+      - 110:110
+      - 995:995
+      - 143:143
+      - 993:993
     volumes:
       - "traefik:/tmp"
       - "/mnt/ssd-1tb/docker/traefik/letsencrypt:/letsencrypt"
