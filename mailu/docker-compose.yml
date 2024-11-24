@@ -229,8 +229,6 @@ services:
       - webmail
     depends_on:
       - front
-    dns:
-      - 172.26.0.254
 
   # Certdumper from Traefik
   certdumper:
