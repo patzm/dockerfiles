@@ -35,7 +35,9 @@ services:
   resolver:
     image: ghcr.io/mailu/unbound:${MAILU_VERSION}
     restart: unless-stopped
-    env_file: mailu.env
+    env_file:
+      - ../stack.env
+      - mailu.env
     networks:
       default:
         ipv4_address: 172.26.0.254
@@ -56,7 +58,9 @@ services:
   front:
     image: ghcr.io/mailu/nginx:${MAILU_VERSION}
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file:
+      - ../stack.env
+      - mailu.env
     logging:
       driver: json-file
     depends_on:
@@ -95,7 +99,9 @@ services:
   admin:
     image: ghcr.io/mailu/admin:${MAILU_VERSION}
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file:
+      - ../stack.env
+      - mailu.env
     volumes:
       - "/mnt/ssd-1tb/docker/mailu/data:/data"
       - "/mnt/ssd-1tb/docker/mailu/dkim:/dkim"
@@ -108,7 +114,9 @@ services:
   imap:
     image: ghcr.io/mailu/dovecot:${MAILU_VERSION}
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file:
+      - ../stack.env
+      - mailu.env
     volumes:
       - "/mnt/ssd-1tb/docker/mailu/mail:/mail"
       - "/mnt/ssd-1tb/docker/mailu/overrides/dovecot:/overrides:ro"
@@ -123,7 +131,9 @@ services:
   smtp:
     image: ghcr.io/mailu/postfix:${MAILU_VERSION}
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file:
+      - ../stack.env
+      - mailu.env
     volumes:
       - "/mnt/ssd-1tb/docker/mailu/mailqueue:/queue"
       - "/mnt/ssd-1tb/docker/mailu/overrides/postfix:/overrides:ro"
@@ -150,7 +160,9 @@ services:
     image: ghcr.io/mailu/rspamd:${MAILU_VERSION}
     hostname: antispam
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file:
+      - ../stack.env
+      - mailu.env
     volumes:
       - "/mnt/ssd-1tb/docker/mailu/filter:/var/lib/rspamd"
       - "/mnt/ssd-1tb/docker/mailu/overrides/rspamd:/etc/rspamd/override.d"
@@ -168,7 +180,9 @@ services:
   webmail:
     image: ghcr.io/mailu/webmail:${MAILU_VERSION}
     restart: unless-stopped
-    env_file: ../stack.env
+    env_file:
+      - ../stack.env
+      - mailu.env
     networks:
       - webmail
     volumes:
