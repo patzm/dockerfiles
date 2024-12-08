@@ -9,26 +9,27 @@ PORT=$2
 AUTH_TOKEN=$3
 STORJ_INSTANCE=$4
 
+# Constants
+_SHARED_STORJ_DIR=/mnt/ssd-256gb/docker/storj
+STORJ_SECRETS="${_SHARED_STORJ_DIR}/secrets.env"
+
+# Sanity checks
 if [ -z "$NODE" ] || [ -z "$PORT" ] || [ -z "$AUTH_TOKEN" ] || [ -z "$STORJ_INSTANCE" ]; then
   echo "Error: NODE, PORT, AUTH_TOKEN, and STORJ_INSTANCE arguments are required."
   exit 1
 fi
 
-_SHARED_STORJ_DIR=/mnt/ssd-256gb/docker/storj
-STORJ_SECRETS="${_SHARED_STORJ_DIR}/secrets.env"
-NODE_DIR="/mnt/${NODE}"
-DATA_ROOT=${NODE_DIR}/storj
-
-if [ ! -d "${NODE_DIR}" ]; then
-  echo "Error: ${NODE_DIR} does not exist."
-  exit 1
-fi
-
+# Check if the pool with the matching node name exists
+zpool list ${NODE} >/dev/null 2>&1 || { echo "Pool ${NODE} not found"; exit 1; }
+DATASET=${Node}/storj
+DATA_ROOT=/mnt/${DATASET}
 echo "Creating the storage node directories in ${DATA_ROOT}"
+sudo zfs create ${DATASET}
+sudo chown -R $(id -u):$(id -g) ${DATA_ROOT}
+
 IDENTITY_DIR="${DATA_ROOT}/identity"
 sudo mkdir -p ${IDENTITY_DIR}
-sudo mkdir -p ${DATA_ROOT}/config/storage
-sudo chown -R $(id -u):$(id -g) ${DATA_ROOT}
+sudo mkdir -p ${DATA_ROOT}/config
 
 NODE_NAME="patzm-${STORJ_INSTANCE}-${NODE}"
 echo "Using node name: ${NODE_NAME}"
