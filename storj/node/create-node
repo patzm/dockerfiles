@@ -23,10 +23,11 @@ fi
 zpool list ${NODE} >/dev/null 2>&1 || { echo "Pool ${NODE} not found"; exit 1; }
 DATASET=${Node}/storj
 DATA_ROOT=/mnt/${DATASET}
-echo "Creating the storage node directories in ${DATA_ROOT}"
+echo "Creating Storj dataset in ${DATASET}"
 sudo zfs create ${DATASET}
 sudo chown -R $(id -u):$(id -g) ${DATA_ROOT}
 
+echo "Creating the storage node directories in ${DATA_ROOT}"
 IDENTITY_DIR="${DATA_ROOT}/identity"
 mkdir -p ${IDENTITY_DIR}
 mkdir -p ${DATA_ROOT}/config
