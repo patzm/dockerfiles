@@ -22,6 +22,7 @@ services:
       - ADDRESS=storj.patz.app:${PORT}  # the publicly accessible address
       - EMAIL=martin@patz.family
     command: --operator.wallet-features=zksync-era
+    user: "${UID:-0}:${GID:-0}"
     volumes:
       - ${DATA_ROOT}/identity:/app/identity
       - ${DATA_ROOT}/config:/app/config
