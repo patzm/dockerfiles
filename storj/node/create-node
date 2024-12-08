@@ -21,7 +21,7 @@ fi
 
 # Check if the pool with the matching node name exists
 sudo zpool list ${NODE} >/dev/null 2>&1 || { echo "Pool ${NODE} not found"; exit 1; }
-DATASET=${Node}/storj
+DATASET=${NODE}/storj
 DATA_ROOT=/mnt/${DATASET}
 echo "Creating Storj dataset in ${DATASET}"
 sudo zfs create ${DATASET}
