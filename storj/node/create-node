@@ -34,7 +34,7 @@ echo "Create & authorize the identity file with the following commands, then mov
 echo "This might take a while ... Run it on a powerful machine!"
 echo "mkdir -p ${NODE_NAME}/identity"
 echo "identity create ${NODE_NAME} --concurrency 32"
-echo "identity authorize ${NODE_NAME} \'${AUTH_TOKEN}\'"
+echo "identity authorize ${NODE_NAME} '${AUTH_TOKEN}'"
 echo "mv ~/.local/share/storj/identity/${NODE_NAME}/* ${NODE_NAME}/identity"
 echo "rsync -avz ${NODE_NAME}/identity/ my-target"
 
