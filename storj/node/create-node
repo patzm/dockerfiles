@@ -28,8 +28,8 @@ sudo zfs create ${DATASET}
 sudo chown -R $(id -u):$(id -g) ${DATA_ROOT}
 
 IDENTITY_DIR="${DATA_ROOT}/identity"
-sudo mkdir -p ${IDENTITY_DIR}
-sudo mkdir -p ${DATA_ROOT}/config
+mkdir -p ${IDENTITY_DIR}
+mkdir -p ${DATA_ROOT}/config
 
 NODE_NAME="patzm-${STORJ_INSTANCE}-${NODE}"
 echo "Using node name: ${NODE_NAME}"
