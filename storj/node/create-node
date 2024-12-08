@@ -27,7 +27,7 @@ fi
 echo "Creating the storage node directories in ${DATA_ROOT}"
 IDENTITY_DIR="${DATA_ROOT}/identity"
 sudo mkdir -p ${IDENTITY_DIR}
-sudo mkdir -p ${DATA_ROOT}/config
+sudo mkdir -p ${DATA_ROOT}/config/storage
 sudo chown -R $(id -u):$(id -g) ${DATA_ROOT}
 
 NODE_NAME="patzm-${STORJ_INSTANCE}-${NODE}"
