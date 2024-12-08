@@ -45,4 +45,4 @@ DATA_ROOT=${DATA_ROOT}
 EOF
 
 echo "Preparation of the node is complete. Launch it by running:"
-echo "NODE_CONFIG=${NODE_CONFIG_FILE} STORJ_SECRETS=${STORJ_SECRETS} docker compose up -d"
+echo "NODE_CONFIG=${NODE_CONFIG_FILE} STORJ_SECRETS=${STORJ_SECRETS} docker compose -f insecure.docker-compose.yml up -d"
