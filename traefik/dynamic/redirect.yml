@@ -33,6 +33,15 @@ http:
      tls:
        certResolver: patz.app
      service: home_assistant
+    storj1:
+      rule: "Host(`storj1.patz.app`)"
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+      middlewares:
+        - keycloak@file
+      service: storj1-service
 
   middlewares:
 
@@ -84,3 +93,7 @@ http:
      loadBalancer:
        servers:
          - url: http://192.168.1.3:8123
+    storj1-service:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.1.5"
