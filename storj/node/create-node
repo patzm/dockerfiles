@@ -51,4 +51,4 @@ STORJ_SECRETS=${STORJ_SECRETS}
 EOF
 
 echo "Preparation of the node is complete. Launch it by running:"
-echo "UID=$(id -u) GID=$(id -g) NODE_CONFIG=${NODE_CONFIG_FILE} docker compose -f insecure.docker-compose.yml up -d"
+echo "cd ${DATA_ROOT}; UID=$(id -u) GID=$(id -g) docker compose -f $(pwd)/insecure.docker-compose.yml up -d"
