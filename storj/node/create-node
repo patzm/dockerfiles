@@ -20,7 +20,7 @@ if [ -z "$NODE" ] || [ -z "$PORT" ] || [ -z "$AUTH_TOKEN" ] || [ -z "$STORJ_INST
 fi
 
 # Check if the pool with the matching node name exists
-zpool list ${NODE} >/dev/null 2>&1 || { echo "Pool ${NODE} not found"; exit 1; }
+sudo zpool list ${NODE} >/dev/null 2>&1 || { echo "Pool ${NODE} not found"; exit 1; }
 DATASET=${Node}/storj
 DATA_ROOT=/mnt/${DATASET}
 echo "Creating Storj dataset in ${DATASET}"
