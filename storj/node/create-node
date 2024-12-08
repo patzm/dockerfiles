@@ -58,11 +58,26 @@ STORJ_SECRETS=${STORJ_SECRETS}
 EOF
 
 printf "\nPreparation of the node is complete. Execute the one-time setup by running:"
-printf "docker run --rm -e SETUP="true" \
+CMD_SETUP="sudo docker run --rm -e SETUP="true" \
     --user $(id -u):$(id -g) \
     --mount type=bind,source="${DATA_ROOT}/identity",destination=/app/identity \
     --mount type=bind,source="${DATA_ROOT}/config",destination=/app/config \
     --name storagenode storjlabs/storagenode:latest"
+printf ${CMD_SETUP}
 
 printf "\nLaunch it by running:"
-printf "sudo docker compose -f insecure.docker-compose.yml --env-file ${DATA_ROOT}/.env up -d"
+CMD_LAUNCH="sudo docker compose -f insecure.docker-compose.yml --env-file ${DATA_ROOT}/.env up -d"
+printf ${CMD_LAUNCH}
+
+INSTRUCTIONS_FILE=${DATA_ROOT}/instructions.sh
+cat <<EOF > ${INSTRUCTIONS_FILE}
+#! /usr/bin/env bash
+
+# Instructions / commands to launch this stack
+
+# Run the following once:
+${CMD_SETUP}
+
+# Launch the stack with:
+${CMD_LAUNCH}
+EOF
