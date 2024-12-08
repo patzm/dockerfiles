@@ -7,9 +7,10 @@ trap "exit" INT
 NODE=$1
 PORT=$2
 AUTH_TOKEN=$3
+STORJ_INSTANCE=$4
 
-if [ -z "$NODE" ] || [ -z "$PORT" ] || [ -z "$AUTH_TOKEN" ]; then
-  echo "Error: NODE, PORT, and AUTH_TOKEN arguments are required."
+if [ -z "$NODE" ] || [ -z "$PORT" ] || [ -z "$AUTH_TOKEN" ] || [ -z "$STORJ_INSTANCE" ]; then
+  echo "Error: NODE, PORT, AUTH_TOKEN, and STORJ_INSTANCE arguments are required."
   exit 1
 fi
 
@@ -27,7 +28,7 @@ IDENTITY_DIR="${DATA_ROOT}/identity"
 mkdir -p ${IDENTITY_DIR}
 mkdir -p ${DATA_ROOT}/config
 
-NODE_NAME="patzm-storj${STORJ_INSTANCE:-}-${NODE}"
+NODE_NAME="patzm-${STORJ_INSTANCE}-${NODE}"
 echo "Using node name: ${NODE_NAME}"
 echo "Create & authorize the identity file with the following commands, then move it to ${IDENTITY_DIR}"
 echo "This might take a while ... Run it on a powerful machine!"
