@@ -16,6 +16,7 @@ services:
       - traefik
     env_file:
       - ${STORJ_SECRETS}
+      - ${NODE_CONFIG}
     environment:
       - AUTO_UPDATE=true
       - ADDRESS=storj.patz.app:${PORT}  # the publicly accessible address
