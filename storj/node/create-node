@@ -1,6 +1,7 @@
 #! /usr/bin/env bash
 
 set -e
+trap "exit" INT
 
 # Read CLI arguments
 NODE=$1
