@@ -48,9 +48,11 @@ COMPOSE_PROJECT_NAME=${NODE}
 STORAGE=${STORAGE}
 NODE=${NODE}
 PORT=${PORT}
+UID=$(id -u)
+GID=$(id -g)
 DATA_ROOT=${DATA_ROOT}
 STORJ_SECRETS=${STORJ_SECRETS}
 EOF
 
 echo "Preparation of the node is complete. Launch it by running:"
-echo "sudo UID=$(id -u) GID=$(id -g) docker compose -f insecure.docker-compose.yml --env-file ${DATA_ROOT}/.env up -d"
+echo "sudo docker compose -f insecure.docker-compose.yml --env-file ${DATA_ROOT}/.env up -d"
