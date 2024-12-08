@@ -27,7 +27,7 @@ echo "Creating Storj dataset in ${DATASET}"
 sudo zfs create ${DATASET}
 sudo chown -R $(id -u):$(id -g) ${DATA_ROOT}
 
-echo "Creating the storage node directories in ${DATA_ROOT}"
+echo "Creating the storage node directories in ${DATA_ROOT}\n"
 IDENTITY_DIR="${DATA_ROOT}/identity"
 mkdir -p ${IDENTITY_DIR}
 mkdir -p ${DATA_ROOT}/config
@@ -35,7 +35,7 @@ mkdir -p ${DATA_ROOT}/config
 NODE_NAME="patzm-${STORJ_INSTANCE}-${NODE}"
 echo "Using node name: ${NODE_NAME}"
 echo "Create & authorize the identity file with the following commands, then move it to ${IDENTITY_DIR}"
-echo "This might take a while ... Run it on a powerful machine!"
+echo "This might take a while ... Run it on a powerful machine!\n"
 echo "mkdir -p ${NODE_NAME}/identity"
 echo "identity create ${NODE_NAME} --concurrency 32"
 echo "identity authorize ${NODE_NAME} '${AUTH_TOKEN}'"
@@ -57,5 +57,12 @@ DATA_ROOT=${DATA_ROOT}
 STORJ_SECRETS=${STORJ_SECRETS}
 EOF
 
-echo "Preparation of the node is complete. Launch it by running:"
+echo "\nPreparation of the node is complete. Execute the one-time setup by running:"
+echo "docker run --rm -e SETUP="true" \
+    --user $(id -u):$(id -g) \
+    --mount type=bind,source="${DATA_ROOT}/identity",destination=/app/identity \
+    --mount type=bind,source="${DATA_ROOT}/config",destination=/app/config \
+    --name storagenode storjlabs/storagenode:latest"
+
+echo "\nLaunch it by running:"
 echo "sudo docker compose -f insecure.docker-compose.yml --env-file ${DATA_ROOT}/.env up -d"
