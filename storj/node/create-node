@@ -1,0 +1,48 @@
+#! /usr/bin/env bash
+
+set -x
+set -e
+
+# Read CLI arguments
+NODE=$1
+PORT=$2
+AUTH_TOKEN=$3
+
+if [ -z "$NODE" ] || [ -z "$PORT" ] || [ -z "$AUTH_TOKEN" ]; then
+  echo "Error: NODE, PORT, and AUTH_TOKEN arguments are required."
+  exit 1
+fi
+
+_SHARED_STORJ_DIR=/mnt/ssd-256gb/docker/storj
+STORJ_SECRETS="${_SHARED_STORJ_DIR}/secrets.env"
+NODE_DIR="/mnt/${NODE}"
+DATA_ROOT=${NODE_DIR}/storj
+
+if [ ! -d "${NODE_DIR}" ]; then
+  echo "Error: ${NODE_DIR} does not exist."
+  exit 1
+fi
+
+IDENTITY_DIR="${DATA_ROOT}/identity"
+mkdir -p ${IDENTITY_DIR}
+mkdir -p ${DATA_ROOT}/config
+
+NODE_NAME="patzm-storj${STORJ_INSTANCE:-}-${NODE}"
+echo "Using node name: ${NODE_NAME}"
+echo "Create & authorize the identity file with the following commands, then move it to ${IDENTITY_DIR}"
+echo "This might take a while ... Run it on a powerful machine!"
+echo "mkdir -p ${NODE_NAME}/identity"
+echo "identity --config-dir ${NODE_NAME}/identity create ${NODE_NAME}"
+echo "identity --config-dir ${NODE_NAME}/identity authorize storagenode ${AUTH_TOKEN}"
+
+STORAGE="$(df -h ${DATA_ROOT} | awk 'NR==2 {print $4}')B"
+
+NODE_CONFIG_FILE=${DATA_ROOT}/.env
+cat > ${NODE_CONFIG_FILE} <<EOF
+STORAGE=${STORAGE}
+NODE=${NODE}
+DATA_ROOT=${DATA_ROOT}
+EOF
+
+echo "Preparation of the node is complete. Launch it by running:"
+echo "NODE_CONFIG=${NODE_CONFIG_FILE} STORJ_SECRETS=${STORJ_SECRETS} docker compose up -d"
