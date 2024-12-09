@@ -58,7 +58,7 @@ STORJ_SECRETS=${STORJ_SECRETS}
 EOF
 
 printf "\nPreparation of the node is complete. Execute the one-time setup by running:\n"
-CMD_SETUP="sudo docker run --rm -e SETUP="true" \
+CMD_SETUP="docker run --rm -e SETUP="true" \
     --user $(id -u):$(id -g) \
     --mount type=bind,source="${DATA_ROOT}/identity",destination=/app/identity \
     --mount type=bind,source="${DATA_ROOT}/config",destination=/app/config \
@@ -66,7 +66,7 @@ CMD_SETUP="sudo docker run --rm -e SETUP="true" \
 echo ${CMD_SETUP}
 
 printf "\nLaunch it by running:\n"
-CMD_LAUNCH="sudo docker compose -f insecure.docker-compose.yml --env-file ${DATA_ROOT}/.env up -d"
+CMD_LAUNCH="docker compose -f insecure.docker-compose.yml --env-file ${DATA_ROOT}/.env up -d"
 echo ${CMD_LAUNCH}
 
 INSTRUCTIONS_FILE=${DATA_ROOT}/instructions.sh
