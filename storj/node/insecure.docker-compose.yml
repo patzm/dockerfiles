@@ -20,6 +20,11 @@ services:
       - AUTO_UPDATE=true
       - ADDRESS=storj.patz.app:${PORT}  # the publicly accessible address
       - EMAIL=martin@patz.family
+      - DATA_ROOT
+      - NODE
+      - PORT
+      - STORAGE
+      - STORJ_INSTANCE
     command: --operator.wallet-features=zksync-era
     user: "${UID:-0}:${GID:-0}"
     volumes:
