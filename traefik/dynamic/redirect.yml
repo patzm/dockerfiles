@@ -36,7 +36,15 @@ http:
     storj1:
       rule: >
         Host(`traefik.storj1.patz.app`)
+        || Host(`storj-1tb-1.storj1.patz.app`)
+        || Host(`storj-1tb-2.storj1.patz.app`)
+        || Host(`storj-2tb-1.storj1.patz.app`)
+        || Host(`storj-2tb-2.storj1.patz.app`)
+        || Host(`storj-2tb-3.storj1.patz.app`)
         || Host(`storj-3tb-1.storj1.patz.app`)
+        || Host(`storj-3tb-2.storj1.patz.app`)
+        || Host(`storj-3tb-3.storj1.patz.app`)
+        || Host(`storj-3tb-4.storj1.patz.app`)
       entryPoints:
         - websecure
       tls:
