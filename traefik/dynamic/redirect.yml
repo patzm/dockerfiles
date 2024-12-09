@@ -34,14 +34,17 @@ http:
        certResolver: patz.app
      service: home_assistant
     storj1:
-      rule: "Host(`storj1.patz.app`)"
+      rule: >
+        Host(`traefik.storj1.patz.app`)
+        || Host(`storj-3tb-1.storj1.patz.app`)
       entryPoints:
         - websecure
       tls:
-        certResolver: letsencrypt
+        certResolver: patz.app
       middlewares:
         - keycloak@file
       service: storj1-service
+
 
   middlewares:
 
@@ -96,4 +99,4 @@ http:
     storj1-service:
       loadBalancer:
         servers:
-          - url: "http://192.168.1.5"
+          - url: "http://192.168.1.5:80"
