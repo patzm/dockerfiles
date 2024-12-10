@@ -27,9 +27,8 @@ DATA_ROOT="/mnt/${DATASET}"
 if ! sudo zfs list "${DATASET}" >/dev/null 2>&1; then
   echo "Creating Storj dataset in ${DATASET}"
   sudo zfs create "${DATASET}"
+  sudo chown -R "$(id -u):$(id -g)" "${DATA_ROOT}"
 fi
-
-sudo chown -R "$(id -u):$(id -g)" "${DATA_ROOT}"
 
 printf "Creating the storage node directories in ${DATA_ROOT}\n\n"
 IDENTITY_DIR="${DATA_ROOT}/identity"
