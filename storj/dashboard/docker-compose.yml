@@ -13,6 +13,9 @@ services:
     restart: unless-stopped
     networks:
       - traefik
+    dns:
+      - "1.1.1.1"
+      - "8.4.8.4"
     volumes:
       - /mnt/ssd-1tb/docker/storj/multinode/identity:/app/identity
       - /mnt/ssd-1tb/docker/storj/multinode/config:/app/config
