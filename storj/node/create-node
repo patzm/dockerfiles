@@ -73,13 +73,7 @@ CMD_LAUNCH="docker compose -f insecure.docker-compose.yml --env-file ${DATA_ROOT
 echo ${CMD_LAUNCH}
 
 printf "\nGenerate credentials by running:\n"
-CMD_CREDENTIALS=$(cat <<-END
-docker compose \\
-    -f insecure.docker-compose.yml \\
-    --env-file ${DATA_ROOT}/.env \\
-    exec storagenode bin/storagenode info --config-dir config --identity-dir identity
-END
-)
+CMD_CREDENTIALS="docker compose -f insecure.docker-compose.yml --env-file ${DATA_ROOT}/.env exec storagenode bin/storagenode info --config-dir config --identity-dir identity"
 echo ${CMD_CREDENTIALS}
 
 INSTRUCTIONS_FILE=${DATA_ROOT}/instructions.sh
