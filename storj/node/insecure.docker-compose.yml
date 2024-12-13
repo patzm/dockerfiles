@@ -22,7 +22,7 @@ services:
       - EMAIL=martin@patz.family
       - DATA_ROOT
       - NODE
-      - EXPOSED_PORT=${PORT}
+      - PORT
       - STORAGE
       - STORJ_INSTANCE
     command: --operator.wallet-features=zksync-era
