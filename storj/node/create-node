@@ -80,7 +80,7 @@ docker compose \\
     exec storagenode bin/storagenode info --config-dir config --identity-dir identity
 END
 )
-echo ${CMD_LAUNCH}
+echo ${CMD_CREDENTIALS}
 
 INSTRUCTIONS_FILE=${DATA_ROOT}/instructions.sh
 cat <<EOF > ${INSTRUCTIONS_FILE}
