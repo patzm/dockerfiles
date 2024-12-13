@@ -6,6 +6,14 @@ Run the following *inside* the container:
 ./bin/storagenode info --config-dir config --identity-dir identity
 ```
 
+or outside
+```bash
+docker compose \
+    -f insecure.docker-compose.yml \
+    --env-file my/env/file/path.env \
+    exec storagenode bin/storagenode info --config-dir config --identity-dir identity
+```
+
 Copy the generated ID.
 You can copy the node ID as well, or copy it from the web-UI.
 
