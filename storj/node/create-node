@@ -72,6 +72,16 @@ printf "\nLaunch it by running:\n"
 CMD_LAUNCH="docker compose -f insecure.docker-compose.yml --env-file ${DATA_ROOT}/.env up -d"
 echo ${CMD_LAUNCH}
 
+printf "\nGenerate credentials by running:\n"
+CMD_CREDENTIALS=$(cat <<-END
+docker compose \\
+    -f insecure.docker-compose.yml \\
+    --env-file ${DATA_ROOT}/.env \\
+    exec storagenode bin/storagenode info --config-dir config --identity-dir identity
+END
+)
+echo ${CMD_LAUNCH}
+
 INSTRUCTIONS_FILE=${DATA_ROOT}/instructions.sh
 cat <<EOF > ${INSTRUCTIONS_FILE}
 #! /usr/bin/env bash
@@ -83,4 +93,8 @@ ${CMD_SETUP}
 
 # Launch the stack with:
 ${CMD_LAUNCH}
+
+# Generate credentials with:
+${CMD_CREDENTIALS}
+
 EOF
