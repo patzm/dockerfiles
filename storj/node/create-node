@@ -1,0 +1,94 @@
+#! /usr/bin/env bash
+
+set -e
+trap "exit" INT
+
+# Read CLI arguments
+NODE=$1
+PORT=$2
+AUTH_TOKEN=$3
+STORJ_INSTANCE=$4
+
+# Constants
+_SHARED_STORJ_DIR=/mnt/ssd-256gb/docker/storj
+STORJ_SECRETS="${_SHARED_STORJ_DIR}/secrets.env"
+
+# Sanity checks
+if [ -z "$NODE" ] || [ -z "$PORT" ] || [ -z "$AUTH_TOKEN" ] || [ -z "$STORJ_INSTANCE" ]; then
+  echo "Error: NODE, PORT, AUTH_TOKEN, and STORJ_INSTANCE arguments are required."
+  exit 1
+fi
+
+# Check if the pool with the matching node name exists
+sudo zpool list "${NODE}" >/dev/null 2>&1 || { echo "Pool ${NODE} not found"; exit 1; }
+DATASET="${NODE}/storj"
+DATA_ROOT="/mnt/${DATASET}"
+
+if ! sudo zfs list "${DATASET}" >/dev/null 2>&1; then
+  echo "Creating Storj dataset in ${DATASET}"
+  sudo zfs create "${DATASET}"
+  sudo chown -R "$(id -u):$(id -g)" "${DATA_ROOT}"
+fi
+
+printf "Creating the storage node directories in ${DATA_ROOT}\n\n"
+IDENTITY_DIR="${DATA_ROOT}/identity"
+mkdir -p ${IDENTITY_DIR}
+mkdir -p ${DATA_ROOT}/config
+
+NODE_NAME="patzm-${STORJ_INSTANCE}-${NODE}"
+echo "Using node name: ${NODE_NAME}"
+echo "Create & authorize the identity file with the following commands, then move it to ${IDENTITY_DIR}"
+echo "This might take a while ... Run it on a powerful machine!\n"
+echo "mkdir -p ${NODE_NAME}/identity"
+echo "identity create ${NODE_NAME} --concurrency 32"
+echo "identity authorize ${NODE_NAME} '${AUTH_TOKEN}'"
+echo "mv ~/.local/share/storj/identity/${NODE_NAME}/* ${NODE_NAME}/identity"
+echo "rsync -avz ${NODE_NAME}/identity/ my-target"
+
+STORAGE="$(df -h ${DATA_ROOT} | awk 'NR==2 {print $4}')B"
+
+NODE_CONFIG_FILE=${DATA_ROOT}/.env
+cat > ${NODE_CONFIG_FILE} <<EOF
+COMPOSE_PROJECT_NAME=${NODE}
+STORAGE=${STORAGE}
+NODE=${NODE}
+PORT=${PORT}
+STORJ_INSTANCE=${STORJ_INSTANCE}
+UID=$(id -u)
+GID=$(id -g)
+DATA_ROOT=${DATA_ROOT}
+STORJ_SECRETS=${STORJ_SECRETS}
+EOF
+
+printf "\nPreparation of the node is complete. Execute the one-time setup by running:\n"
+CMD_SETUP="docker run --rm -e SETUP="true" \
+    --user $(id -u):$(id -g) \
+    --mount type=bind,source="${DATA_ROOT}/identity",destination=/app/identity \
+    --mount type=bind,source="${DATA_ROOT}/config",destination=/app/config \
+    --name storagenode storjlabs/storagenode:latest"
+echo ${CMD_SETUP}
+
+printf "\nLaunch it by running:\n"
+CMD_LAUNCH="docker compose -f insecure.docker-compose.yml --env-file ${DATA_ROOT}/.env up -d"
+echo ${CMD_LAUNCH}
+
+printf "\nGenerate credentials by running:\n"
+CMD_CREDENTIALS="docker compose -f insecure.docker-compose.yml --env-file ${DATA_ROOT}/.env exec storagenode bin/storagenode info --config-dir config --identity-dir identity"
+echo ${CMD_CREDENTIALS}
+
+INSTRUCTIONS_FILE=${DATA_ROOT}/instructions.sh
+cat <<EOF > ${INSTRUCTIONS_FILE}
+#! /usr/bin/env bash
+
+# Instructions / commands to launch this stack
+
+# Run the following once:
+${CMD_SETUP}
+
+# Launch the stack with:
+${CMD_LAUNCH}
+
+# Generate credentials with:
+${CMD_CREDENTIALS}
+
+EOF

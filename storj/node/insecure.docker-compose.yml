@@ -1,0 +1,37 @@
+networks:
+  traefik:
+    name: traefik
+    external: true
+
+services:
+
+  storagenode:
+    image: storjlabs/storagenode:latest
+    restart: unless-stopped
+    stop_grace_period: 300s
+    ports:
+      - "${PORT}:28967/tcp"
+      - "${PORT}:28967/udp"
+    networks:
+      - traefik
+    env_file:
+      - ${STORJ_SECRETS}
+    environment:
+      - AUTO_UPDATE=true
+      - ADDRESS=storj.patz.app:${PORT}  # the publicly accessible address
+      - EMAIL=martin@patz.family
+      - DATA_ROOT
+      - NODE
+      - PORT
+      - STORAGE
+      - STORJ_INSTANCE
+    command: --operator.wallet-features=zksync-era
+    user: "${UID:-0}:${GID:-0}"
+    volumes:
+      - ${DATA_ROOT}/identity:/app/identity
+      - ${DATA_ROOT}/config:/app/config
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.${NODE}.entrypoints=web
+      - traefik.http.routers.${NODE}.rule=Host(`${NODE}.storj${STORJ_INSTANCE:-}.patz.app`)
+      - traefik.http.services.${NODE}.loadbalancer.server.port=14002
