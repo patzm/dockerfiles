@@ -51,7 +51,7 @@ services:
       - DOMAIN=${DOMAIN}
       - TRAEFIK_VERSION=v2
     volumes:
-      - "/mnt/ssd-1tb/docker/traefik/letsencrypt/patz.family:/traefik"
+      - "/mnt/ssd-1tb/docker/traefik/letsencrypt/patz.app:/traefik"
       - "/mnt/ssd-1tb/docker/mailu/certs:/output"
 
   # Core services
