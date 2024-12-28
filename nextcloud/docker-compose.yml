@@ -13,7 +13,7 @@ networks:
 services:
 
   db:
-    image: mariadb:10.2
+    image: mariadb:10
     restart: unless-stopped
     volumes:
       - ${MOUNT_DB}:/var/lib/mysql
