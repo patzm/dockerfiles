@@ -48,7 +48,7 @@ services:
     dns:
       - 172.26.0.254
     environment:
-      - DOMAIN=${DOMAIN}
+      - DOMAIN=mail.${DOMAIN}
       - TRAEFIK_VERSION=v2
     volumes:
       - "/mnt/ssd-1tb/docker/traefik/letsencrypt/patz.app:/traefik"
