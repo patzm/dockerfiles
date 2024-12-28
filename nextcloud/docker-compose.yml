@@ -20,6 +20,8 @@ services:
     networks:
       - traefik
     env_file: ../stack.env
+    environment:
+      - MARIADB_AUTO_UPGRADE=1
 
   redis:
     image: redis:4.0-alpine
