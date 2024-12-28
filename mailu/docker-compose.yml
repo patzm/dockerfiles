@@ -88,8 +88,8 @@ services:
       - "traefik.http.routers.mailu-front.rule=Host(`mail.${DOMAIN}`)"
       - "traefik.http.routers.mailu-front.entrypoints=websecure"
       - "traefik.http.routers.mailu-front.tls.certresolver=${DOMAIN}"
-      - "traefik.http.routers.mailu-front.tls.domains[0].main=${DOMAIN}"
-      - "traefik.http.routers.mailu-front.tls.domains[0].sans=mail.${DOMAIN}"
+      # - "traefik.http.routers.mailu-front.tls.domains[0].main=${DOMAIN}"
+      # - "traefik.http.routers.mailu-front.tls.domains[0].sans=mail.${DOMAIN}"
       - "traefik.http.services.mailu-front.loadbalancer.server.port=80"
 
   admin:
