@@ -85,7 +85,7 @@ services:
       - "/mnt/ssd-1tb/docker/mailu/overrides/nginx:/overrides:ro"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mailu-front.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.routers.mailu-front.rule=Host(`mail.${DOMAIN}`)"
       - "traefik.http.routers.mailu-front.entrypoints=websecure"
       - "traefik.http.routers.mailu-front.tls.certresolver=${DOMAIN}"
       - "traefik.http.services.mailu-front.loadbalancer.server.port=80"
