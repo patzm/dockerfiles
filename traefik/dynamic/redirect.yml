@@ -7,7 +7,7 @@ http:
         - web
       middlewares:
         - redirect-https
-      rule: HostRegexp(`{host:.+}`)
+      rule: "HostRegexp(`{host:^(.+)$}`)"
       service: noop
     http-catch-all:
       entrypoints:
@@ -15,7 +15,7 @@ http:
         - websecure
       middlewares:
         - redirect-www-to-https
-      rule: "HostRegexp(`{host:(www\\.).+}`)"
+      rule: "HostRegexp(`{host:^(www\\..+)$}`)"
       service: noop
     nas:
       entrypoints:
