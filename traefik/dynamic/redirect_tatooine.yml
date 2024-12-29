@@ -1,0 +1,21 @@
+http:
+
+  routers:
+
+    nas-tatooine:
+      entrypoints:
+        - websecure
+      rule: "Host(`nas.tatooine.patz.app`)"
+      tls:
+        certResolver: patz.app
+      middlewares:
+        - keycloak@file
+      service: nas-tatooine
+
+  services:
+
+    nas-tatooine:
+      loadBalancer:
+        servers:
+          - url: https://192.168.1.4:444
+        serversTransport: trust-internal-tls
