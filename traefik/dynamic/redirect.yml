@@ -27,12 +27,14 @@ http:
         certResolver: patz.app
       service: nas
     home-assistant:
-     entrypoints:
-       - websecure
-     rule: "Host(`home.patz.app`)"
-     tls:
-       certResolver: patz.app
-     service: home_assistant
+      entrypoints:
+        - websecure
+      rule: "Host(`home.patz.app`)"
+      tls:
+        certResolver: patz.app
+      middlewares:
+        - keycloak@file
+      service: home_assistant
     storj1:
       rule: >
         Host(`traefik.storj1.patz.app`)
