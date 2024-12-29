@@ -2,7 +2,7 @@ http:
   routers:
     traefik-websecure:
       entrypoints: websecure
-      rule: "Host(`traefik.patz.app`)"
+      rule: "Host(`traefik.arnold.patz.app`)"
       middlewares:
         - keycloak@file
       tls:
