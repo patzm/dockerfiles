@@ -15,7 +15,6 @@ services:
     volumes:
       - /mnt/ssd-1tb/docker/unifi:/unifi
     ports:
-      - "8080:8080"
       - "3478:3478/udp"
     labels:
       - "traefik.enable=true"
@@ -23,4 +22,4 @@ services:
       - "traefik.http.routers.unifi.entrypoints=websecure"
       - "traefik.http.routers.unifi.tls.certresolver=patz.app"
       - "traefik.http.routers.unifi.middlewares=keycloak@file"
-      - "traefik.http.services.unifi.loadbalancer.server.port=8880"
+      - "traefik.http.services.unifi.loadbalancer.server.port=8080"
