@@ -14,6 +14,8 @@ services:
       - TZ=Europe/Berlin
     volumes:
       - /mnt/ssd-1tb/docker/unifi:/unifi
+    networks:
+      - traefik
     ports:
       - "3478:3478/udp"
     labels:
