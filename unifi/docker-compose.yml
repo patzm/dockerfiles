@@ -23,5 +23,5 @@ services:
       - "traefik.http.routers.unifi.tls.certresolver=patz.app"
       - "traefik.http.routers.unifi.middlewares=keycloak@file"
       - "traefik.http.services.unifi.loadbalancer.server.port=8443"
-      - "traefik.http.services.unifi.loadbalancer.server.server.scheme=https"
+      - "traefik.http.services.unifi.loadbalancer.server.scheme=https"
       - "traefik.http.services.unifi.loadbalancer.serversTransport=trust-internal-tls"
