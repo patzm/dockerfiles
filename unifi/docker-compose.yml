@@ -1,0 +1,26 @@
+networks:
+
+  traefik:
+    name: traefik
+    external: true
+
+
+services:
+
+  unifi:
+    image: jacobalberty/unifi:${UNIFI_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Berlin
+    volumes:
+      - /mnt/ssd-1tb/docker/unifi:/unifi
+    ports:
+      - "8080:8080"
+      - "3478:3478/udp"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.unifi.rule=Host(`wifi.patz.app`)"
+      - "traefik.http.routers.unifi.entrypoints=websecure"
+      - "traefik.http.routers.unifi.tls.certresolver=patz.app"
+      - "traefik.http.routers.unifi.middlewares=keycloak@file"
+      - "traefik.http.services.unifi.loadbalancer.server.port=8880"
