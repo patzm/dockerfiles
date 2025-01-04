@@ -40,15 +40,6 @@ http:
       middlewares:
         - keycloak@file
       service: home_assistant
-    unifi:
-      entrypoints:
-        - websecure
-      rule: "Host(`wifi.patz.app`)"
-      tls:
-        certResolver: patz.app
-      middlewares:
-        - keycloak@file
-      service: unifi
     storj1:
       rule: >
         Host(`traefik.storj1.patz.app`)
@@ -125,8 +116,3 @@ http:
       loadBalancer:
         servers:
           - url: http://192.168.1.5:80
-    unifi:
-      loadBalancer:
-        servers:
-          - url: https://192.168.1.3:8443
-        serversTransport: trust-internal-tls
