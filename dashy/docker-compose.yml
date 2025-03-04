@@ -8,7 +8,7 @@ networks:
 services:
 
   dashy:
-    image: lissy93/dashy
+    image: lissy93/dashy:${DASHY_TAG:-latest}
     restart: unless-stopped
     healthcheck:
       test: ['CMD', 'node', '/app/services/healthcheck']
