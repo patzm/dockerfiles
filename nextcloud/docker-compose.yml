@@ -19,7 +19,9 @@ services:
       - ${MOUNT_DB}:/var/lib/mysql
     networks:
       - traefik
-    env_file: ../stack.env
+    env_file:
+      - nextcloud.env
+      - ../stack.env
     environment:
       - MARIADB_AUTO_UPGRADE=1
 
@@ -41,7 +43,9 @@ services:
       - ${MOUNT_DATA}:/data
     networks:
       - traefik
-    env_file: ../stack.env
+    env_file:
+      - nextcloud.env
+      - ../stack.env
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.patz-nc-websecure.entrypoints=websecure"
@@ -71,7 +75,9 @@ services:
       - ${MOUNT_DATA}:/data
     networks:
       - traefik
-    env_file: ../stack.env
+    env_file:
+      - nextcloud.env
+      - ../stack.env
     environment:
       - "SIDECAR_CRON=1"
       - "CRON_PERIOD=*/15 * * * *"
@@ -85,7 +91,9 @@ services:
       - ${MOUNT_DATA}:/data
     networks:
       - traefik
-    env_file: ../stack.env
+    env_file:
+      - nextcloud.env
+      - ../stack.env
     environment:
       - "SIDECAR_PREVIEWGEN=1"
       - "PREVIEWGEN_PERIOD=0 * * * *"
