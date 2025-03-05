@@ -20,7 +20,7 @@ services:
     networks:
       - traefik
     env_file:
-      - nextcloud.env
+      - .env
       - ../stack.env
     environment:
       - MARIADB_AUTO_UPGRADE=1
@@ -44,7 +44,7 @@ services:
     networks:
       - traefik
     env_file:
-      - nextcloud.env
+      - .env
       - ../stack.env
     labels:
       - "traefik.enable=true"
@@ -76,7 +76,7 @@ services:
     networks:
       - traefik
     env_file:
-      - nextcloud.env
+      - .env
       - ../stack.env
     environment:
       - "SIDECAR_CRON=1"
@@ -92,7 +92,7 @@ services:
     networks:
       - traefik
     env_file:
-      - nextcloud.env
+      - .env
       - ../stack.env
     environment:
       - "SIDECAR_PREVIEWGEN=1"
