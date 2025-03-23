@@ -26,12 +26,14 @@ services:
       - MARIADB_AUTO_UPGRADE=1
 
   redis:
-    image: redis:4.0-alpine
+    image: redis:6-alpine
     restart: unless-stopped
-    volumes:
-      - redis:/data
     networks:
       - traefik
+    volumes:
+      - redis:/data
+    environment:
+      - "TZ"
 
   nextcloud:
     image: crazymax/nextcloud:${NEXTCLOUD_TAG:-24.0.5}
