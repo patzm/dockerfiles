@@ -67,7 +67,7 @@ services:
 
       - "traefik.http.middlewares.nc-secure.headers.customRequestHeaders.X-Forwarded-Proto=https"
       - "traefik.http.middlewares.nc-secure.headers.customResponseHeaders.X-Robots-Tag=noindex,nofollow"
-      - "traefik.http.middlewares.nc-secure.headers.hostsproxyheaders[0]=X-Forwarded-Host"
+      - "traefik.http.middlewares.nc-secure.headers.hostsproxyheaders=X-Forwarded-Host"
       - "traefik.http.middlewares.nc-secure.headers.referrerpolicy=same-origin"
 
   cron:
