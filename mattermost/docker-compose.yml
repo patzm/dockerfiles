@@ -78,8 +78,9 @@ services:
       - auth_internal
       - default
       - traefik
-    expose:
-      - 8443  # calls
+    ports:
+      - 8443:8443/udp  # calls via UDP
+      - 8443:8443/tcp  # calls via TCP
     healthcheck:
       test: "curl -f http://localhost:${APP_PORT}/api/v4/system/ping || bash -c 'kill -s 15 -1 && (sleep 10; kill -s 9 -1)'"
       interval: 30s
