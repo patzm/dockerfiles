@@ -58,8 +58,8 @@ services:
       - "traefik.http.services.nc.loadbalancer.server.port=8000"
 
       - "traefik.http.middlewares.nc-dav-redirect.redirectregex.permanent=true"
-      - "traefik.http.middlewares.nc-dav-redirect.redirectregex.regex=https://(.*)/.well-known/(card|cal)dav"
-      - "traefik.http.middlewares.nc-dav-redirect.redirectregex.replacement=https://$${1}/remote.php/dav/"
+      - "traefik.http.middlewares.nc-dav-redirect.redirectregex.regex=https://(.*)/.well-known/(?:card|cal)dav"
+      - "traefik.http.middlewares.nc-dav-redirect.redirectregex.replacement=https://$${1}/remote.php/dav"
 
       - "traefik.http.middlewares.nc-wellknown-redirect.redirectregex.permanent=true"
       - "traefik.http.middlewares.nc-wellknown-redirect.redirectregex.regex=https?://([^/]*)(/.well-known[^#]*)"
