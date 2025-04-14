@@ -11,7 +11,7 @@ Make sure that the following environment variables are set:
 
 For instance, bring up this stack by invoking
 ```bash
-PUID=$(id -u) PGID=$(id -g) docker-compose up -d
+PUID=$(id -u) PGID=$(id -g) docker compose up -d
 ```
 
 ## Authenticate any resource with forward authentication
