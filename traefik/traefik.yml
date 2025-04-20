@@ -9,6 +9,11 @@ entryPoints:
     address: ":80"
   websecure:
     address: ":443"
+    transport:
+      respondingTimeouts:
+        readTimeout: 10000s
+        writeTimeout: 10000s
+        idleTimeout: 10000s
 
 providers:
   docker:
