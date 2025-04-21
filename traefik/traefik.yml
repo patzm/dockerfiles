@@ -9,6 +9,7 @@ entryPoints:
     address: ":80"
   websecure:
     address: ":443"
+    # To improve NextCloud transfer (upload) stability
     transport:
       respondingTimeouts:
         readTimeout: 10000s
