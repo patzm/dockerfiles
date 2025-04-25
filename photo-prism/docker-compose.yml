@@ -35,7 +35,7 @@ services:
       MYSQL_PASSWORD: insecure
 
   photoprism:
-    image: photoprism/photoprism:${PHOTOPRISM_TAG:-ubuntu}
+    image: photoprism/photoprism:${PHOTOPRISM_TAG:-latest}
     restart: unless-stopped
     depends_on:
       - mariadb
