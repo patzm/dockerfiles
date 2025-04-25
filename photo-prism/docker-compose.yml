@@ -60,7 +60,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.photo-prism.entrypoints=websecure"
-      - "traefik.http.routers.photo-prism.rule=Host(`pictures.patz.app`)"
+      - "traefik.http.routers.photo-prism.rule=Host(`${DOMAIN}`)"
       - "traefik.http.routers.photo-prism.tls=true"
       - "traefik.http.routers.photo-prism.tls.certresolver=patz.app"
       - "traefik.http.services.photo-prism.loadbalancer.server.port=2342"
