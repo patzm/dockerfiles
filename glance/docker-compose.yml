@@ -1,0 +1,27 @@
+networks:
+
+  traefik:
+    name: traefik
+    external: true
+
+
+services:
+
+  glance:
+    image: glanceapp/glance
+    restart: unless-stopped
+    env_file:
+      - /mnt/docker-ssd/docker/glance/secrets.env
+    volumes:
+      - ./config:/app/config
+      - ./assets:/app/assets
+    networks:
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.glance.entrypoints=websecure
+      - traefik.http.routers.glance.middlewares=security-headers@file,keycloak@file
+      - traefik.http.routers.glance.rule=Host(`patz.app`)
+      - traefik.http.routers.glance.tls=true
+      - traefik.http.routers.glance.tls.certresolver=patz.app
+      - traefik.http.services.outline.loadbalancer.server.port=8080
