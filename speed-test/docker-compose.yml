@@ -13,11 +13,11 @@ services:
       networks:
         - traefik
       labels:
-      - traefik.enable=true
+        - traefik.enable=true
 
-      - traefik.http.routers.speed-test.entrypoints=websecure
-      - traefik.http.routers.speed-test.middlewares=security-headers@file
-      - traefik.http.routers.speed-test.rule=Host(`speed-test.patz.app`)
-      - traefik.http.routers.speed-test.tls=true
-      - traefik.http.routers.speed-test.tls.certresolver=patz.app
-      - traefik.http.services.speed-test.loadbalancer.server.port=3000
+        - traefik.http.routers.speed-test.entrypoints=websecure
+        - traefik.http.routers.speed-test.middlewares=security-headers@file
+        - traefik.http.routers.speed-test.rule=Host(`speed-test.patz.app`)
+        - traefik.http.routers.speed-test.tls=true
+        - traefik.http.routers.speed-test.tls.certresolver=patz.app
+        - traefik.http.services.speed-test.loadbalancer.server.port=3000
