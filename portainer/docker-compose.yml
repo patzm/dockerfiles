@@ -11,7 +11,7 @@ networks:
 services:
 
   portainer:
-    image: portainer/portainer-ee:2.27.6
+    image: portainer/portainer-ee:2.33.1
     restart: unless-stopped
     command: -H unix:///var/run/docker.sock
     volumes:
