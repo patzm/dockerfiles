@@ -1,5 +1,8 @@
 networks:
 
+  auth_internal:
+    external: true
+
   sites:
     driver: bridge
     ipam:
@@ -57,6 +60,7 @@ services:
     ports:
       - "51821:51821/udp"
     networks:
+      auth_internal:
       traefik:
     env_file: ../stack.env
     environment:
@@ -66,5 +70,6 @@ services:
       - traefik.enable=true
       - traefik.http.routers.wireguard.entrypoints=websecure
       - traefik.http.routers.wireguard.rule=Host(`wg.patz.app`)
+      - traefik.http.routers.wireguard.middlewares=keycloak@file
       - traefik.http.routers.wireguard.tls.certresolver=patz.app
       - traefik.http.services.wireguard.loadbalancer.server.port=51821
