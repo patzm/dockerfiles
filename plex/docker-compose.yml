@@ -28,7 +28,7 @@ services:
       - /mnt/hdd-16tb/media/music:/data/music
       - /mnt/hdd-16tb/media/tv-shows:/data/tv-shows
     environment:
-      ADVERTISE_IP: https://plex.patz.app
+      ADVERTISE_IP: http://arnold.local:32400/,https://plex.patz.app
       PLEX_UID: 1001
       PLEX_GID: 1002
       TZ: Europe/Berlin
