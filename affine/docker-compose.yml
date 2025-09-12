@@ -44,7 +44,7 @@ services:
     image: ghcr.io/toeverything/affine:${AFFINE_TAG:-stable}
     command: ['sh', '-c', 'node ./scripts/self-host-predeploy.js']
     restart: unless-stopped
-        depends_on:
+    depends_on:
       postgres:
         condition: service_healthy
       redis:
