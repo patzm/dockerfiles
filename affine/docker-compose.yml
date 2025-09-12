@@ -1,14 +1,11 @@
 networks:
-
   affine:
 
   traefik:
     name: traefik
     external: true
 
-
 services:
-
   affine:
     image: ghcr.io/toeverything/affine:${AFFINE_TAG:-stable}
     restart: unless-stopped
@@ -42,7 +39,7 @@ services:
 
   affine_migration:
     image: ghcr.io/toeverything/affine:${AFFINE_TAG:-stable}
-    command: ['sh', '-c', 'node ./scripts/self-host-predeploy.js']
+    command: ["sh", "-c", "node ./scripts/self-host-predeploy.js"]
     restart: unless-stopped
     depends_on:
       postgres:
@@ -66,7 +63,7 @@ services:
     image: redis
     restart: unless-stopped
     healthcheck:
-      test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -78,7 +75,7 @@ services:
     restart: unless-stopped
     healthcheck:
       test:
-        ['CMD', 'pg_isready', '-U', "${DB_USERNAME}", '-d', "${DB_DATABASE}"]
+        ["CMD", "pg_isready", "-U", "${DB_USERNAME}", "-d", "${DB_DATABASE}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -93,5 +90,5 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
-      POSTGRES_INITDB_ARGS: '--data-checksums'
+      POSTGRES_INITDB_ARGS: "--data-checksums"
       POSTGRES_HOST_AUTH_METHOD: trust
