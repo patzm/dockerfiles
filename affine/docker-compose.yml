@@ -10,18 +10,88 @@ networks:
 services:
 
   affine:
-    image: ghcr.io/toeverything/affine-self-hosted:${AFFINE_TAG:-latest}
+    image: ghcr.io/toeverything/affine:${AFFINE_TAG:-stable}
     restart: unless-stopped
-    env_file: ../stack.env
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      affine_migration:
+        condition: service_completed_successfully
     networks:
       - traefik
       - affine
     volumes:
-      - /mnt/ssd-1tb/docker/affine:/app/data
+      - /mnt/ssd-1tb/docker/affine/upload:/root/.affine/storage
+      - /mnt/ssd-1tb/docker/affine/config:/root/.affine/config
+    env_file:
+      - .env
+      - ../stack.env
+    environment:
+      - REDIS_SERVER_HOST=redis
+      - DATABASE_URL=postgresql://${DB_USERNAME}:${DB_PASSWORD}@postgres:5432/${DB_DATABASE:-affine}
+      - AFFINE_INDEXER_ENABLED=false
     labels:
       - traefik.enable=true
       - traefik.http.routers.affine.entrypoints=websecure
       - traefik.http.routers.affine.middlewares=security-headers@file
-      - traefik.http.routers.affine.rule=Host(`affine.patz.app`)
+      - traefik.http.routers.affine.rule=Host(`${AFFINE_SERVER_HOST}`)
       - traefik.http.routers.affine.tls.certresolver=patz.app
-      - traefik.http.services.affine.loadbalancer.server.port=3000
+      - traefik.http.services.affine.loadbalancer.server.port=3010
+
+  affine_migration:
+    image: ghcr.io/toeverything/affine:${AFFINE_TAG:-stable}
+    command: ['sh', '-c', 'node ./scripts/self-host-predeploy.js']
+    restart: unless-stopped
+        depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - affine
+    volumes:
+      - /mnt/ssd-1tb/docker/affine/upload:/root/.affine/storage
+      - /mnt/ssd-1tb/docker/affine/config:/root/.affine/config
+    env_file:
+      - .env
+      - ../stack.env
+    environment:
+      - REDIS_SERVER_HOST=redis
+      - DATABASE_URL=postgresql://${DB_USERNAME}:${DB_PASSWORD}@postgres:5432/${DB_DATABASE:-affine}
+      - AFFINE_INDEXER_ENABLED=false
+
+  redis:
+    image: redis
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - affine
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    healthcheck:
+      test:
+        ['CMD', 'pg_isready', '-U', "${DB_USERNAME}", '-d', "${DB_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - affine
+    volumes:
+      - /mnt/ssd-1tb/docker/affine/db:/var/lib/postgresql/data
+    env_file:
+      - .env
+      - ../stack.env
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_INITDB_ARGS: '--data-checksums'
+      POSTGRES_HOST_AUTH_METHOD: trust
