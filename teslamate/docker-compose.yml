@@ -55,6 +55,7 @@ services:
   grafana:
     image: teslamate/grafana:latest
     restart: unless-stopped
+    user: "1000:999"
     env_file:
       - .env
       - ../stack.env
