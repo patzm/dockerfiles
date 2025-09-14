@@ -2,6 +2,9 @@ networks:
 
   teslamate:
 
+  auth_internal:
+    external: true
+
   traefik:
     name: traefik
     external: true
@@ -32,7 +35,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.teslamate-app.entrypoints=websecure
-      - traefik.http.routers.teslamate-app.middlewares=security-headers@file
+      - traefik.http.routers.teslamate-app.middlewares=security-headers@file,keycloak@file
       - traefik.http.routers.teslamate-app.rule=Host(`app.teslamate.patz.app`)
       - traefik.http.routers.teslamate-app.tls.certresolver=patz.app
       - traefik.http.services.teslamate-app.loadbalancer.server.port=4000
