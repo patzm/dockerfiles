@@ -67,16 +67,12 @@ services:
       - DATABASE_PASS=${DB_PASSWORD}
       - DATABASE_NAME=${DB_NAME}
       - DATABASE_HOST=database
-      - GF_AUTH_ANONYMOUS_ENABLED=false
-      - GF_AUTH_ANONYMOUS_ORG_NAME=Patz
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
-      - GF_AUTH_DISABLE_LOGIN_FORM=true
-      - GF_AUTH_BASIC_ENABLED=false
     networks:
       - teslamate
       - traefik
     volumes:
       - /mnt/ssd-1tb/docker/teslamate/grafana-data:/var/lib/grafana
+      - /mnt/ssd-1tb/docker/teslamate/grafana-config/grafana.ini:/etc/grafana/grafana.ini
     labels:
       - traefik.enable=true
       - traefik.http.routers.teslamate-dash.entrypoints=websecure
