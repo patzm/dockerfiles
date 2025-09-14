@@ -76,7 +76,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.teslamate-dash.entrypoints=websecure
-      - traefik.http.routers.teslamate-dash.middlewares=security-headers@file,keycloak@file
+      - traefik.http.routers.teslamate-dash.middlewares=security-headers@file
       - traefik.http.routers.teslamate-dash.rule=Host(`dash.teslamate.patz.app`)
       - traefik.http.routers.teslamate-dash.tls.certresolver=patz.app
       - traefik.http.services.teslamate-dash.loadbalancer.server.port=3000
