@@ -67,6 +67,11 @@ services:
       - DATABASE_PASS=${DB_PASSWORD}
       - DATABASE_NAME=${DB_NAME}
       - DATABASE_HOST=database
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+      - GF_AUTH_ANONYMOUS_ORG_NAME=Patz
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_AUTH_BASIC_ENABLED=false
     networks:
       - teslamate
       - traefik
@@ -75,7 +80,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.teslamate-dash.entrypoints=websecure
-      - traefik.http.routers.teslamate-dash.middlewares=security-headers@file
+      - traefik.http.routers.teslamate-dash.middlewares=security-headers@file,keycloak@file
       - traefik.http.routers.teslamate-dash.rule=Host(`dash.teslamate.patz.app`)
       - traefik.http.routers.teslamate-dash.tls.certresolver=patz.app
       - traefik.http.services.teslamate-dash.loadbalancer.server.port=3000
