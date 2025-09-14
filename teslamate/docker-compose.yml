@@ -1,0 +1,89 @@
+networks:
+
+  teslamate:
+
+  traefik:
+    name: traefik
+    external: true
+
+
+services:
+
+  teslamate:
+    image: teslamate/teslamate:${TESLAMATE_TAG:-latest}
+    restart: unless-stopped
+    cap_drop:
+      - all
+    env_file:
+      - .env
+      - ../stack.env
+    environment:
+      - ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - DATABASE_USER=${DB_USER}
+      - DATABASE_NAME=${DB_NAME}
+      - DATABASE_PASS=${DB_PASSWORD}
+      - DATABASE_HOST=database
+      - MQTT_HOST=mosquitto
+    networks:
+      - teslamate
+      - traefik
+    volumes:
+      - /mnt/ssd-1tb/docker/teslamate/import:/opt/app/import
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.teslamate-app.entrypoints=websecure
+      - traefik.http.routers.teslamate-app.middlewares=security-headers@file
+      - traefik.http.routers.teslamate-app.rule=Host(`app.teslamate.patz.app`)
+      - traefik.http.routers.teslamate-app.tls.certresolver=patz.app
+      - traefik.http.services.teslamate-app.loadbalancer.server.port=4000
+
+  database:
+    image: postgres:17-trixie
+    restart: unless-stopped
+    env_file:
+      - .env
+      - ../stack.env
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    networks:
+      - teslamate
+    volumes:
+      - /mnt/ssd-1tb/docker/teslamate/db:/var/lib/postgresql/data
+
+  grafana:
+    image: teslamate/grafana:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+      - ../stack.env
+    environment:
+      - DATABASE_USER=${DB_USER}
+      - DATABASE_PASS=${DB_PASSWORD}
+      - DATABASE_NAME=${DB_NAME}
+      - DATABASE_HOST=database
+    networks:
+      - teslamate
+      - traefik
+    volumes:
+      - /mnt/ssd-1tb/docker/teslamate/grafana-data:/var/lib/grafana
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.teslamate-dash.entrypoints=websecure
+      - traefik.http.routers.teslamate-dash.middlewares=security-headers@file
+      - traefik.http.routers.teslamate-dash.rule=Host(`dash.teslamate.patz.app`)
+      - traefik.http.routers.teslamate-dash.tls.certresolver=patz.app
+      - traefik.http.services.teslamate-dash.loadbalancer.server.port=3000
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    command: mosquitto -c /mosquitto-no-auth.conf
+    # ports:
+    #   - 1883:1883
+    networks:
+      - teslamate
+    volumes:
+      - /mnt/ssd-1tb/docker/teslamate/mosquitto-conf:/mosquitto/config
+      - /mnt/ssd-1tb/docker/teslamate/mosquitto-data:/mosquitto/data
