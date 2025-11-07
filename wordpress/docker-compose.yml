@@ -3,7 +3,7 @@ networks:
     internal:
 
     traefik:
-        name: traefik
+        name: traefik_swarm
         external: true
 
 
