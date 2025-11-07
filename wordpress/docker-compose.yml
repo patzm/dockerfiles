@@ -12,6 +12,11 @@ services:
   db:
     image: mysql:8.0
     restart: unless-stopped
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      replicas: 1
     networks:
       - internal
     volumes:
@@ -29,6 +34,11 @@ services:
       - db
     volumes:
       - /mnt/ssd-1tb/docker/wordpress/wp:/var/www/html
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      replicas: 1
     networks:
       - traefik
       - internal
