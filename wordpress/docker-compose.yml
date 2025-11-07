@@ -23,7 +23,6 @@ services:
       - /mnt/ssd-1tb/docker/wordpress/db:/var/lib/mysql
     env_file:
       - .env
-      - stack.env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
@@ -47,7 +46,6 @@ services:
       - internal
     env_file:
       - .env
-      - stack.env
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: ${DB_NAME}
