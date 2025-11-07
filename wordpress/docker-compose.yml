@@ -21,13 +21,11 @@ services:
       - internal
     volumes:
       - /mnt/ssd-1tb/docker/wordpress/db:/var/lib/mysql
-    env_file:
-      - .env
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
 
   wordpress:
     image: wordpress:${WORDPRESS_TAG:-latest}
@@ -44,13 +42,11 @@ services:
     networks:
       - traefik
       - internal
-    env_file:
-      - .env
     environment:
       WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: ${DB_NAME}
-      WORDPRESS_DB_PASSWORD: ${DB_USER}
-      WORDPRESS_DB_NAME: ${DB_PASSWORD}
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
     labels:
       - traefik.enable=true
       - traefik.http.routers.wordpress.entrypoints=websecure
