@@ -12,6 +12,8 @@ services:
   db:
     image: mysql:8.0
     restart: unless-stopped
+    networks:
+      - internal
     volumes:
       - /mnt/ssd-1tb/docker/wordpress/db:/var/lib/mysql
     environment:
@@ -19,8 +21,6 @@ services:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-    networks:
-      - internal
 
   wordpress:
     image: wordpress:${WORDPRESS_TAG:-latest}
