@@ -15,7 +15,7 @@ networks:
 services:
 
   traefik:
-    image: traefik:v3.5.4
+    image: traefik:v3.6.5
     restart: unless-stopped
     user: "${PUID}:${PGID}"
     logging:

@@ -17,5 +17,5 @@ http:
     nas-tatooine:
       loadBalancer:
         servers:
-          - url: https://192.168.1.4:444
+          - url: https://192.168.1.4:443
         serversTransport: trust-internal-tls

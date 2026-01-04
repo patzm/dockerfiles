@@ -1,0 +1,56 @@
+networks:
+
+    internal:
+
+    traefik:
+        name: traefik_swarm
+        external: true
+
+
+services:
+
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      replicas: 1
+    networks:
+      - internal
+    volumes:
+      - /mnt/ssd-1tb/docker/wordpress/db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+  wordpress:
+    image: wordpress:${WORDPRESS_TAG:-latest}
+    restart: unless-stopped
+    depends_on:
+      - db
+    volumes:
+      - /mnt/ssd-1tb/docker/wordpress/wp:/var/www/html
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      replicas: 1
+    networks:
+      - traefik
+      - internal
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.wordpress.entrypoints=websecure
+      - traefik.http.routers.wordpress.middlewares=security-headers@file
+      - traefik.http.routers.wordpress.rule=Host(`wp.patz.app`)
+      - traefik.http.routers.wordpress.tls.certresolver=patz.app
+      - traefik.http.services.wordpress.loadbalancer.server.port=80
