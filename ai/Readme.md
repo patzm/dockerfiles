@@ -19,12 +19,12 @@ Set the following environment variables in `.env` or export them:
 * `OLLAMA_TAG`: overwrites the Docker :whale: image tag for Ollama (default: `latest`)
 * `OPEN_WEBUI_TAG`: overwrites the Docker :whale: image tag for Open WebUI (default: `main`)
 * `OAUTH_PROVIDER_NAME`: display name for OAuth provider (default: `KeyCloak`)
-* `OPENID_PROVIDER_URL`: OpenID configuration URL (default: `https://keycloak.patz.app/realms/master/.well-known/openid-configuration`)
+* `OPENID_PROVIDER_URL`: OpenID configuration URL (default: `https://keycloak.patz.app/realms/patz/.well-known/openid-configuration`)
 * `OAUTH_SCOPES`: OAuth scopes to request (default: `openid profile email`)
 
 ### Configure KeyCloak Client
 1. Login to KeyCloak at `https://keycloak.patz.app`
-2. Navigate to your realm (e.g., `master`)
+2. Navigate to your realm (e.g., `patz`)
 3. Create a new client:
    - Client ID: `open-webui` (or your chosen ID)
    - Client Protocol: `openid-connect`
