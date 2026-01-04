@@ -36,11 +36,11 @@ services:
             - OLLAMA_BASE_URL=http://ollama:11434
             - WEBUI_AUTH=false
             - ENABLE_OAUTH_SIGNUP=true
-            - OAUTH_PROVIDER_NAME=${OAUTH_PROVIDER_NAME:-KeyCloak}
-            - OPENID_PROVIDER_URL=${OPENID_PROVIDER_URL:-https://keycloak.patz.app/realms/master/.well-known/openid-configuration}
-            - OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}
+            - OAUTH_PROVIDER_NAME=KeyCloak
+            - OPENID_PROVIDER_URL=https://keycloak.patz.app/realms/master/.well-known/openid-configuration
+            - OAUTH_CLIENT_ID=open-webui
             - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
-            - OAUTH_SCOPES=${OAUTH_SCOPES:-openid profile email}
+            - OAUTH_SCOPES=openid profile email
         volumes:
             - /mnt/ssd-1tb/docker/ai/open-webui:/app/backend/data
         networks:

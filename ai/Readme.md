@@ -12,27 +12,23 @@ docker network create ai
 Set the following environment variables in `.env` or export them:
 
 **Required for OAuth:**
-* `OAUTH_CLIENT_ID`: Client ID from KeyCloak for Open WebUI
 * `OAUTH_CLIENT_SECRET`: Client secret from KeyCloak for Open WebUI
 
 **Optional:**
 * `OLLAMA_TAG`: overwrites the Docker :whale: image tag for Ollama (default: `latest`)
 * `OPEN_WEBUI_TAG`: overwrites the Docker :whale: image tag for Open WebUI (default: `main`)
-* `OAUTH_PROVIDER_NAME`: display name for OAuth provider (default: `KeyCloak`)
-* `OPENID_PROVIDER_URL`: OpenID configuration URL (default: `https://keycloak.patz.app/realms/patz/.well-known/openid-configuration`)
-* `OAUTH_SCOPES`: OAuth scopes to request (default: `openid profile email`)
 
 ### Configure KeyCloak Client
 1. Login to KeyCloak at `https://keycloak.patz.app`
-2. Navigate to your realm (e.g., `patz`)
+2. Navigate to your realm (`patz`)
 3. Create a new client:
-   - Client ID: `open-webui` (or your chosen ID)
+   - Client ID: `open-webui`
    - Client Protocol: `openid-connect`
    - Access Type: `confidential`
    - Valid Redirect URIs: `https://chat.patz.app/*`
    - Web Origins: `https://chat.patz.app`
 4. Save and copy the client secret from the Credentials tab
-5. Set `OAUTH_CLIENT_ID` and `OAUTH_CLIENT_SECRET` in your environment
+5. Set `OAUTH_CLIENT_SECRET` in your environment
 
 ### Start the stack
 Bring up this stack by invoking:
