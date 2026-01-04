@@ -11,6 +11,9 @@ networks:
     name: traefik
     external: true
 
+  traefik_swarm:
+    external: true
+
 
 services:
 
@@ -35,6 +38,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
       - traefik
+      - traefik_swarm
 
   forward_auth:
     image: thomseddon/traefik-forward-auth:2.2
@@ -52,6 +56,7 @@ services:
     networks:
       - auth_internal
       - traefik
+      - traefik_swarm
     labels:
       - traefik.enable=true
       - traefik.http.routers.forward-auth.entrypoints=websecure
