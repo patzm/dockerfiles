@@ -1,0 +1,54 @@
+networks:
+    ai:
+        name: ai
+        external: true
+
+    auth_internal:
+        external: true
+
+    traefik:
+        name: traefik
+        external: true
+
+services:
+    ollama:
+        image: ollama/ollama:${OLLAMA_TAG:-latest}
+        restart: unless-stopped
+        env_file:
+            - /mnt/ssd-1tb/docker/ai/.env
+        environment:
+            - TZ=Europe/Berlin
+        volumes:
+            - /mnt/ssd-1tb/docker/ai/ollama:/root/.ollama
+        networks:
+            - ai
+
+    open-webui:
+        image: ghcr.io/open-webui/open-webui:${OPEN_WEBUI_TAG:-main}
+        restart: unless-stopped
+        env_file:
+            - /mnt/ssd-1tb/docker/ai/.env
+        environment:
+            - TZ=Europe/Berlin
+            - OLLAMA_BASE_URL=http://ollama:11434
+            - WEBUI_AUTH=false
+            - ENABLE_OAUTH_SIGNUP=true
+            - OAUTH_PROVIDER_NAME=KeyCloak
+            - OPENID_PROVIDER_URL=https://keycloak.patz.app/realms/master/.well-known/openid-configuration
+            - OAUTH_CLIENT_ID=open-webui
+            - OAUTH_CLIENT_SECRET=${OAUTH_CLIENT_SECRET}
+            - OAUTH_SCOPES=openid profile email
+        volumes:
+            - /mnt/ssd-1tb/docker/ai/open-webui:/app/backend/data
+        networks:
+            - ai
+            - auth_internal
+            - traefik
+        depends_on:
+            - ollama
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.open-webui.rule=Host(`chat.patz.app`)
+            - traefik.http.routers.open-webui.entrypoints=websecure
+            - traefik.http.routers.open-webui.tls.certresolver=patz.app
+            - traefik.http.services.open-webui.loadbalancer.server.port=8080
