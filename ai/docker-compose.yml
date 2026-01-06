@@ -22,13 +22,6 @@ services:
             - /mnt/ssd-1tb/docker/ai/ollama:/root/.ollama
         networks:
             - ai
-            - traefik
-        labels:
-            - traefik.enable=true
-            - traefik.http.routers.ollama.rule=Host(`ollama.patz.app`)
-            - traefik.http.routers.ollama.entrypoints=websecure
-            - traefik.http.routers.ollama.tls.certresolver=patz.app
-            - traefik.http.services.ollama.loadbalancer.server.port=11434
 
     open-webui:
         image: ghcr.io/open-webui/open-webui:${OPEN_WEBUI_TAG:-main}
