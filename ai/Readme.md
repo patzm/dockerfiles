@@ -38,7 +38,6 @@ docker compose up -d
 
 ## Services
 
-- **Ollama**: LLM runtime accessible at `https://ollama.patz.app`
 - **Open WebUI**: Web interface for chat accessible at `https://chat.patz.app`
 
 ## Data Storage
