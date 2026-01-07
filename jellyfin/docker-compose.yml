@@ -1,0 +1,33 @@
+volumes:
+    cache:
+
+networks:
+    traefik:
+        name: traefik
+        external: true
+
+services:
+    jellyfin:
+        image: jellyfin/jellyfin:latest
+        restart: unless-stopped
+        networks:
+            - traefik
+        volumes:
+            - cache:/cache
+            - /mnt/ssd-1tb/docker/jellyfin/config:/config
+            - /mnt/hdd-16tb/media/audiobooks:/data/audiobooks:ro
+            - /mnt/hdd-16tb/media/plex:/data/plex:ro
+            - /mnt/hdd-16tb/media/movies:/data/movies:ro
+            - /mnt/hdd-16tb/media/music:/data/music:ro
+            - /mnt/hdd-16tb/media/tv-shows:/data/tv-shows:ro
+        environment:
+            PUID: 1001
+            PGID: 1002
+            TZ: Europe/Berlin
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.jellyfin.entrypoints=websecure"
+            - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.patz.app`)"
+            - "traefik.http.routers.jellyfin.tls=true"
+            - "traefik.http.routers.jellyfin.tls.certresolver=patz.app"
+            - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
