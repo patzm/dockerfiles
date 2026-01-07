@@ -8,7 +8,7 @@ networks:
 
 services:
     jellyfin:
-        image: jellyfin/jellyfin:latest
+        image: jellyfin/jellyfin:${JELLYFIN_TAG:-latest}
         restart: unless-stopped
         networks:
             - traefik
