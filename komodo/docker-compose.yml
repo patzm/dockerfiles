@@ -30,7 +30,9 @@ services:
             - traefik
         volumes:
             - /mnt/ssd-1tb/docker/komodo/backups:/backups
-        env_file: ./.env
+        env_file:
+            - ./.env
+            - /mnt/ssd-1tb/docker/komodo/secrets.env
         environment:
             KOMODO_DATABASE_ADDRESS: mongo:27017
             KOMODO_DATABASE_USERNAME: ${KOMODO_DB_USERNAME}
@@ -53,7 +55,9 @@ services:
             - /var/run/docker.sock:/var/run/docker.sock
             - /proc:/proc
             - ${PERIPHERY_ROOT_DIRECTORY}:${PERIPHERY_ROOT_DIRECTORY}
-        env_file: ./.env
+        env_file:
+            - ./.env
+            - /mnt/ssd-1tb/docker/komodo/secrets.env
         environment:
             TZ: ${TZ}
         labels:
