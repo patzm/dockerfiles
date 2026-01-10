@@ -1,0 +1,60 @@
+networks:
+    traefik:
+        name: traefik
+        external: true
+
+services:
+    mongo:
+        image: mongo
+        restart: unless-stopped
+        command: --quiet --wiredTigerCacheSizeGB 0.25
+        networks:
+            - default
+        volumes:
+            - /mnt/ssd-1tb/docker/komodo/mongo-data:/data/db
+            - /mnt/ssd-1tb/docker/komodo/mongo-config:/data/configdb
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ${KOMODO_DB_USERNAME}
+            MONGO_INITDB_ROOT_PASSWORD: ${KOMODO_DB_PASSWORD}
+            TZ: ${TZ}
+        labels:
+            komodo.skip:
+
+    core:
+        image: ghcr.io/moghtech/komodo-core:${COMPOSE_KOMODO_IMAGE_TAG:-latest}
+        restart: unless-stopped
+        depends_on:
+            - mongo
+        networks:
+            - default
+            - traefik
+        volumes:
+            - /mnt/ssd-1tb/docker/komodo/backups:/backups
+        env_file: ./.env
+        environment:
+            KOMODO_DATABASE_ADDRESS: mongo:27017
+            KOMODO_DATABASE_USERNAME: ${KOMODO_DB_USERNAME}
+            KOMODO_DATABASE_PASSWORD: ${KOMODO_DB_PASSWORD}
+            TZ: ${TZ}
+        labels:
+            komodo.skip:
+            traefik.enable: "true"
+            traefik.http.routers.komodo.rule: "Host(`komodo.arnold.patz.app`)"
+            traefik.http.routers.komodo.entrypoints: "websecure"
+            traefik.http.routers.komodo.tls.certresolver: "patz.app"
+            traefik.http.services.komodo.loadbalancer.server.port: "9120"
+
+    periphery:
+        image: ghcr.io/moghtech/komodo-periphery:${COMPOSE_KOMODO_IMAGE_TAG:-latest}
+        restart: unless-stopped
+        networks:
+            - default
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - /proc:/proc
+            - ${PERIPHERY_ROOT_DIRECTORY}:${PERIPHERY_ROOT_DIRECTORY}
+        env_file: ./.env
+        environment:
+            TZ: ${TZ}
+        labels:
+            komodo.skip:
