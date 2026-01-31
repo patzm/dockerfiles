@@ -26,8 +26,6 @@ services:
     open-webui:
         image: ghcr.io/open-webui/open-webui:${OPEN_WEBUI_TAG:-main}
         restart: unless-stopped
-        env_file:
-            - /mnt/ssd-1tb/docker/ai/.env
         environment:
             - TZ=Europe/Berlin
             - OLLAMA_BASE_URL=http://ollama:11434
