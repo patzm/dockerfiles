@@ -14,8 +14,6 @@ services:
     ollama:
         image: ollama/ollama:${OLLAMA_TAG:-latest}
         restart: unless-stopped
-        env_file:
-            - /mnt/ssd-1tb/docker/ai/.env
         environment:
             - TZ=Europe/Berlin
         volumes:
