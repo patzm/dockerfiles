@@ -4,11 +4,6 @@ NVR (Network Video Recorder) with AI object detection for IP cameras.
 
 ## Setup
 
-### Environment Variables
-
-Edit `docker-compose.yml`:
-- `FRIGATE_RTSP_PASSWORD` - Password for RTSP stream access (change from `changeme`)
-
 ### Directories
 
 ```bash
@@ -25,6 +20,8 @@ Create `/mnt/ssd-1tb/docker/frigate/config/config.yml` with your camera configur
 ```bash
 docker compose up -d
 ```
+
+Note the password that gets logged on the 1st launch.
 
 Access at `https://frigate.patz.app`
 
