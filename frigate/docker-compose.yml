@@ -17,7 +17,7 @@ services:
         volumes:
             - /etc/localtime:/etc/localtime:ro
             - /mnt/ssd-1tb/docker/frigate/config:/config
-            - /mnt/hdd-16tb/frigate/media:/media/frigate
+            - /mnt/hdd-16tb/docker/frigate/media:/media/frigate
             - type: tmpfs
               target: /tmp/cache
               tmpfs:
