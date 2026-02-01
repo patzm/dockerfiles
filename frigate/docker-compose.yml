@@ -22,10 +22,6 @@ services:
               target: /tmp/cache
               tmpfs:
                   size: 1000000000
-        ports:
-            - "8554:8554"
-            - "8555:8555/tcp"
-            - "8555:8555/udp"
         environment:
             TZ: Europe/Berlin
             FRIGATE_RTSP_PASSWORD: "${FRIGATE_RTSP_PASSWORD}"
