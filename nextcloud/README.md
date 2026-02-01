@@ -15,3 +15,10 @@ Additionally, the following optional and _non-sensitive_ environment variables:
 * `NEXTCLOUD_TAG`: overwrites the Docker :whale: image tag
 
 Then upload the `nextcloud.env` file into Portainer and populate the environment.
+
+## Configuration
+
+Disallowed characters in file names:
+```
+'?', '<', '>', ':', '#', '*', '|', '"', '%', '$', '\n', '\r', '\0'
+```
