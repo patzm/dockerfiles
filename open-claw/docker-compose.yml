@@ -18,7 +18,7 @@ volumes:
             device: :/mnt/ssd-1tb/docker/open-claw
 
 services:
-    openclaw-gateway:
+    gateway:
         image: ghcr.io/openclaw/openclaw:${OPEN_CLAW_TAG:-latest}
         restart: unless-stopped
         environment:
