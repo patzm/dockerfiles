@@ -1,5 +1,6 @@
 networks:
     default:
+
     ai:
         name: ai_swarm
         external: true
