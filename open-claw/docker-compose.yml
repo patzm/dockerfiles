@@ -29,6 +29,7 @@ services:
             OPENCLAW_GATEWAY_PORT: ${OPENCLAW_GATEWAY_PORT:-18789}
             OPENCLAW_GATEWAY_MODE: ${OPENCLAW_GATEWAY_MODE:-local}
             OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN:?set_gateway_token}
+            OPENCLAW_TRUSTED_PROXIES: ${OPENCLAW_TRUSTED_PROXIES:-10.0.0.0/16}
         volumes:
             - openclaw_data:/home/node/.openclaw
         ports:
