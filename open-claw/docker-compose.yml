@@ -37,7 +37,6 @@ services:
                 constraints:
                     - node.hostname == krabbi
             replicas: 1
-
         labels:
             - traefik.enable=true
             - traefik.http.routers.openclaw.rule=Host(`openclaw.patz.app`)
