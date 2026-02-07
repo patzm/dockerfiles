@@ -23,12 +23,24 @@ services:
         restart: unless-stopped
         environment:
             TZ: Europe/Berlin
-            OPENCLAW_GATEWAY_BIND: lan
-            OPENCLAW_GATEWAY_PORT: 18789
+            HOME: /home/node
+            TERM: xterm-256color
+            OPENCLAW_GATEWAY_BIND: ${OPENCLAW_GATEWAY_BIND:-lan}
+            OPENCLAW_GATEWAY_PORT: ${OPENCLAW_GATEWAY_PORT:-18789}
             OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN:?set_gateway_token}
-            OLLAMA_API_KEY: ollama-local
         volumes:
             - openclaw_data:/home/node/.openclaw
+        ports:
+            - "${OPENCLAW_GATEWAY_PORT:-18789}:18789"
+        init: true
+        command:
+            - node
+            - dist/index.js
+            - gateway
+            - --bind
+            - ${OPENCLAW_GATEWAY_BIND:-lan}
+            - --port
+            - "18789"
         networks:
             - default
             - traefik
