@@ -27,6 +27,7 @@ services:
             TERM: xterm-256color
             OPENCLAW_GATEWAY_BIND: ${OPENCLAW_GATEWAY_BIND:-lan}
             OPENCLAW_GATEWAY_PORT: ${OPENCLAW_GATEWAY_PORT:-18789}
+            OPENCLAW_GATEWAY_MODE: ${OPENCLAW_GATEWAY_MODE:-local}
             OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN:?set_gateway_token}
         volumes:
             - openclaw_data:/home/node/.openclaw
