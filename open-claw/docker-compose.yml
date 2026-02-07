@@ -18,7 +18,7 @@ volumes:
 
 services:
     openclaw-gateway:
-        image: ghcr.io/openclaw/openclaw:latest
+        image: ghcr.io/openclaw/openclaw:${OPEN_CLAW_TAG:-latest}
         restart: unless-stopped
         environment:
             TZ: Europe/Berlin
