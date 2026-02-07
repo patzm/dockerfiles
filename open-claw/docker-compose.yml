@@ -1,0 +1,46 @@
+networks:
+    default:
+    ai:
+        name: ai_swarm
+        external: true
+
+    traefik:
+        name: traefik_swarm
+        external: true
+
+volumes:
+    openclaw_data:
+        driver: local
+        driver_opts:
+            type: nfs
+            o: addr=192.168.1.2,nolock,soft,rw
+            device: :/mnt/ssd-1tb/docker/open-claw
+
+services:
+    openclaw-gateway:
+        image: ghcr.io/openclaw/openclaw:latest
+        restart: unless-stopped
+        environment:
+            TZ: Europe/Berlin
+            OPENCLAW_GATEWAY_BIND: lan
+            OPENCLAW_GATEWAY_PORT: 18789
+            OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN:?set_gateway_token}
+            OLLAMA_API_KEY: ollama-local
+        volumes:
+            - openclaw_data:/home/node/.openclaw
+        networks:
+            - default
+            - traefik
+            - ai
+        deploy:
+            placement:
+                constraints:
+                    - node.hostname == krabbi
+            replicas: 1
+
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.openclaw.rule=Host(`openclaw.patz.app`)
+            - traefik.http.routers.openclaw.entrypoints=websecure
+            - traefik.http.routers.openclaw.tls.certresolver=patz.app
+            - traefik.http.services.openclaw.loadbalancer.server.port=18789
