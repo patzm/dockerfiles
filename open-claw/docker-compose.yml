@@ -37,9 +37,9 @@ services:
                 constraints:
                     - node.hostname == krabbi
             replicas: 1
-        labels:
-            - traefik.enable=true
-            - traefik.http.routers.openclaw.rule=Host(`openclaw.patz.app`)
-            - traefik.http.routers.openclaw.entrypoints=websecure
-            - traefik.http.routers.openclaw.tls.certresolver=patz.app
-            - traefik.http.services.openclaw.loadbalancer.server.port=18789
+            labels:
+                - traefik.enable=true
+                - traefik.http.routers.openclaw.rule=Host(`openclaw.patz.app`)
+                - traefik.http.routers.openclaw.entrypoints=websecure
+                - traefik.http.routers.openclaw.tls.certresolver=patz.app
+                - traefik.http.services.openclaw.loadbalancer.server.port=18789
