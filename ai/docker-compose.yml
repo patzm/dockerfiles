@@ -3,6 +3,10 @@ networks:
         name: ai
         external: true
 
+    ai_swarm:
+        name: ai_swarm
+        external: true
+
     auth_internal:
         external: true
 
@@ -20,6 +24,7 @@ services:
             - /mnt/ssd-1tb/docker/ai/ollama:/root/.ollama
         networks:
             - ai
+            - ai_swarm
 
     open-webui:
         image: ghcr.io/open-webui/open-webui:${OPEN_WEBUI_TAG:-main}

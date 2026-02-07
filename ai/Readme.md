@@ -6,6 +6,7 @@
 Before bringing up this stack, create the external networks:
 ```bash
 docker network create ai
+docker network create --driver overlay --attachable ai_swarm
 ```
 
 ### Environment Variables
