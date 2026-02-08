@@ -26,10 +26,11 @@ services:
             HOME: /home/node
             TERM: xterm-256color
             OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN}
-            OPENCLAW_GATEWAY_PASSWORD: ${OPENCLAW_GATEWAY_PASSWORD}
         volumes:
             - openclaw_data:/home/node/.openclaw
         init: true
+        ports:
+            - "18789:18789"
         command:
             - node
             - dist/index.js
