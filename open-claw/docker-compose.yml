@@ -54,3 +54,23 @@ services:
                 - traefik.http.routers.openclaw.middlewares=security-headers@file
                 - traefik.http.routers.openclaw.tls.certresolver=patz.app
                 - traefik.http.services.openclaw.loadbalancer.server.port=18789
+
+    cli:
+        image: ghcr.io/openclaw/openclaw:${OPEN_CLAW_TAG:-latest}
+        environment:
+            TZ: Europe/Berlin
+            HOME: /home/node
+            TERM: xterm-256color
+            OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN}
+            BROWSER: echo
+        volumes:
+            - openclaw_data:/home/node/.openclaw
+        stdin_open: true
+        tty: true
+        init: true
+        entrypoint: ["node", "dist/index.js"]
+        deploy:
+            placement:
+                constraints:
+                    - node.hostname == krabbi
+            replicas: 1
