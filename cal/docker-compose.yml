@@ -1,0 +1,73 @@
+networks:
+
+  default:
+
+  traefik:
+    name: traefik
+    external: true
+
+
+services:
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    env_file:
+      - ../stack.env
+      - .env
+    networks:
+      - default
+    volumes:
+      - /mnt/ssd-1tb/docker/cal/postgresql-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?}
+      POSTGRES_DB: ${POSTGRES_DB:-cal}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    networks:
+      - default
+    volumes:
+      - /mnt/ssd-1tb/docker/cal/redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    image: calcom.docker.scarf.sh/calcom/cal.diy:${CAL_TAG:-latest}
+    restart: unless-stopped
+    env_file:
+      - ../stack.env
+      - .env
+    networks:
+      - default
+      - traefik
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      DATABASE_DIRECT_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://redis:6379
+      NEXTAUTH_URL: https://${APP_DOMAIN}
+      NEXT_PUBLIC_WEBAPP_URL: https://${APP_DOMAIN}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cal.entrypoints=websecure"
+      - "traefik.http.routers.cal.rule=Host(`${APP_DOMAIN}`)"
+      - "traefik.http.routers.cal.tls=true"
+      - "traefik.http.routers.cal.tls.certresolver=patz.app"
+      - "traefik.http.routers.cal.middlewares=security-headers@file"
+      - "traefik.http.services.cal.loadbalancer.server.port=3000"
