@@ -1,106 +1,102 @@
 volumes:
-  traefik:
-
+    traefik:
 
 networks:
+    auth_internal:
+        external: true
 
-  auth_internal:
-    external: true
-
-  traefik:
-    name: traefik
-    external: true
-
+    traefik:
+        name: traefik
+        external: true
 
 services:
+    traefik:
+        image: traefik:v3.6.5
+        restart: unless-stopped
+        user: "${PUID}:${PGID}"
+        logging:
+            options:
+                max-size: "10m"
+                max-file: "3"
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - "traefik:/tmp"
+            - "/mnt/ssd-1tb/docker/traefik/letsencrypt:/letsencrypt"
+            - "./traefik.yml:/etc/traefik/traefik.yml"
+            - "./dynamic:/etc/traefik/dynamic"
+            - "/var/run/docker.sock:/var/run/docker.sock:ro"
+        networks:
+            - traefik
 
-  traefik:
-    image: traefik:v3.6.5
-    restart: unless-stopped
-    user: "${PUID}:${PGID}"
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - "traefik:/tmp"
-      - "/mnt/ssd-1tb/docker/traefik/letsencrypt:/letsencrypt"
-      - "./traefik.yml:/etc/traefik/traefik.yml"
-      - "./dynamic:/etc/traefik/dynamic"
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    networks:
-      - traefik
+    forward_auth:
+        image: thomseddon/traefik-forward-auth:2.2
+        restart: unless-stopped
+        env_file: .env
+        environment:
+            - DEFAULT_PROVIDER=oidc
+            - PROVIDERS_OIDC_CLIENT_ID=traefik-forward-auth
+            - PROVIDERS_OIDC_ISSUER_URL=https://keycloak.patz.app/auth/realms/patz
+            - AUTH_HOST=auth.patz.app
+            - COOKIE_DOMAIN=patz.app
+            - URL_PATH=/_oauth
+            - INSECURE_COOKIE=false
+            - LOG_LEVEL=debug
+        networks:
+            - auth_internal
+            - traefik
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.forward-auth.entrypoints=websecure
+            - traefik.http.routers.forward-auth.rule=Host(`auth.patz.app`)
+            - traefik.http.routers.forward-auth.tls=true
+            - traefik.http.routers.forward-auth.tls.certresolver=patz.app
+            - traefik.http.routers.forward-auth.middlewares=keycloak@file
+            - traefik.http.services.forward-auth.loadbalancer.server.port=4181
 
-  forward_auth:
-    image: thomseddon/traefik-forward-auth:2.2
-    restart: unless-stopped
-    env_file: .env
-    environment:
-      - DEFAULT_PROVIDER=oidc
-      - PROVIDERS_OIDC_CLIENT_ID=traefik-forward-auth
-      - PROVIDERS_OIDC_ISSUER_URL=https://keycloak.patz.app/auth/realms/patz
-      - AUTH_HOST=auth.patz.app
-      - COOKIE_DOMAIN=patz.app
-      - URL_PATH=/_oauth
-      - INSECURE_COOKIE=false
-      - LOG_LEVEL=debug
-    networks:
-      - auth_internal
-      - traefik
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.forward-auth.entrypoints=websecure
-      - traefik.http.routers.forward-auth.rule=Host(`auth.patz.app`)
-      - traefik.http.routers.forward-auth.tls=true
-      - traefik.http.routers.forward-auth.tls.certresolver=patz.app
-      - traefik.http.routers.forward-auth.middlewares=keycloak@file
-      - traefik.http.services.forward-auth.loadbalancer.server.port=4181
+    #  ddns:
+    #    image: qmcgaw/ddns-updater:v2.6.0
+    #    restart: unless-stopped
+    #    user: "${PUID}:${PGID}"
+    #    environment:
+    #      - PERIOD=5m
+    #      - UPDATE_COOLDOWN_PERIOD=5m
+    #      - PUBLICIP_FETCHERS=all
+    #      - PUBLICIP_HTTP_PROVIDERS=all
+    #      - PUBLICIPV4_HTTP_PROVIDERS=all
+    #      - PUBLICIPV6_HTTP_PROVIDERS=all
+    #      - PUBLICIP_DNS_PROVIDERS=all
+    #      - PUBLICIP_DNS_TIMEOUT=3s
+    #      - RESOLVER_ADDRESS=1.1.1.1:53
+    #      - HTTP_TIMEOUT=10s
+    #      - LOG_LEVEL=info
+    #      - LOG_CALLER=hidden
+    #      - TZ=Europe/Berlin
+    #    networks:
+    #      - traefik
+    #    volumes:
+    #      - /mnt/ssd-1tb/docker/traefik/ddns:/updater/data
+    #    labels:
+    #    # doesn't work yet!
+    #      - traefik.enable=true
+    #      - traefik.http.routers.ddns.entrypoints=websecure
+    #      - traefik.http.routers.ddns.rule=Host(`ddns.patz.app`)
+    #      - traefik.http.routers.ddns.tls=true
+    #      - traefik.http.routers.ddns.tls.certresolver=patz.app
+    #      - traefik.http.routers.ddns.middlewares=keycloak@file
+    #      - traefik.http.services.ddns.loadbalancer.server.port=8000
 
-#  ddns:
-#    image: qmcgaw/ddns-updater:v2.6.0
-#    restart: unless-stopped
-#    user: "${PUID}:${PGID}"
-#    environment:
-#      - PERIOD=5m
-#      - UPDATE_COOLDOWN_PERIOD=5m
-#      - PUBLICIP_FETCHERS=all
-#      - PUBLICIP_HTTP_PROVIDERS=all
-#      - PUBLICIPV4_HTTP_PROVIDERS=all
-#      - PUBLICIPV6_HTTP_PROVIDERS=all
-#      - PUBLICIP_DNS_PROVIDERS=all
-#      - PUBLICIP_DNS_TIMEOUT=3s
-#      - RESOLVER_ADDRESS=1.1.1.1:53
-#      - HTTP_TIMEOUT=10s
-#      - LOG_LEVEL=info
-#      - LOG_CALLER=hidden
-#      - TZ=Europe/Berlin
-#    networks:
-#      - traefik
-#    volumes:
-#      - /mnt/ssd-1tb/docker/traefik/ddns:/updater/data
-#    labels:
-#    # doesn't work yet!
-#      - traefik.enable=true
-#      - traefik.http.routers.ddns.entrypoints=websecure
-#      - traefik.http.routers.ddns.rule=Host(`ddns.patz.app`)
-#      - traefik.http.routers.ddns.tls=true
-#      - traefik.http.routers.ddns.tls.certresolver=patz.app
-#      - traefik.http.routers.ddns.middlewares=keycloak@file
-#      - traefik.http.services.ddns.loadbalancer.server.port=8000
-
-  whoami:
-    image: "containous/whoami"
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.patz.app`)"
-      - "traefik.http.routers.whoami.tls=true"
-      - "traefik.http.routers.whoami.tls.certresolver=patz.app"
-    networks:
-      - traefik
+    whoami:
+        image: "containous/whoami"
+        restart: unless-stopped
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.whoami.entrypoints=websecure"
+            - "traefik.http.routers.whoami.rule=Host(`whoami.patz.app`)"
+            - "traefik.http.routers.whoami.tls=true"
+            - "traefik.http.routers.whoami.tls.certresolver=patz.app"
+        networks:
+            - traefik
