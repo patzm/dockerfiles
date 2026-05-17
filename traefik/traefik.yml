@@ -7,8 +7,16 @@ log:
 entryPoints:
     web:
         address: ":80"
+        forwardedHeaders:
+            trustedIPs:
+                - "127.0.0.1/32"
+                - "::1/128"
     websecure:
         address: ":443"
+        forwardedHeaders:
+            trustedIPs:
+                - "127.0.0.1/32"
+                - "::1/128"
         # To improve NextCloud transfer (upload) stability
         transport:
             respondingTimeouts:
