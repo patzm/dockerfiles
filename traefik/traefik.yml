@@ -1,63 +1,71 @@
 global:
-  sendAnonymousUsage: true
+    sendAnonymousUsage: true
 
 log:
-  level: WARN
+    level: WARN
 
 entryPoints:
-  web:
-    address: ":80"
-  websecure:
-    address: ":443"
-    # To improve NextCloud transfer (upload) stability
-    transport:
-      respondingTimeouts:
-        readTimeout: 10000s
-        writeTimeout: 10000s
-        idleTimeout: 10000s
+    web:
+        address: ":80"
+        forwardedHeaders:
+            trustedIPs:
+                - "127.0.0.1/32"
+                - "::1/128"
+    websecure:
+        address: ":443"
+        forwardedHeaders:
+            trustedIPs:
+                - "127.0.0.1/32"
+                - "::1/128"
+        # To improve NextCloud transfer (upload) stability
+        transport:
+            respondingTimeouts:
+                readTimeout: 10000s
+                writeTimeout: 10000s
+                idleTimeout: 10000s
 
 providers:
-  docker:
-    network: traefik
-    watch: true
-    exposedByDefault: false
-    endpoint: unix:///var/run/docker.sock
-  file:
-    directory: /etc/traefik/dynamic
+    docker:
+        network: traefik
+        watch: true
+        exposedByDefault: false
+        endpoint: unix:///var/run/docker.sock
+    file:
+        directory: /etc/traefik/dynamic
 
 certificatesResolvers:
-  patz.app:
-    acme:
-      email: postmaster@martin-patz.de
-      storage: letsencrypt/patz.app/acme.json
-      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
-      tlsChallenge: {}
-      httpChallenge:
-        entrypoint: web
-  patz.family:
-    acme:
-      email: postmaster@martin-patz.de
-      storage: letsencrypt/patz.family/acme.json
-      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
-      tlsChallenge: {}
-      httpChallenge:
-        entrypoint: web
-  bergaufboardab.de:
-    acme:
-      email: postmaster@martin-patz.de
-      storage: letsencrypt/bergaufboardab.de/acme.json
-      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
-      tlsChallenge: {}
-      httpChallenge:
-        entrypoint: web
-  whynot.holdings:
-    acme:
-      email: postmaster@martin-patz.de
-      storage: letsencrypt/whynot.holdings/acme.json
-      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
-      tlsChallenge: {}
-      httpChallenge:
-        entrypoint: web
+    patz.app:
+        acme:
+            email: postmaster@martin-patz.de
+            storage: letsencrypt/patz.app/acme.json
+            # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+            tlsChallenge: {}
+            httpChallenge:
+                entrypoint: web
+    patz.family:
+        acme:
+            email: postmaster@martin-patz.de
+            storage: letsencrypt/patz.family/acme.json
+            # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+            tlsChallenge: {}
+            httpChallenge:
+                entrypoint: web
+    bergaufboardab.de:
+        acme:
+            email: postmaster@martin-patz.de
+            storage: letsencrypt/bergaufboardab.de/acme.json
+            # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+            tlsChallenge: {}
+            httpChallenge:
+                entrypoint: web
+    whynot.holdings:
+        acme:
+            email: postmaster@martin-patz.de
+            storage: letsencrypt/whynot.holdings/acme.json
+            # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+            tlsChallenge: {}
+            httpChallenge:
+                entrypoint: web
 
 api:
-  dashboard: true
+    dashboard: true
