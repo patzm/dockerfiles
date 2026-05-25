@@ -1,6 +1,10 @@
 networks:
   affine:
 
+  ai:
+    name: ai
+    external: true
+
   traefik:
     name: traefik
     external: true
@@ -19,6 +23,7 @@ services:
     networks:
       - traefik
       - affine
+      - ai
     volumes:
       - /mnt/ssd-1tb/docker/affine/upload:/root/.affine/storage
       - /mnt/ssd-1tb/docker/affine/config:/root/.affine/config
