@@ -1,12 +1,9 @@
 http:
-
   serversTransports:
-
     trust-internal-tls:
       insecureSkipVerify: true
 
   routers:
-
     redirect-https:
       entrypoints:
         - web
@@ -60,9 +57,7 @@ http:
         - keycloak@file
       service: storj1-service
 
-
   middlewares:
-
     redirect-https:
       redirectScheme:
         scheme: https
@@ -97,7 +92,6 @@ http:
           - "X-Forwarded-User"
 
   services:
-
     noop:
       loadBalancer:
         servers:
@@ -109,9 +103,9 @@ http:
           - url: https://host.docker.internal:444
         serversTransport: trust-internal-tls
     home_assistant:
-     loadBalancer:
-       servers:
-         - url: http://192.168.1.3:8123
+      loadBalancer:
+        servers:
+          - url: http://192.168.1.3:8123
     storj1-service:
       loadBalancer:
         servers:
