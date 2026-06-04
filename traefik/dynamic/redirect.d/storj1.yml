@@ -1,0 +1,55 @@
+http:
+  routers:
+    nas-storj1:
+      entrypoints:
+        - websecure
+      rule: "Host(`nas.storj1.patz.app`)"
+      tls:
+        certResolver: patz.app
+      middlewares:
+        - keycloak@file
+      service: storj1-nas
+
+    portainer-storj1:
+      entrypoints:
+        - websecure
+      rule: "Host(`portainer.storj1.patz.app`)"
+      tls:
+        certResolver: patz.app
+      middlewares:
+        - keycloak@file
+      service: storj1-portainer
+
+    storj1:
+      rule: >
+        Host(`traefik.storj1.patz.app`)
+        || Host(`storj-1tb-1.storj1.patz.app`)
+        || Host(`storj-1tb-2.storj1.patz.app`)
+        || Host(`storj-3tb-1.storj1.patz.app`)
+        || Host(`storj-3tb-2.storj1.patz.app`)
+        || Host(`storj-3tb-3.storj1.patz.app`)
+        || Host(`storj-3tb-4.storj1.patz.app`)
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: patz.app
+      middlewares:
+        - keycloak@file
+      service: storj1-traefik
+
+  services:
+    storj1-nas:
+      loadBalancer:
+        servers:
+          - url: https://192.168.1.5:443
+        serversTransport: trust-internal-tls
+
+    storj1-traefik:
+      loadBalancer:
+        servers:
+          - url: http://192.168.1.5:80
+
+    storj1-portainer:
+      loadBalancer:
+        servers:
+          - url: http://192.168.1.5:31017  # http port
