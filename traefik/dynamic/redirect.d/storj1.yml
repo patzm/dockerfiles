@@ -1,0 +1,18 @@
+http:
+  routers:
+    nas-storj1:
+      entrypoints:
+        - websecure
+      rule: "Host(`nas.storj1.patz.app`)"
+      tls:
+        certResolver: patz.app
+      middlewares:
+        - keycloak@file
+      service: nas-tatooine
+
+  services:
+    nas-storj1:
+      loadBalancer:
+        servers:
+          - url: https://192.168.1.5:443
+        serversTransport: trust-internal-tls
