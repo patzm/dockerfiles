@@ -69,6 +69,7 @@ http:
       forwardAuth:
         address: "http://forward_auth:4181"
         trustForwardHeader: true
+        maxResponseBodySize: 1048576
         authResponseHeaders:
           - "X-Forwarded-User"
 
