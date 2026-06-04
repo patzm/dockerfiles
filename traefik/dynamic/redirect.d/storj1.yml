@@ -10,6 +10,16 @@ http:
         - keycloak@file
       service: storj1-nas
 
+    portainer-storj1:
+      entrypoints:
+        - websecure
+      rule: "Host(`portainer.storj1.patz.app`)"
+      tls:
+        certResolver: patz.app
+      middlewares:
+        - keycloak@file
+      service: storj1-portainer
+
     storj1:
       rule: >
         Host(`traefik.storj1.patz.app`)
@@ -38,3 +48,8 @@ http:
       loadBalancer:
         servers:
           - url: http://192.168.1.5:80
+
+    storj1-portainer:
+      loadBalancer:
+        servers:
+          - url: http://192.168.1.5:31015
