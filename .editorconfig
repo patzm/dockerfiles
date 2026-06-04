@@ -1,0 +1,7 @@
+# Mark this as the top-most EditorConfig file for this project
+root = true
+
+# Apply these settings only to YAML files
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
