@@ -52,4 +52,4 @@ http:
     storj1-portainer:
       loadBalancer:
         servers:
-          - url: http://192.168.1.5:31015
+          - url: http://192.168.1.5:31017
