@@ -28,12 +28,9 @@ It allows you to specify additional properties, in addition to the above :point_
     sudo sudo mv identity /mnt/ssd-256gb/docker/storj/identity
     ```
 
-1. Register an authorization token at https://storj.dev/node/get-started/auth-token
-
-1. run `create-node` with the following syntax: `create-node NODE PORT AUTH-TOKEN STORJ_INSTANCE`
+1. run `create-node` with the following syntax: `create-node NODE PORT STORJ_INSTANCE`
     - the `NODE` needs to match a mounted disk name in `/mnt`
     - the `PORT` needs to be a publicly accessible, *open* port
-    - `AUTH-TOKEN` is when we got from the previous step
     - `STORJ_INSTANCE`: a unique identifier of the Storj server, e.g. `1` or `2`
 
 1. execute the pre-configured commands in order
