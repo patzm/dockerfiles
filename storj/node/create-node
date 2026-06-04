@@ -9,6 +9,7 @@ PORT=$2
 STORJ_INSTANCE=$3
 
 # Constants
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 _SHARED_STORJ_DIR=/mnt/ssd-256gb/docker/storj
 STORJ_SECRETS="${_SHARED_STORJ_DIR}/secrets.env"
 
@@ -67,11 +68,11 @@ CMD_SETUP="docker run --rm -e SETUP="true" \
 echo ${CMD_SETUP}
 
 printf "\nLaunch it by running:\n"
-CMD_LAUNCH="docker compose -f insecure.docker-compose.yml --env-file ${DATA_ROOT}/.env up -d"
+CMD_LAUNCH="docker compose -f ${SCRIPT_DIR}/insecure.docker-compose.yml --env-file ${DATA_ROOT}/.env up -d"
 echo ${CMD_LAUNCH}
 
 printf "\nGenerate credentials by running:\n"
-CMD_CREDENTIALS="docker compose -f insecure.docker-compose.yml --env-file ${DATA_ROOT}/.env exec storagenode bin/storagenode info --config-dir config --identity-dir identity"
+CMD_CREDENTIALS="docker compose -f ${SCRIPT_DIR}/insecure.docker-compose.yml --env-file ${DATA_ROOT}/.env exec storagenode bin/storagenode info --config-dir config --identity-dir identity"
 echo ${CMD_CREDENTIALS}
 
 INSTRUCTIONS_FILE=${DATA_ROOT}/instructions.sh
