@@ -8,7 +8,7 @@ http:
         certResolver: patz.app
       middlewares:
         - keycloak@file
-      service: nas-tatooine
+      service: storj1-nas
 
     storj1:
       rule: >
@@ -25,16 +25,16 @@ http:
         certResolver: patz.app
       middlewares:
         - keycloak@file
-      service: storj1-service
+      service: storj1-traefik
 
   services:
-    nas-storj1:
+    storj1-nas:
       loadBalancer:
         servers:
           - url: https://192.168.1.5:443
         serversTransport: trust-internal-tls
 
-    storj1-service:
+    storj1-traefik:
       loadBalancer:
         servers:
           - url: http://192.168.1.5:80
