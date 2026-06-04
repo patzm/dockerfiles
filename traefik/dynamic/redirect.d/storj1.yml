@@ -10,9 +10,34 @@ http:
         - keycloak@file
       service: nas-tatooine
 
+    storj1:
+      rule: >
+        Host(`traefik.storj1.patz.app`)
+        || Host(`storj-1tb-1.storj1.patz.app`)
+        || Host(`storj-1tb-2.storj1.patz.app`)
+        || Host(`storj-2tb-1.storj1.patz.app`)
+        || Host(`storj-2tb-2.storj1.patz.app`)
+        || Host(`storj-2tb-3.storj1.patz.app`)
+        || Host(`storj-3tb-1.storj1.patz.app`)
+        || Host(`storj-3tb-2.storj1.patz.app`)
+        || Host(`storj-3tb-3.storj1.patz.app`)
+        || Host(`storj-3tb-4.storj1.patz.app`)
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: patz.app
+      middlewares:
+        - keycloak@file
+      service: storj1-service
+
   services:
     nas-storj1:
       loadBalancer:
         servers:
           - url: https://192.168.1.5:443
         serversTransport: trust-internal-tls
+
+    storj1-service:
+      loadBalancer:
+        servers:
+          - url: http://192.168.1.5:80
