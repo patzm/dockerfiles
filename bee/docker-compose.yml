@@ -42,6 +42,7 @@ services:
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is required}
+      - CORE_DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD:?DB_PASSWORD is required}@postgres:5432/${DB_NAME}
       - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD:?DB_PASSWORD is required}@postgres:5432/${DB_NAME}
       - MONITORING_DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD:?DB_PASSWORD is required}@postgres:5432/${DB_NAME}
       - BEEFLOW_DATA_DIR=/data
