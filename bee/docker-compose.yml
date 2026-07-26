@@ -26,7 +26,7 @@ services:
 
   server:
     image: ghcr.io/bee-flow/server:${BEEFLOW_SERVER_TAG}
-    restart: unless-stopped
+    # restart: unless-stopped
     environment:
       - TZ=${TIMEZONE}
       - NODE_ENV=production
@@ -71,7 +71,7 @@ services:
 
   agent-hub:
     image: ghcr.io/bee-flow/agent-hub:${BEEFLOW_UI_TAG}
-    restart: unless-stopped
+    # restart: unless-stopped
     environment:
       - SERVER_HOST=server
       - SERVER_PORT=3001
