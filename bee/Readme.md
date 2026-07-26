@@ -25,13 +25,20 @@ Self-hosted Bee Flow with Ollama as model provider, exposed as `https://bee.patz
    - `DB_PASSWORD`
    - `OLLAMA_BASE_URL`
 
-2. Start:
+2. Create required host paths for bind mounts:
+
+```bash
+mkdir -p /mnt/ssd-1tb/docker/bee/postgres
+mkdir -p /mnt/ssd-1tb/docker/bee/data
+```
+
+3. Start:
 
 ```bash
 docker compose up -d
 ```
 
-3. Check health and logs:
+4. Check health and logs:
 
 ```bash
 docker compose ps
