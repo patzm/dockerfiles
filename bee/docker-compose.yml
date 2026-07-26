@@ -1,0 +1,94 @@
+networks:
+    ai:
+        name: ai
+        external: true
+
+    traefik:
+        name: traefik
+        external: true
+
+services:
+    postgres:
+        image: pgvector/pgvector:pg15
+        restart: unless-stopped
+        environment:
+            - TZ=${TIMEZONE}
+            - POSTGRES_DB=${DB_NAME}
+            - POSTGRES_USER=${DB_USER}
+            - POSTGRES_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is required}
+        volumes:
+            - /mnt/ssd-1tb/docker/bee/postgres:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+            interval: 10s
+            timeout: 5s
+            retries: 10
+
+    beeflow-server:
+        image: ghcr.io/bee-flow/server:${BEEFLOW_SERVER_TAG}
+        restart: unless-stopped
+        environment:
+            - TZ=${TIMEZONE}
+            - NODE_ENV=production
+            - DEPLOYMENT_MODE=self-hosted
+            - PORT=3001
+            - PUBLIC_URL=${PUBLIC_URL}
+            - SESSION_SECRET=${SESSION_SECRET:?SESSION_SECRET is required}
+            - MASTER_ENCRYPTION_KEY=${MASTER_ENCRYPTION_KEY:?MASTER_ENCRYPTION_KEY is required}
+            - INIT_ADMIN_PASSWORD=${INIT_ADMIN_PASSWORD}
+            - LOG_LEVEL=${LOG_LEVEL}
+            - DB_HOST=postgres
+            - DB_PORT=5432
+            - DB_NAME=${DB_NAME}
+            - DB_USER=${DB_USER}
+            - DB_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is required}
+            - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD:?DB_PASSWORD is required}@postgres:5432/${DB_NAME}
+            - MONITORING_DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD:?DB_PASSWORD is required}@postgres:5432/${DB_NAME}
+            - BEEFLOW_DATA_DIR=/data
+            - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:?OLLAMA_BASE_URL is required}
+        volumes:
+            - /mnt/ssd-1tb/docker/bee/data:/data
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        depends_on:
+            postgres:
+                condition: service_healthy
+        networks:
+            - default
+            - ai
+        healthcheck:
+            test:
+                [
+                    "CMD",
+                    "node",
+                    "-e",
+                    "require('http').get('http://127.0.0.1:3001/api/health',(r)=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1));",
+                ]
+            interval: 15s
+            timeout: 5s
+            retries: 15
+
+    agent-hub:
+        image: ghcr.io/bee-flow/agent-hub:${BEEFLOW_UI_TAG}
+        restart: unless-stopped
+        environment:
+            - SERVER_HOST=beeflow-server
+            - SERVER_PORT=3001
+        depends_on:
+            beeflow-server:
+                condition: service_healthy
+        networks:
+            - default
+            - traefik
+        healthcheck:
+            test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1/ || exit 1"]
+            interval: 15s
+            timeout: 5s
+            retries: 10
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.bee.entrypoints=websecure
+            - traefik.http.routers.bee.rule=Host(`bee.patz.app`)
+            - traefik.http.routers.bee.tls=true
+            - traefik.http.routers.bee.tls.certresolver=patz.app
+            - traefik.http.services.bee.loadbalancer.server.port=80
