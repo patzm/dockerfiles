@@ -24,7 +24,7 @@ services:
       timeout: 5s
       retries: 10
 
-  beeflow-server:
+  beeflow:
     image: ghcr.io/bee-flow/server:${BEEFLOW_SERVER_TAG}
     restart: unless-stopped
     environment:
@@ -72,10 +72,10 @@ services:
     image: ghcr.io/bee-flow/agent-hub:${BEEFLOW_UI_TAG}
     restart: unless-stopped
     environment:
-      - SERVER_HOST=beeflow-server
+      - SERVER_HOST=server
       - SERVER_PORT=3001
     depends_on:
-      beeflow-server:
+      server:
         condition: service_healthy
     networks:
       - default
