@@ -24,7 +24,7 @@ services:
       timeout: 5s
       retries: 10
 
-  beeflow:
+  server:
     image: ghcr.io/bee-flow/server:${BEEFLOW_SERVER_TAG}
     restart: unless-stopped
     environment:
