@@ -1,0 +1,27 @@
+networks:
+  traefik:
+    name: traefik
+    external: true
+
+services:
+  hermes:
+    image: nousresearch/hermes-agent:${HERMES_TAG:-latest}
+    restart: unless-stopped
+    command: gateway run
+    environment:
+      - HERMES_DASHBOARD=1
+      - HERMES_DASHBOARD_PUBLIC_URL=https://hermes.patz.app
+      - HERMES_DASHBOARD_BASIC_AUTH_USERNAME=admin
+      - HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=${HERMES_DASHBOARD_BASIC_AUTH_PASSWORD}
+      - HERMES_DASHBOARD_BASIC_AUTH_SECRET=${HERMES_DASHBOARD_BASIC_AUTH_SECRET}
+      - HERMES_GATEWAY_BOOTSTRAP_STATE=running
+    volumes:
+      - /mnt/ssd-1tb/docker/hermes:/opt/data
+    networks:
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.hermes.entrypoints=websecure
+      - traefik.http.routers.hermes.rule=Host(`hermes.patz.app`)
+      - traefik.http.routers.hermes.tls.certresolver=patz.app
+      - traefik.http.services.hermes.loadbalancer.server.port=9119
