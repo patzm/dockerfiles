@@ -1,6 +1,11 @@
 ARG HERMES_TAG=latest
 FROM nousresearch/hermes-agent:${HERMES_TAG}
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    neovim \
+    && \
+    rm -rf /var/lib/apt/lists/*
+
 ARG BW_VERSION=2026.8.0
 ARG TARGETARCH=amd64
 ARG BW_SHA256_AMD64=367f618e9fcccaac4980ec12c7bafd01df739b5f3cb1af31bc9045cf75eea1d6
