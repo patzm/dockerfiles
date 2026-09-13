@@ -73,6 +73,8 @@ services:
   nextcloud-mcp:
     image: ghcr.io/cbcoutinho/nextcloud-mcp-server:${NEXTCLOUD_MCP_TAG:-latest}
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
       NEXTCLOUD_HOST: https://cloud.patz.app
       MCP_DEPLOYMENT_MODE: multi_user_basic
