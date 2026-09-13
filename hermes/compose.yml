@@ -9,6 +9,8 @@ services:
     restart: unless-stopped
     command: gateway run
     environment:
+      - HERMES_UID=10000
+      - HERMES_GID=10000
       - HERMES_DASHBOARD=1
       - HERMES_DASHBOARD_PUBLIC_URL=https://hermes.patz.app
       - HERMES_DASHBOARD_BASIC_AUTH_USERNAME=admin
