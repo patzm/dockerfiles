@@ -23,7 +23,7 @@ The API key authenticates the CLI but does not decrypt the vault; `BW_PASSWORD` 
 Set the secret's permissions, then start:
 
 ```sh
-chmod 0640 /mnt/ssd-1tb/docker-secrets/hermes/vaultwarden_private_api_key
+chmod 0644 /mnt/ssd-1tb/docker-secrets/hermes/vaultwarden_private_api_key
 cat > /mnt/ssd-1tb/docker/hermes/config.yaml <<'EOF'
 dashboard:
   trusted_proxies:
@@ -32,7 +32,7 @@ EOF
 docker compose up -d --build
 ```
 
-Populate `vaultwarden_private_api_key` before starting the stack. Compose mounts it as a file at `/run/secrets/vaultwarden_private_api_key`; it is not automatically exposed as an environment variable. File-backed Compose secrets retain host ownership and mode, so GID `10000` and mode `0640` let the Hermes process read the file while the `0700` parent directory prevents other host users from traversing it. The CLI's app-data directory is mounted as tmpfs at `/run/hermes-bw`, preventing its encrypted vault cache from persisting under `/opt/data`.
+Populate `vaultwarden_private_api_key` before starting the stack. Compose mounts it as a file at `/run/secrets/vaultwarden_private_api_key`; it is not automatically exposed as an environment variable. File-backed Compose secrets retain host ownership and mode, so mode `0644` lets the Hermes process (UID/GID `10000`) read the root-owned file while the `0700` parent directory prevents other host users from traversing it. The CLI's app-data directory is mounted as tmpfs at `/run/hermes-bw`, preventing its encrypted vault cache from persisting under `/opt/data`.
 
 The custom image runs `entrypoint.sh`, which sources `vaultwarden-start.sh` to configure the Vaultwarden server, log in with the API key, and unlock the vault before starting Hermes with `BW_SESSION`. No setup skill or agent prompt is required. Add future system packages to `Dockerfile`. If Hermes needs retrieval guidance, use:
 
