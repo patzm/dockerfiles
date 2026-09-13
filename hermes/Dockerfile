@@ -2,7 +2,10 @@ ARG HERMES_TAG=latest
 FROM nousresearch/hermes-agent:${HERMES_TAG}
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    jq \
+    less \
     neovim \
+    tree \
     && \
     rm -rf /var/lib/apt/lists/*
 
