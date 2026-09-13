@@ -44,4 +44,5 @@ RUN set -eu; \
     install -m 0755 /tmp/himalaya /usr/local/bin/himalaya; \
     rm -f /tmp/himalaya /tmp/himalaya.tgz
 
-COPY --chmod=0755 entrypoint.sh vaultwarden-start.sh /usr/local/bin/
+COPY --chmod=0755 entrypoint.sh /usr/local/bin/
+COPY --chmod=0755 bw-session.sh /usr/local/bin/bw-session

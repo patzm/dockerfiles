@@ -2,7 +2,7 @@
 set -eu
 
 echo "[hermes-entrypoint] Initializing Vaultwarden session"
-. /usr/local/bin/vaultwarden-start.sh
+bw-session status >/dev/null
 echo "[hermes-entrypoint] Vaultwarden session ready"
 
 echo "[hermes-entrypoint] Starting Hermes gateway"
