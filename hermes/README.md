@@ -9,21 +9,21 @@ Set these stack environment variables:
 
 ## Vaultwarden bootstrap
 
-Store the dedicated Vaultwarden account's API credentials and master password as dotenv-shaped bootstrap material:
+Store the dedicated Vaultwarden account's API credentials in `vaultwarden_private_api_key` as dotenv-shaped bootstrap material:
 
 ```dotenv
 VAULTWARDEN_URL=https://vaultwarden.example.com
 BW_CLIENTID=user.account-uuid
 BW_CLIENTSECRET=generated-api-key-secret
-BW_PASSWORD=your-master-password
 ```
 
-The API key authenticates the CLI but does not decrypt the vault; `BW_PASSWORD` is required to unlock it. Do not use `BWS_ACCESS_TOKEN`: Vaultwarden does not implement Bitwarden Secrets Manager.
+Store the master password as the only line in `vaultwarden_master_password`, without shell quoting or a variable-name prefix. A normal trailing newline is fine. The API key authenticates the CLI but the master password is still required to decrypt the vault. Do not use `BWS_ACCESS_TOKEN`: Vaultwarden does not implement Bitwarden Secrets Manager.
 
 Set the secret's permissions, then start:
 
 ```sh
-chmod 0644 /mnt/ssd-1tb/docker-secrets/hermes/vaultwarden_private_api_key
+chmod 0644 /mnt/ssd-1tb/docker-secrets/hermes/vaultwarden_private_api_key \
+  /mnt/ssd-1tb/docker-secrets/hermes/vaultwarden_master_password
 cat > /mnt/ssd-1tb/docker/hermes/config.yaml <<'EOF'
 dashboard:
   trusted_proxies:
@@ -32,7 +32,7 @@ EOF
 docker compose up -d --build
 ```
 
-Populate `vaultwarden_private_api_key` before starting the stack. Compose mounts it as a file at `/run/secrets/vaultwarden_private_api_key`; it is not automatically exposed as an environment variable. File-backed Compose secrets retain host ownership and mode, so mode `0644` lets the Hermes process (UID/GID `10000`) read the root-owned file while the `0700` parent directory prevents other host users from traversing it. The CLI's app-data directory is mounted as tmpfs at `/run/hermes-bw`, preventing its encrypted vault cache from persisting under `/opt/data`.
+Populate both secret files before starting the stack. Compose mounts them at `/run/secrets/vaultwarden_private_api_key` and `/run/secrets/vaultwarden_master_password`; they are not automatically exposed as environment variables. File-backed Compose secrets retain host ownership and mode, so mode `0644` lets the Hermes process (UID/GID `10000`) read the root-owned file while the `0700` parent directory prevents other host users from traversing it. The CLI's app-data directory is mounted as tmpfs at `/run/hermes-bw`, preventing its encrypted vault cache from persisting under `/opt/data`.
 
 The custom image installs pinned, checksum-verified Bitwarden and Himalaya CLIs system-wide. Automated Vaultwarden startup is currently disabled while its login flow is debugged; set the service command to `/usr/local/bin/entrypoint.sh` to re-enable it. Add future system packages to `Dockerfile`. If Hermes needs retrieval guidance, use:
 

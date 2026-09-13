@@ -6,6 +6,8 @@ networks:
 secrets:
   vaultwarden_private_api_key:
     file: /mnt/ssd-1tb/docker-secrets/hermes/vaultwarden_private_api_key
+  vaultwarden_master_password:
+    file: /mnt/ssd-1tb/docker-secrets/hermes/vaultwarden_master_password
 
 services:
   hermes:
@@ -26,6 +28,7 @@ services:
       - BITWARDENCLI_APPDATA_DIR=/run/hermes-bw
     secrets:
       - vaultwarden_private_api_key
+      - vaultwarden_master_password
     tmpfs:
       - /run/hermes-bw:mode=0700,uid=10000,gid=10000
     volumes:
