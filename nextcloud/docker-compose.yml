@@ -70,6 +70,27 @@ services:
       - "traefik.http.middlewares.nc-secure.headers.hostsproxyheaders=X-Forwarded-Host"
       - "traefik.http.middlewares.nc-secure.headers.referrerpolicy=same-origin"
 
+  nextcloud-mcp:
+    image: ghcr.io/cbcoutinho/nextcloud-mcp-server:${NEXTCLOUD_MCP_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      NEXTCLOUD_HOST: https://cloud.patz.app
+      MCP_DEPLOYMENT_MODE: multi_user_basic
+    volumes:
+      - ${MOUNT_MCP_DATA}:/app/data
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.patz-nc-mcp.entrypoints=websecure"
+      - "traefik.http.routers.patz-nc-mcp.rule=Host(`mcp-cloud.patz.app`)"
+      - "traefik.http.routers.patz-nc-mcp.middlewares=nc-mcp-ratelimit"
+      - "traefik.http.routers.patz-nc-mcp.tls=true"
+      - "traefik.http.routers.patz-nc-mcp.tls.certresolver=patz.app"
+      - "traefik.http.services.patz-nc-mcp.loadbalancer.server.port=8000"
+      - "traefik.http.middlewares.nc-mcp-ratelimit.ratelimit.average=20"
+      - "traefik.http.middlewares.nc-mcp-ratelimit.ratelimit.burst=40"
+
   cron:
     image: crazymax/nextcloud:${NEXTCLOUD_TAG}
     restart: unless-stopped
