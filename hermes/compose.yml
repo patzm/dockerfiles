@@ -3,6 +3,10 @@ networks:
     name: traefik
     external: true
 
+secrets:
+  vaultwarden_private_api_key:
+    file: /mnt/ssd-1tb/docker-secrets/hermes/vaultwarden_private_api_key
+
 services:
   hermes:
     image: nousresearch/hermes-agent:${HERMES_TAG:-latest}
@@ -16,6 +20,11 @@ services:
       - HERMES_DASHBOARD_BASIC_AUTH_USERNAME=admin
       - HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=${HERMES_DASHBOARD_BASIC_AUTH_PASSWORD}
       - HERMES_DASHBOARD_BASIC_AUTH_SECRET=${HERMES_DASHBOARD_BASIC_AUTH_SECRET}
+      - BITWARDENCLI_APPDATA_DIR=/run/hermes-bw
+    secrets:
+      - vaultwarden_private_api_key
+    tmpfs:
+      - /run/hermes-bw:mode=0700,uid=10000,gid=10000
     volumes:
       - /mnt/ssd-1tb/docker/hermes:/opt/data
     networks:
