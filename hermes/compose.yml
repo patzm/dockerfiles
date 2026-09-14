@@ -16,7 +16,7 @@ services:
       args:
         HERMES_TAG: ${HERMES_TAG:-latest}
     restart: unless-stopped
-    command: /usr/local/bin/entrypoint.sh
+    command: gateway run
     environment:
       - HERMES_UID=10000
       - HERMES_GID=10000

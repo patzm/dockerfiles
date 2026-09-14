@@ -34,9 +34,36 @@ docker compose up -d --build
 
 Populate both secret files before starting the stack. Compose mounts them at `/run/secrets/vaultwarden_private_api_key` and `/run/secrets/vaultwarden_master_password`; they are not automatically exposed as environment variables. File-backed Compose secrets retain host ownership and mode, so mode `0644` lets the Hermes process (UID/GID `10000`) read the root-owned file while the `0700` parent directory prevents other host users from traversing it. The CLI's app-data directory is mounted as tmpfs at `/run/hermes-bw`, preventing its encrypted vault cache from persisting under `/opt/data`.
 
-The custom image installs pinned, checksum-verified Bitwarden and Himalaya CLIs system-wide. `entrypoint.sh` invokes `bw-session` before starting the Hermes gateway. The short-lived session is stored at `/run/hermes-bw/session`; `bw-session` reloads it and unlocks again on demand. Add future system packages to `Dockerfile`. If Hermes needs retrieval guidance, use:
+The custom image installs pinned, checksum-verified Bitwarden and Himalaya CLIs system-wide. `bw-session` logs in and unlocks on demand, caching its short-lived session at `/run/hermes-bw/session`. Add future system packages to `Dockerfile`. If Hermes needs retrieval guidance, use:
 
 > Use `bw-session` for Bitwarden credentials. Sync before reading, retrieve only the required item or field, and never print or persist secret values.
+
+## Nextcloud MCP
+
+Create a Vaultwarden login item named `hermes-nextcloud-mcp` with the Nextcloud username and a dedicated app password. Verify lookup without printing either value:
+
+```sh
+bw-session get username hermes-nextcloud-mcp >/dev/null
+bw-session get password hermes-nextcloud-mcp >/dev/null
+```
+
+Add these blocks to `/mnt/ssd-1tb/docker/hermes/config.yaml`:
+
+```yaml
+secrets:
+  command:
+    enabled: true
+    command: "/usr/local/bin/nextcloud-mcp-auth"
+    override_existing: true
+
+mcp_servers:
+  nextcloud:
+    url: "https://mcp-cloud.patz.app/mcp"
+    headers:
+      Authorization: "Basic ${NEXTCLOUD_MCP_BASIC_AUTH}"
+```
+
+At startup, Hermes' command secret source runs `nextcloud-mcp-auth`, which retrieves the Vaultwarden item and injects the encoded header directly into the gateway process. If lookup fails, Hermes stays up but the Nextcloud MCP has no usable credential.
 
 Configure the model at <https://hermes.patz.app>. Store runtime API credentials in the dedicated Vaultwarden account instead of Hermes' data directory.
 
