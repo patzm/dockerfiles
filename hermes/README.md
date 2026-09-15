@@ -54,6 +54,7 @@ secrets:
   command:
     enabled: true
     command: "/usr/local/bin/nextcloud-mcp-auth"
+    helper_timeout_seconds: 30
     override_existing: true
 
 mcp_servers:

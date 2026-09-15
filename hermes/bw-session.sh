@@ -1,5 +1,9 @@
 #!/bin/sh
 set -eu
+umask 077
+
+exec 9>/run/hermes-bw/session.lock
+flock 9
 
 session_file=/run/hermes-bw/session
 
@@ -26,7 +30,6 @@ if ! printf '%s\n' "$BW_STATUS" | grep -q '"status":[[:space:]]*"unlocked"'; the
     BW_SESSION=$(bw unlock --passwordfile /run/secrets/vaultwarden_master_password --raw --nointeraction)
     export BW_SESSION
 
-    umask 077
     session_tmp="${session_file}.$$"
     printf '%s' "$BW_SESSION" > "$session_tmp"
     mv -f "$session_tmp" "$session_file"

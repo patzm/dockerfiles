@@ -1,8 +1,10 @@
 #!/bin/sh
 set -eu
 
-NC_USER=$(bw-session get username hermes-nextcloud-mcp --nointeraction)
-NC_PASS=$(bw-session get password hermes-nextcloud-mcp --nointeraction)
+NC_ITEM=$(bw-session get item hermes-nextcloud-mcp --nointeraction)
+NC_USER=$(printf '%s' "$NC_ITEM" | jq -r '.login.username // empty')
+NC_PASS=$(printf '%s' "$NC_ITEM" | jq -r '.login.password // empty')
+unset NC_ITEM
 
 if [ -z "$NC_USER" ] || [ -z "$NC_PASS" ]; then
     echo "Nextcloud MCP credential is incomplete" >&2
