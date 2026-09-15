@@ -54,7 +54,7 @@ secrets:
   command:
     enabled: true
     command: "/usr/local/bin/nextcloud-mcp-auth"
-    helper_timeout_seconds: 30
+    helper_timeout_seconds: 60
     override_existing: true
 
 mcp_servers:
@@ -64,7 +64,7 @@ mcp_servers:
       Authorization: "Basic ${NEXTCLOUD_MCP_BASIC_AUTH}"
 ```
 
-At startup, Hermes' command secret source runs `nextcloud-mcp-auth`, which retrieves the Vaultwarden item and injects the encoded header directly into the gateway process. If lookup fails, Hermes stays up but the Nextcloud MCP has no usable credential.
+At startup, Hermes' command secret source runs `nextcloud-mcp-auth`. The first process retrieves the Vaultwarden item and atomically caches the dotenv output at `/run/hermes-bw/nextcloud-mcp.env`; concurrent processes return that tmpfs cache instead of repeating the slow unlock. Recreate the container after rotating the app password. If lookup fails, Hermes stays up but the Nextcloud MCP has no usable credential.
 
 Configure the model at <https://hermes.patz.app>. Store runtime API credentials in the dedicated Vaultwarden account instead of Hermes' data directory.
 
