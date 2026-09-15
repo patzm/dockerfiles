@@ -1,6 +1,6 @@
 # Hermes Agent
 
-Hermes dashboard at <https://hermes.patz.app>, with data in `/mnt/ssd-1tb/docker/hermes` and its Vaultwarden bootstrap secret in `/mnt/ssd-1tb/docker-secrets/hermes`.
+Hermes dashboard at <https://hermes.patz.app>, with data in `/mnt/ssd-1tb/docker/hermes` and Vaultwarden bootstrap secrets in `/mnt/ssd-1tb/docker-secrets/hermes`.
 
 Set these stack environment variables:
 
